@@ -54,3 +54,9 @@ Four main components of this application:
   - Locks us into English.
 * Mobile design first, but consider Desktop as well.
 * Dark modes.
+
+## TODO
+
+* [x] Resolve the Tailwind CSS configuration warnings when building.
+* [ ] How does the Vite build process work? tsc appears to do nothing.
+* [ ] What's React.StrictMode?

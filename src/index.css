@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -12,6 +16,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 
 a {
@@ -66,4 +75,8 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.background-component {
+  background: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
 }
