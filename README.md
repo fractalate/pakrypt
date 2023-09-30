@@ -1,29 +1,32 @@
 # Pakrypt
 
-## Problem Statement
+## Overview
 
-* I need a place that I trust to store my most sensitive information (passwords to banks, health portals).
-* My current password manager sucks.
+Pakrypt is intended to be an encrypted data manager for the browser, allowing a user to manage several different kids of data, which only get stored in its encrypted form on a device you trust or control.
 
-## Vision
+Use cases:
 
-* Minimalism.
-  - No list view.
-  - Don't be busy.
-  - Don't be too sparse.
-* Multiple different storage mechanisms.
+* File packaging mechanism.
+* Password manager.
+* Private note taking tool.
 
-## Goals
+## Development
 
-* Have fun!
-* Build skills:
-  - React
-  - Tailwind
-* Manage different kinds of data:
-  - Passwords.
-  - Notes.
+Install dependencies:
 
-## Technology
+```
+npm install .
+```
+
+Run development server:
+
+```
+npm run dev
+```
+
+## Design Materials
+
+### Technology
 
 * JavaScript (NodeJS)
   - TypeScript
@@ -32,7 +35,7 @@
 * Maybe try IndexDB?
 * Cryptographic Libraries
 
-## Architecture
+### Architecture
 
 Four main components of this application:
 
@@ -43,7 +46,7 @@ Four main components of this application:
 * Encryption scheme.
 * Persistence scheme.
 
-## Minimalistic Style
+### Minimalistic Style
 
 * When you view the app, it's has just enough design to distinguish it from other apps.
 * One way to initiate all activities
@@ -54,9 +57,3 @@ Four main components of this application:
   - Locks us into English.
 * Mobile design first, but consider Desktop as well.
 * Dark modes.
-
-## TODO
-
-* [x] Resolve the Tailwind CSS configuration warnings when building.
-* [ ] How does the Vite build process work? tsc appears to do nothing.
-* [ ] What's React.StrictMode?
