@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import './App.css'
+import Omnibar from './Omnibar';
 
 export type ColorTheme = '' | 'light' | 'dark';
 
 function loadColorTheme(): ColorTheme {
+// TODO: Figure out the light/dark theme with javascript. https://stackoverflow.com/questions/56393880/how-do-i-detect-dark-mode-using-javascript
   const value = localStorage.getItem('color-theme');
   if (value == null) {
     return '';
@@ -14,27 +14,52 @@ function loadColorTheme(): ColorTheme {
   return '';
 }
 
-const firstColorTheme = loadColorTheme();
+_setTheme(loadColorTheme());
+
+function _setTheme(theme: ColorTheme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+
+// XXX: This is hacky. Replace a toggle control or something.
+(window as any).setTheme = function(theme: ColorTheme) {
+  localStorage.setItem('color-theme', theme);
+  _setTheme(theme);
+};
+// XXX: This is hacky. Replace a toggle control or something.
+var currentTheme = loadColorTheme(); // TODO: Double loading, but this is here for tests.
+// XXX: This is hacky. Replace a toggle control or something.
+(window as any).swapTheme = function() {
+  if (currentTheme == 'light') {
+  	(window as any).setTheme(currentTheme = 'dark');
+  } else {
+    (window as any).setTheme(currentTheme = 'light');
+  }
+};
+// XXX: This is hacky. Replace a toggle control or something.
+(window as any).swapOn = function() {
+  setInterval((window as any).swapTheme, 2000);
+};
 
 function App() {
-  const [theme, setTheme] = useState(firstColorTheme);
-
-  // XXX: This is hacky. Replace a toggle control or something.
-  (window as any).setTheme = function(theme: ColorTheme) {
-    localStorage.setItem('color-theme', theme);
-    setTheme(theme);
-  }
-
-  const themeClassName = theme || '';
-
   return (
-    <div className={themeClassName + " h-screen w-screen background-component"}>
-      <svg className="h-screen w-screen">
-        <line x1="75%" y1="0" x2="75%" y2="100%" style={{
-          stroke: 'var(--pakrypt-stripe-color)',
-          strokeWidth: 20, // I want CM or something.
+    <div className={`
+      h-screen w-screen
+      text-[#333] bg-[#FFE]
+      dark:text-[#EED] dark:bg-[#323]
+    `}>
+      <svg className="h-screen w-screen absolute left-0 right-0 top-0 bottom-0">
+        <line x1="75%" y1="0" x2="75%" y2="100%" className="stroke-[#EED] dark:stroke-[#434]" style={{
+          strokeWidth: 20, // TODO: I want centimeters or something.
         }}></line>
       </svg>
+      {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
+      <div className="relative">
+        <Omnibar />
+      </div>
     </div>
   )
 }

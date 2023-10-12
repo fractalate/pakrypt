@@ -3,18 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --pakrypt-light-color: #333;
-  --pakrypt-light-background-color: #FFE;
-  --pakrypt-light-color-selection: #443;
-  --pakrypt-light-background-color-selection: #BBB;
-  --pakrypt-light-stripe-color: #EED;
-
-  --pakrypt-dark-color: #EED;
-  --pakrypt-dark-background-color: #323;
-  --pakrypt-dark-color-selection: #BBC;
-  --pakrypt-dark-background-color-selection: #666;
-  --pakrypt-dark-stripe-color: #434;
-
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -28,77 +16,7 @@
   color-scheme: light dark;
 }
 
-:root {
-  color: var(--pakrypt-light-color);
-  background-color: var(--pakrypt-light-background-color);
-  --pakrypt-stripe-color: var(--pakrypt-light-stripe-color);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: var(--pakrypt-dark-color);
-    background-color: var(--pakrypt-dark-background-color);
-    --pakrypt-stripe-color: var(--pakrypt-dark-stripe-color);
-  }
-}
-
-.light {
-  color: var(--pakrypt-light-color);
-  background-color: var(--pakrypt-light-background-color);
-  --pakrypt-stripe-color: var(--pakrypt-light-stripe-color);
-}
-.dark {
-  color: var(--pakrypt-dark-color);
-  background-color: var(--pakrypt-dark-background-color);
-  --pakrypt-stripe-color: var(--pakrypt-dark-stripe-color);
-}
-
-:root ::selection {
-  color: var(--pakrypt-color-selection);
-  background-color: var(--pakrypt-background-color-selection);
-}
-
 #root {
   margin: 0 0 0 0;
   padding: 0 0 0 0;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
