@@ -16,27 +16,28 @@ function loadColorTheme(): ColorTheme {
 
 _setTheme(loadColorTheme());
 
+
+// XXX: This is hacky. Replace a toggle control or something.
+var currentTheme = loadColorTheme(); // TODO: Double loading, but this is here for tests.
 function _setTheme(theme: ColorTheme) {
+  currentTheme = theme;
   if (theme === 'dark') {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
   }
 }
-
 // XXX: This is hacky. Replace a toggle control or something.
 (window as any).setTheme = function(theme: ColorTheme) {
   localStorage.setItem('color-theme', theme);
   _setTheme(theme);
 };
 // XXX: This is hacky. Replace a toggle control or something.
-var currentTheme = loadColorTheme(); // TODO: Double loading, but this is here for tests.
-// XXX: This is hacky. Replace a toggle control or something.
 (window as any).swapTheme = function() {
-  if (currentTheme == 'light') {
-  	(window as any).setTheme(currentTheme = 'dark');
+  if (currentTheme == 'dark') {
+  	(window as any).setTheme('light');
   } else {
-    (window as any).setTheme(currentTheme = 'light');
+    (window as any).setTheme('dark');
   }
 };
 // XXX: This is hacky. Replace a toggle control or something.

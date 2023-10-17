@@ -1,15 +1,16 @@
 import { useState } from "react";
 import InputOmnibar from "./components/InputOmnibar";
 import { randomId } from "./lib/rand";
+import Tile from "./components/Tile";
 
 export default function Omnibar() {
   const [results, setResults] = useState([] as string[])
 
   async function onChange(query: string) {
-    if (query === 'help') {
-      setResults(['help here', 'help online']);
+    if (query.length > 0 && 'help'.startsWith(query)) {
+      setResults(['Type "theme" to demonstrate the themes.']);
     } else if (query === 'theme') {
-      setResults(['swap theme']);
+      setResults(['swap theme', 'set light theme', 'set dark theme', 'mytheme.com']);
     } else if (query === 'light') {
       setResults(['set light theme']);
     } else if (query === 'dark') {
@@ -29,30 +30,36 @@ export default function Omnibar() {
     (window as any).setTheme('dark'); // TODO: Hacky
   }
 
-  const tiles = results.map((result) => {
+  function isCommandTile(result: string) {
+    return result === 'swap theme' || result === 'set light theme' || result === 'set dark theme';
+  }
+
+  function makeTileContent(result: string) {
     if (result === 'swap theme') {
-      return <p key={randomId()}>
-        <button onClick={swapTheme}>
-          {result}
-        </button>
-      </p>
+      return <button onClick={swapTheme}>
+        {result}
+      </button>
     }
     if (result === 'set light theme') {
-      return <p key={randomId()}>
-        <button onClick={setLightTheme}>
-          {result}
-        </button>
-      </p>
+      return <button onClick={setLightTheme}>
+        {result}
+      </button>
     }
     if (result === 'set dark theme') {
-      return <p key={randomId()}>
-        <button onClick={setDarkTheme}>
-          {result}
-        </button>
-      </p>
+      return <button onClick={setDarkTheme}>
+        {result}
+      </button>
     }
-    return <p key={randomId()}>{result}</p>
-  });
+    return <>
+      {result}
+    </>
+  }
+
+  const tiles = results.map((result) => <div className="pt-1">
+    <Tile key={randomId()} commandTile={isCommandTile(result)}>
+      {makeTileContent(result)}
+    </Tile>
+  </div>);
 
   return <div className="p-1.5">
     <InputOmnibar onChange={onChange}/>
