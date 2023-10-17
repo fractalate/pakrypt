@@ -1,5 +1,3 @@
-// TODO: Need placeholder text.
-
 import { randomId } from "../lib/rand";
 
 export default function InputText(props: { id?: string, placeholder?: string }) {

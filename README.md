@@ -39,8 +39,8 @@ npm run dev
 
 Four main components of this application:
 
-* Data manager UI
-* Dada model that the UI manager
+* Data manager UI.
+* Dada model that the UI manager uses.
   - Object structure in JavaScript/JSON.
   - How it's serialized to bytes? Or to strings or to whatever storage?
 * Encryption scheme.
