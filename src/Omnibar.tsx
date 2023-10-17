@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputTextOmnibar from "./components/InputTextOmnibar";
+import InputOmnibar from "./components/InputOmnibar";
 import { randomId } from "./lib/rand";
 
 export default function Omnibar() {
@@ -55,7 +55,7 @@ export default function Omnibar() {
   });
 
   return <div className="p-1.5">
-    <InputTextOmnibar onChange={onChange}/>
+    <InputOmnibar onChange={onChange}/>
     {tiles}
   </div>
 }
