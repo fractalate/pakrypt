@@ -3,7 +3,11 @@ import InputOmnibar from "./components/InputOmnibar";
 import { randomId } from "./lib/rand";
 import Tile from "./components/Tile";
 
-export default function Omnibar() {
+interface OmnibarProps {
+  autoFocus?: boolean;
+}
+
+export default function Omnibar(props: OmnibarProps) {
   const [results, setResults] = useState([] as string[])
 
   async function onChange(query: string) {
@@ -67,7 +71,7 @@ export default function Omnibar() {
   </div>);
 
   return <div className="p-1.5">
-    <InputOmnibar onChange={onChange}/>
+    <InputOmnibar autoFocus={props.autoFocus} onChange={onChange}/>
     <div>
       {tiles}
     </div>

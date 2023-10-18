@@ -59,7 +59,7 @@ function App() {
       </svg>
       {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
       <div className="relative">
-        <Omnibar />
+        <Omnibar autoFocus={true} />
       </div>
     </div>
   )
