@@ -15,6 +15,12 @@ export default function Omnibar() {
       setResults(['set light theme']);
     } else if (query === 'dark') {
       setResults(['set dark theme']);
+    } else if (query === 'long') {
+      const results = [];
+      for (let i = 0; i < 100; ++i) {
+        results.push('' + i);
+      }
+      setResults(results);
     } else {
       setResults([]);
     }
@@ -54,15 +60,16 @@ export default function Omnibar() {
       {result}
     </>
   }
-
-  const tiles = results.map((result) => <div className="pt-1">
-    <Tile key={randomId()} commandTile={isCommandTile(result)}>
+  const tiles = results.map((result) => <div key={randomId()} className="pt-1">
+    <Tile commandTile={isCommandTile(result)}>
       {makeTileContent(result)}
     </Tile>
   </div>);
 
   return <div className="p-1.5">
     <InputOmnibar onChange={onChange}/>
-    {tiles}
+    <div>
+      {tiles}
+    </div>
   </div>
 }

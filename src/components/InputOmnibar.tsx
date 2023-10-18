@@ -1,7 +1,7 @@
 
 export default function InputOmnibar(props: {onChange: (query: string) => any}) {
   // TODO: I need to test that the label here DOES get read by a screen reader. I believe this is how to do it with the hidden class and aria-hidden="false".
-  return <div>
+  return <>
     <label htmlFor="omnibarInput" className="hidden" aria-hidden="false">Type commands here:</label>
     <input type="text" id="omnibarInput"
       placeholder="Type help for help."
@@ -14,5 +14,5 @@ export default function InputOmnibar(props: {onChange: (query: string) => any}) 
         props.onChange(e.target.value);
       }}
     />
-  </div>
+  </>
 }
