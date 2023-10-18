@@ -48,7 +48,7 @@ function _setTheme(theme: ColorTheme) {
 function App() {
   return (
     <div className={`
-      h-screen w-screen
+      h-screen w-screen overflow-y-scroll
       text-[#333] bg-[#FFE]
       dark:text-[#EED] dark:bg-[#323]
     `}>
