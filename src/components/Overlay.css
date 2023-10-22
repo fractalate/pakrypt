@@ -1,0 +1,8 @@
+.overlay {
+  display: none;
+  overflow: hide;
+}
+.overlay:last-of-type {
+  display: inline;
+  overflow: auto;
+}

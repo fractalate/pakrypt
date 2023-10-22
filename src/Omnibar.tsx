@@ -2,6 +2,7 @@ import { useState } from "react";
 import InputOmnibar from "./components/InputOmnibar";
 import { randomId } from "./lib/rand";
 import Tile from "./components/Tile";
+import Overlay from "./components/Overlay";
 
 interface OmnibarProps {
   autoFocus?: boolean;
@@ -64,11 +65,30 @@ export default function Omnibar(props: OmnibarProps) {
       {result}
     </>
   }
-  const tiles = results.map((result) => <div key={randomId()} className="pt-1">
-    <Tile commandTile={isCommandTile(result)}>
-      {makeTileContent(result)}
-    </Tile>
-  </div>);
+
+  function TileFacade(props: { result: string }) {
+    const [opened, setOpened] = useState(false);
+
+    function toggleOpened() {
+      setOpened(!opened);
+    }
+
+    return <div key={randomId()} className="pt-1">
+      <Tile commandTile={isCommandTile(props.result)}>
+        {makeTileContent(props.result)}
+        <div>
+          <button className="border-2 radius-1 bg-blue-900" onClick={toggleOpened}>Expand</button>
+          {(opened) && <Overlay>
+            opened!
+            <button className="border-2 radius-1 bg-blue-900" onClick={toggleOpened}>Expand</button>
+
+            </Overlay>}
+        </div>
+      </Tile>
+    </div>
+  }
+
+  const tiles = results.map((result) => <TileFacade result={result} />);
 
   return <div className="p-1.5">
     <InputOmnibar autoFocus={props.autoFocus} onChange={onChange}/>

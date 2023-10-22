@@ -1,4 +1,6 @@
 import Omnibar from './Omnibar';
+import Overlay from './components/Overlay';
+import OverlayContainer from './components/OverlayContainer';
 
 export type ColorTheme = '' | 'light' | 'dark';
 
@@ -47,20 +49,24 @@ function _setTheme(theme: ColorTheme) {
 
 function App() {
   return (
-    <div className={`
-      h-screen w-screen overflow-y-scroll
-      text-[#333] bg-[#FFE]
-      dark:text-[#EED] dark:bg-[#323]
+  <div className={`
+    h-screen w-screen
+    text-[#333] bg-[#FFE]
+    dark:text-[#EED] dark:bg-[#323]
     `}>
-      <svg className="h-screen w-screen absolute left-0 right-0 top-0 bottom-0">
-        <line x1="75%" y1="0" x2="75%" y2="100%" className="stroke-[#EED] dark:stroke-[#434]" style={{
-          strokeWidth: 20, // TODO: I want centimeters or something.
-        }}></line>
-      </svg>
-      {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
-      <div className="relative">
-        <Omnibar autoFocus={true} />
-      </div>
+      <OverlayContainer>
+        <Overlay>
+          <svg className="h-screen w-100 absolute left-0 right-0 top-0 bottom-0">
+            <line x1="75%" y1="0" x2="75%" y2="100%" className="stroke-[#EED] dark:stroke-[#434]" style={{
+              strokeWidth: 20, // TODO: I want centimeters or something.
+            }}></line>
+          </svg>
+          {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
+          <div className="relative">
+            <Omnibar autoFocus={true} />
+          </div>
+        </Overlay>
+      </OverlayContainer>
     </div>
   )
 }
