@@ -47,7 +47,7 @@ function _setTheme(theme: ColorTheme) {
   setInterval((window as any).swapTheme, 2000);
 };
 
-function App() {
+export default function App() {
   return (
   <div className={`
     h-screen w-screen
@@ -70,5 +70,3 @@ function App() {
     </div>
   )
 }
-
-export default App

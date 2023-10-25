@@ -1,8 +1,9 @@
 import { useState } from "react";
 import InputOmnibar from "./components/InputOmnibar";
 import { randomId } from "./lib/rand";
-import Tile from "./components/Tile";
-import Overlay from "./components/Overlay";
+import Tile from "./tiles/Tile";
+import { TileNote } from "./tiles/TileNote";
+import { LayoutStickyControls } from "./lib/layout";
 
 interface OmnibarProps {
   autoFocus?: boolean;
@@ -14,6 +15,8 @@ export default function Omnibar(props: OmnibarProps) {
   async function onChange(query: string) {
     if (query.length > 0 && 'help'.startsWith(query)) {
       setResults(['Type "theme" to demonstrate the themes.']);
+    } else if (/n(o(t(e)?)?)?$/i.test(query)) {
+      setResults(['new note'])
     } else if (query === 'theme') {
       setResults(['swap theme', 'set light theme', 'set dark theme', 'mytheme.com']);
     } else if (query === 'light') {
@@ -42,10 +45,12 @@ export default function Omnibar(props: OmnibarProps) {
   }
 
   function isCommandTile(result: string) {
-    return result === 'swap theme' || result === 'set light theme' || result === 'set dark theme';
+    return result === 'swap theme' || result === 'set light theme' || result === 'set dark theme' || result === 'new note';
   }
-
   function makeTileContent(result: string) {
+    if (result === 'new note') {
+      return <TileNote />
+    }
     if (result === 'swap theme') {
       return <button onClick={swapTheme}>
         {result}
@@ -67,23 +72,9 @@ export default function Omnibar(props: OmnibarProps) {
   }
 
   function TileFacade(props: { result: string }) {
-    const [opened, setOpened] = useState(false);
-
-    function toggleOpened() {
-      setOpened(!opened);
-    }
-
     return <div key={randomId()} className="pt-1">
       <Tile commandTile={isCommandTile(props.result)}>
         {makeTileContent(props.result)}
-        <div>
-          <button className="border-2 radius-1 bg-blue-900" onClick={toggleOpened}>Expand</button>
-          {(opened) && <Overlay>
-            opened!
-            <button className="border-2 radius-1 bg-blue-900" onClick={toggleOpened}>Expand</button>
-
-            </Overlay>}
-        </div>
       </Tile>
     </div>
   }
@@ -91,7 +82,9 @@ export default function Omnibar(props: OmnibarProps) {
   const tiles = results.map((result) => <TileFacade result={result} />);
 
   return <div className="p-1.5">
-    <InputOmnibar autoFocus={props.autoFocus} onChange={onChange}/>
+    <div className={LayoutStickyControls}>
+      <InputOmnibar autoFocus={props.autoFocus} onChange={onChange} />
+    </div>
     <div>
       {tiles}
     </div>

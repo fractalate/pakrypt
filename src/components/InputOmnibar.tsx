@@ -37,14 +37,13 @@ export default function InputOmnibar(props: InputOmnibarProps) {
   })
 
   // TODO: I need to test that the label here DOES get read by a screen reader. I believe this is how to do it with the hidden class and aria-hidden="false".
-  return <div className="sticky top-1">
+  return <div>
     <label htmlFor="omnibarInput" className="hidden" aria-hidden="false">Type commands here:</label>
     <input type="search" id="omnibarInput" ref={queryRef}
       autoFocus={props.autoFocus}
       value={query}
       placeholder="Type help for help."
       className={`
-        sticky top-1
         border rounded-lg block w-full ${ textAndPaddingClasses }
         text-[#223] bg-white/75 border-slate-200
         dark:text-[#EEE] dark:bg-black/60 dark:border-slate-600
