@@ -15,7 +15,7 @@ export default function Omnibar(props: OmnibarProps) {
   async function onChange(query: string) {
     if (query.length > 0 && 'help'.startsWith(query)) {
       setResults(['Type "theme" to demonstrate the themes.']);
-    } else if (/n(o(t(e)?)?)?$/i.test(query)) {
+    } else if (/^n(o(t(e)?)?)?$/i.test(query)) {
       setResults(['new note'])
     } else if (query === 'theme') {
       setResults(['swap theme', 'set light theme', 'set dark theme', 'mytheme.com']);

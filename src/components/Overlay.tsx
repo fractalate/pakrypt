@@ -2,8 +2,6 @@ import { PropsWithChildren, useEffect } from "react";
 import './Overlay.css';
 import ReactDOM from "react-dom/client";
 
-const bgColorDefault = 'bg-white';
-
 interface OverlayProps {
   transparent?: boolean;
   busy?: boolean;
@@ -13,7 +11,7 @@ interface OverlayProps {
 export default function Overlay(props: PropsWithChildren & OverlayProps) {
   function Overlay(props: PropsWithChildren & OverlayProps) {
     // See Overlay.css for "overlay" class.
-    return <div className={"absolute top-0 right-0 left-0 bottom-0 h-screen w-full overflow-y-scroll"}>
+    return <div className={"absolute h-screen w-full overflow-y-scroll"}>
       {props.children}
     </div>;
   }
@@ -26,7 +24,15 @@ export default function Overlay(props: PropsWithChildren & OverlayProps) {
     const div = document.createElement('div');
     div.className = "overlay";
     const content = <Overlay {...props}>
-      {props.children}
+      <svg className="absolute h-screen w-full">
+        <line x1="75%" y1="0" x2="75%" y2="100%" className="stroke-[#EED] dark:stroke-[#434]" style={{
+          strokeWidth: 20, // TODO: I want centimeters or something.
+        }}></line>
+      </svg>
+      {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
+      <div className="relative">
+        {props.children}
+      </div>
     </Overlay>;
     ReactDOM.createRoot(div).render(content);
     container.appendChild(div);

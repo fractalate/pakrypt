@@ -56,15 +56,7 @@ export default function App() {
     `}>
       <OverlayContainer>
         <Overlay>
-          <svg className="h-screen w-100 absolute left-0 right-0 top-0 bottom-0">
-            <line x1="75%" y1="0" x2="75%" y2="100%" className="stroke-[#EED] dark:stroke-[#434]" style={{
-              strokeWidth: 20, // TODO: I want centimeters or something.
-            }}></line>
-          </svg>
-          {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
-          <div className="relative">
-            <Omnibar autoFocus={true} />
-          </div>
+          <Omnibar autoFocus={true} />
         </Overlay>
       </OverlayContainer>
     </div>
