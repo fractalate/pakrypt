@@ -47,35 +47,37 @@ export default function Omnibar(props: OmnibarProps) {
   function isCommandTile(result: string) {
     return result === 'swap theme' || result === 'set light theme' || result === 'set dark theme' || result === 'new note';
   }
-  function makeTileContent(result: string) {
-    if (result === 'new note') {
-      return <TileNote />
-    }
-    if (result === 'swap theme') {
-      return <button onClick={swapTheme}>
-        {result}
-      </button>
-    }
-    if (result === 'set light theme') {
-      return <button onClick={setLightTheme}>
-        {result}
-      </button>
-    }
-    if (result === 'set dark theme') {
-      return <button onClick={setDarkTheme}>
-        {result}
-      </button>
-    }
-    return <>
-      {result}
-    </>
-  }
 
   function TileFacade(props: { result: string }) {
-    return <div key={randomId()} className="pt-1">
-      <Tile commandTile={isCommandTile(props.result)}>
-        {makeTileContent(props.result)}
+    let stuff;
+    if (props.result === 'new note') {
+      stuff = <TileNote />
+    } else if (props.result === 'swap theme') {
+      stuff = <Tile commandTile={isCommandTile(props.result)}>
+        <button onClick={swapTheme}>
+          {props.result}
+        </button>
       </Tile>
+    } else if (props.result === 'set light theme') {
+      stuff = <Tile commandTile={isCommandTile(props.result)}>
+        <button onClick={setLightTheme}>
+          {props.result}
+        </button>
+      </Tile>
+    } else if (props.result === 'set dark theme') {
+      stuff = <Tile commandTile={isCommandTile(props.result)}>
+        <button onClick={setDarkTheme}>
+          {props.result}
+        </button>
+      </Tile>
+    } else {
+      stuff = <Tile commandTile={isCommandTile(props.result)}>
+        {props.result}
+      </Tile>
+    }
+
+    return <div key={randomId()} className="pt-1">
+      {stuff}
     </div>
   }
 
