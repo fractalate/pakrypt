@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import Tile from "./Tile";
 import Overlay from "../components/Overlay";
 import { LayoutStickyControls } from "../lib/layout";
+import { textAndPaddingClasses } from "../components/InputOmnibar";
 
 interface TODONote { // TODO: Moving this somewhere.
   ov: 'pakrypt.note:0';
@@ -57,11 +58,19 @@ export function TileNote(props: TileNoteProps) {
       </div>
       <div>
         <label htmlFor="title">Title</label>
-        <input name="title" onChange={onInputChanged}></input>
+        <input name="title" className={`
+          border rounded-lg block w-full text-sm p-1.5
+          text-[#223] bg-white/75 border-slate-200
+          dark:text-[#EEE] dark:bg-black/60 dark:border-slate-600
+        `} onChange={onInputChanged}></input>
       </div>
       <div>
         <label htmlFor="body">Body</label>
-        <input name="body" onChange={onInputChanged}></input>
+        <input name="body" className={`
+          border rounded-lg block w-full text-sm p-1.5
+          text-[#223] bg-white/75 border-slate-200
+          dark:text-[#EEE] dark:bg-black/60 dark:border-slate-600
+        `} onChange={onInputChanged}></input>
       </div>
     </Overlay>}
   </Tile>

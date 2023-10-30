@@ -25,7 +25,7 @@ export default function Overlay(props: PropsWithChildren) {
         }}></line>
       </svg>
       {/* TODO: Why does position: relative help here? Otherwise the SVG is on top of Omnibar */}
-      <div className="relative">
+      <div className="relative p-1.5">
         {props.children}
       </div>
     </OverlayInner>;

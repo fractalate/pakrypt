@@ -83,7 +83,7 @@ export default function Omnibar(props: OmnibarProps) {
 
   const tiles = results.map((result) => <TileFacade result={result} />);
 
-  return <div className="p-1.5">
+  return <div>
     <div className={LayoutStickyControls}>
       <InputOmnibar autoFocus={props.autoFocus} onChange={onChange} />
     </div>

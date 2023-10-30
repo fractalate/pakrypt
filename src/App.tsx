@@ -7,6 +7,7 @@ export type ColorTheme = '' | 'light' | 'dark';
 
 function loadColorTheme(): ColorTheme {
   // TODO: Figure out the light/dark theme with javascript. https://stackoverflow.com/questions/56393880/how-do-i-detect-dark-mode-using-javascript
+  // TODO: detect the system color theme so that our media-query-free dark/light implementation can respect the users choice.
   const value = localStorage.getItem('color-theme');
   if (value == null) {
     return '';

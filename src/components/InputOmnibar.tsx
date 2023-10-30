@@ -5,7 +5,7 @@ interface InputOmnibarProps {
   autoFocus?: boolean;
 }
 
-const textAndPaddingClasses = 'text-sm p-2.5';
+export const textAndPaddingClasses = 'text-sm p-2.5';
 
 export default function InputOmnibar(props: InputOmnibarProps) {
   const queryRef = useRef(null as null | HTMLInputElement);

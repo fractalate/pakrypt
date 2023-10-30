@@ -57,7 +57,3 @@ Four main components of this application:
   - Locks us into English.
 * Mobile design first, but consider Desktop as well.
 * Dark modes.
-
-## TODO
-
-* Fix horizontal stretching on the background SVG.
