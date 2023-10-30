@@ -11,6 +11,16 @@ export default function InputOmnibar(props: InputOmnibarProps) {
   const queryRef = useRef(null as null | HTMLInputElement);
   const [query, setQuery] = useState('');
 
+  useEffect(() => {
+    const listener = () => {
+      clearQuery();
+    };
+    window.addEventListener('InputOmnibar.clear()', listener);
+    return () => {
+      window.removeEventListener('InputOmnibar.clear()', listener);
+    };
+  });
+
   function updateQuery(newQuery: string) {
     setQuery(newQuery);
     props.onChange(newQuery);
@@ -23,23 +33,10 @@ export default function InputOmnibar(props: InputOmnibarProps) {
     }
   }
 
-  useEffect(() => {
-    function callback(e: KeyboardEvent) {
-      console.log('clearning now');
-      if (e.code === 'Escape') {
-        clearQuery();
-      }
-    }
-    window.addEventListener('keyup', callback);
-    return () => {
-      window.removeEventListener('keyup', callback);
-    };
-  })
-
   // TODO: I need to test that the label here DOES get read by a screen reader. I believe this is how to do it with the hidden class and aria-hidden="false".
   return <div>
     <label htmlFor="omnibarInput" className="hidden" aria-hidden="false">Type commands here:</label>
-    <input type="search" id="omnibarInput" ref={queryRef}
+    <input type="search" name="omnibarInput" ref={queryRef}
       autoFocus={props.autoFocus}
       value={query}
       placeholder="Type help for help."
@@ -57,3 +54,8 @@ export default function InputOmnibar(props: InputOmnibarProps) {
     </div>
   </div>
 }
+
+InputOmnibar.clear = () => {
+  const event = new Event('InputOmnibar.clear()');
+  window.dispatchEvent(event);
+};

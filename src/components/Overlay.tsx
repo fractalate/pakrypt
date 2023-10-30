@@ -2,14 +2,9 @@ import { PropsWithChildren, useEffect } from "react";
 import './Overlay.css';
 import ReactDOM from "react-dom/client";
 
-interface OverlayProps {
-  transparent?: boolean;
-  busy?: boolean;
-}
-
 // TODO: I need to really evaluate this for memory leaks.
-export default function Overlay(props: PropsWithChildren & OverlayProps) {
-  function Overlay(props: PropsWithChildren & OverlayProps) {
+export default function Overlay(props: PropsWithChildren) {
+  function OverlayInner(props: PropsWithChildren) {
     // See Overlay.css for "overlay" class.
     return <div className={"absolute h-screen w-full overflow-y-scroll"}>
       {props.children}
@@ -23,7 +18,7 @@ export default function Overlay(props: PropsWithChildren & OverlayProps) {
     }
     const div = document.createElement('div');
     div.className = "overlay";
-    const content = <Overlay {...props}>
+    const content = <OverlayInner>
       <svg className="absolute h-screen w-full">
         <line x1="75%" y1="0" x2="75%" y2="100%" className="stroke-[#EED] dark:stroke-[#434]" style={{
           strokeWidth: 20, // TODO: I want centimeters or something.
@@ -33,7 +28,7 @@ export default function Overlay(props: PropsWithChildren & OverlayProps) {
       <div className="relative">
         {props.children}
       </div>
-    </Overlay>;
+    </OverlayInner>;
     ReactDOM.createRoot(div).render(content);
     container.appendChild(div);
     return () => {
@@ -41,6 +36,6 @@ export default function Overlay(props: PropsWithChildren & OverlayProps) {
       container.removeChild(div);
     };
   });
-
+  
   return <></>;
 }
