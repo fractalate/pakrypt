@@ -1,3 +1,5 @@
+import { telemetry } from "./telemetry";
+
 const THEME_KEY = 'theme';
 
 export type Theme = 'dark' | 'light';
@@ -18,7 +20,7 @@ export function getPreferredTheme(): '' | Theme {
   } else if (theme === '' || theme === 'light' || theme === 'dark') {
     return theme;
   }
-  console.error('Unsupported preferred theme ' + JSON.stringify(theme) + '. Using fallback.');
+  telemetry.error('Unsupported preferred theme ' + JSON.stringify(theme) + '. Using fallback.');
   return '';
 }
 
@@ -47,6 +49,7 @@ export function setGlobalTheme(theme: '' | Theme): Theme {
   if (theme === '') {
     return clearGlobalTheme();
   }
+  telemetry.log('Setting local storage item ' + THEME_KEY + ' to ' + JSON.stringify(theme) + '.');
   localStorage.setItem(THEME_KEY, theme);
   usingPreferredTheme = true;
   applyTheme(theme);
@@ -54,6 +57,7 @@ export function setGlobalTheme(theme: '' | Theme): Theme {
 }
 
 export function clearGlobalTheme(): Theme {
+  telemetry.log('Removing local storage item ' + THEME_KEY + '.');
   localStorage.removeItem(THEME_KEY);
   usingPreferredTheme = false;
   const theme = computeTheme();
@@ -68,20 +72,18 @@ export function startupTheme() {
   let appliedTheme = preferredTheme == '' ? currentSystemTheme : preferredTheme;
   applyTheme(appliedTheme);
 
-  // Check for changed theme every so often and apply it.
-  // Is there a way to do this without polling?
-  setInterval(() => {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     const nowSystemTheme = getSystemTheme();
     if (nowSystemTheme == currentSystemTheme) {
       return;
     }
-    console.log('detected system theme change from ' + currentSystemTheme + ' to ' + nowSystemTheme + '.');
+    telemetry.log('detected system theme change from ' + currentSystemTheme + ' to ' + nowSystemTheme + '.');
     if (!usingPreferredTheme) {
       applyTheme(nowSystemTheme);
     }
     currentSystemTheme = nowSystemTheme;
     notifyThemeSwitchListeners(nowSystemTheme);
-  }, 2000);
+  });
 }
 
 export function addThemeSwitchListener(listener: (theme: Theme) => void) {

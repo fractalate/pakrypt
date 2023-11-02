@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Theme, addThemeSwitchListener, clearGlobalTheme, getAppliedTheme, removeThemeSwitchListener, setGlobalTheme } from "../browser/theme";
+import { Theme, addThemeSwitchListener, clearGlobalTheme, getAppliedTheme, removeThemeSwitchListener, setGlobalTheme } from "../lib/theme";
 
 function computeThemeText(theme: Theme): string {
   return theme;
@@ -38,9 +38,9 @@ export default function ThemeSwitcher() {
     `}>
       Theme is {themeText}
       <br/>
-      <button onClick={() => clearTheme()}>Set No Theme</button>
-      <button onClick={() => setTheme('dark')}>Set Dark Theme</button>
-      <button onClick={() => setTheme('light')}>Set Light Theme</button>
+      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => clearTheme()}>Set No Theme</button>
+      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => setTheme('dark')}>Set Dark Theme</button>
+      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => setTheme('light')}>Set Light Theme</button>
     </div>
   )
 }
