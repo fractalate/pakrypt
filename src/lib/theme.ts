@@ -5,7 +5,6 @@ const THEME_KEY = 'theme';
 export type Theme = 'dark' | 'light';
 
 const themeSwitchListeners: ((theme: Theme) => void)[] = [];
-let currentSystemTheme: Theme = 'light'
 let usingPreferredTheme = false;
 
 export function getSystemTheme(): Theme {
@@ -66,11 +65,10 @@ export function clearGlobalTheme(): Theme {
 }
 
 export function startupTheme() {
-  currentSystemTheme = getSystemTheme();
+  let currentSystemTheme = getSystemTheme();
   const preferredTheme = getPreferredTheme();
   usingPreferredTheme = preferredTheme != '';
-  let appliedTheme = preferredTheme == '' ? currentSystemTheme : preferredTheme;
-  applyTheme(appliedTheme);
+  applyTheme(preferredTheme == '' ? currentSystemTheme : preferredTheme);
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     const nowSystemTheme = getSystemTheme();
