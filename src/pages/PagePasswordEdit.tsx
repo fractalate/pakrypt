@@ -50,7 +50,6 @@ export default function PagePasswordEdit({
     onUserSubmit(data);
   }
 
-  // TODO: INtegrate the other fields.
   return <div>
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-1">
@@ -58,6 +57,18 @@ export default function PagePasswordEdit({
         <input className={inputClasses} type="text" {...register("title", {
           required: true,
         })} />
+      </div>
+      <div className="p-1">
+        <label className="block" htmlFor="subtitle">Subtitle</label>
+        <input className={inputClasses} type="text" {...register("subtitle")} />
+      </div>
+      <div className="p-1">
+        <label className="block" htmlFor="username">Username</label>
+        <input className={inputClasses} type="text" {...register("username")} />
+      </div>
+      <div className="p-1">
+        <label className="block" htmlFor="password">Password</label>
+        <input className={inputClasses} type="text" {...register("password")} />
       </div>
       <div className="p-1">
         <button className={buttonClasses} type="submit">Submit</button>
