@@ -1,6 +1,9 @@
 import ThemeSwitcher from "./components/ThemeSwitcher";
+import { main } from "./lib/pak";
 import { PageNoteEditExample } from "./pages/PageNoteEdit";
 import { PagePasswordEditExample } from "./pages/PagePasswordEdit";
+
+main();
 
 export default function App() {
   return <div className="
