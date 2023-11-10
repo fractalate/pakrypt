@@ -16,8 +16,7 @@ export default function ThemeContextProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  return ThemeContext.Provider({
-    children,
-    value: currentTheme
-  })
+  return <ThemeContext.Provider value={currentTheme}>
+    {children}
+  </ThemeContext.Provider>
 }

@@ -200,36 +200,3 @@ export function DeleteEntry(pak: Pak1r0, id: string): null | Pak1r0_Entry {
   }
   return result;
 }
-
-// TODO: Delete this eventually. This is for testing.
-export async function main() {
-  const pak = NewPak1r0();
-
-  const p1 = CreatePassword(pak, {
-    title: 'My Fav Site',
-    subtitle: '',
-    username: 'FaultyAdapter',
-    password: uuid(),
-    note: 'My dawg\'s name... is dawg.',
-  });
-
-  const n1 = CreateNote(pak, {
-    title: 'My Fav Note',
-    subtitle: 'Get Out More',
-    note: 'The ultimate out is inside out.',
-  });
-
-  const f1 = CreateFile(pak, {
-    title: 'MyCoolFileBomb.zip',
-    data: btoa('HNeris the data'),
-    tags: ['cool file', 'important'],
-  });
-
-  console.log(pak);
-
-  DeleteEntry(pak, p1.id);
-  DeleteEntry(pak, n1.id);
-  DeleteEntry(pak, f1.id);
-
-  console.log(pak);
-}
