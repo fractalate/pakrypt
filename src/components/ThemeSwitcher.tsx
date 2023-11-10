@@ -1,34 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
-import { Theme, addThemeSwitchListener, clearGlobalTheme, getAppliedTheme, removeThemeSwitchListener, setGlobalTheme } from "../lib/theme";
+import { useContext } from "react";
+import { Theme, clearPreferredTheme, setPreferredTheme } from "../lib/theme";
+import { ThemeContext } from "../Contexts";
 
 function computeThemeText(theme: Theme): string {
   return theme;
 }
 
 export default function ThemeSwitcher() {
-  const initialTheme = useMemo(() => getAppliedTheme(), []);
-  
-  const [themeText, setThemeText] = useState(computeThemeText(initialTheme));
-  
-  function setTheme(theme: Theme) {
-    setGlobalTheme(theme);
-    setThemeText(computeThemeText(theme));
-  }
-
-  function clearTheme() {
-    clearGlobalTheme();
-    setThemeText(computeThemeText(getAppliedTheme()));
-  }
-
-  useEffect(() => {
-    const listener = () => {
-      setThemeText(computeThemeText(getAppliedTheme()));
-    };
-    addThemeSwitchListener(listener);
-    return () => {
-      removeThemeSwitchListener(listener);
-    };
-  }, []);
+  const themeText = computeThemeText(useContext(ThemeContext));
 
   return (
     <div className={`
@@ -38,9 +17,9 @@ export default function ThemeSwitcher() {
     `}>
       Theme is {themeText}
       <br/>
-      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => clearTheme()}>Set No Theme</button>
-      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => setTheme('dark')}>Set Dark Theme</button>
-      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => setTheme('light')}>Set Light Theme</button>
+      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => clearPreferredTheme()}>Set No Theme</button>
+      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => setPreferredTheme('dark')}>Set Dark Theme</button>
+      <button className="rounded mx-1 bg-slate-300 dark:bg-slate-900" onClick={() => setPreferredTheme('light')}>Set Light Theme</button>
     </div>
   )
 }

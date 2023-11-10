@@ -1,11 +1,9 @@
 import { telemetry } from "./telemetry";
 
-const THEME_KEY = 'theme';
-
 export type Theme = 'dark' | 'light';
 
+const THEME_KEY = 'pakrypt.theme';
 const themeSwitchListeners: ((theme: Theme) => void)[] = [];
-let usingPreferredTheme = false;
 
 export function getSystemTheme(): Theme {
   const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -23,20 +21,19 @@ export function getPreferredTheme(): '' | Theme {
   return '';
 }
 
-export function computeTheme(): Theme {
-  const theme = getPreferredTheme();
+export function setPreferredTheme(theme: '' | Theme): Theme {
   if (theme === '') {
-    return getSystemTheme();
+    return clearPreferredTheme();
   }
-  return theme;
+  telemetry.log('Setting local storage item ' + THEME_KEY + ' to ' + JSON.stringify(theme) + '.');
+  localStorage.setItem(THEME_KEY, theme);
+  return computeAndApplyTheme();
 }
 
-function applyTheme(theme: Theme) {
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
+export function clearPreferredTheme(): Theme {
+  telemetry.log('Removing local storage item ' + THEME_KEY + '.');
+  localStorage.removeItem(THEME_KEY);
+  return computeAndApplyTheme();
 }
 
 export function getAppliedTheme(): Theme {
@@ -44,43 +41,10 @@ export function getAppliedTheme(): Theme {
   return dark ? 'dark' : 'light';
 }
 
-export function setGlobalTheme(theme: '' | Theme): Theme {
-  if (theme === '') {
-    return clearGlobalTheme();
-  }
-  telemetry.log('Setting local storage item ' + THEME_KEY + ' to ' + JSON.stringify(theme) + '.');
-  localStorage.setItem(THEME_KEY, theme);
-  usingPreferredTheme = true;
-  applyTheme(theme);
-  return theme;
-}
-
-export function clearGlobalTheme(): Theme {
-  telemetry.log('Removing local storage item ' + THEME_KEY + '.');
-  localStorage.removeItem(THEME_KEY);
-  usingPreferredTheme = false;
-  const theme = computeTheme();
-  applyTheme(theme);
-  return theme;
-}
-
 export function startupTheme() {
-  let currentSystemTheme = getSystemTheme();
-  const preferredTheme = getPreferredTheme();
-  usingPreferredTheme = preferredTheme != '';
-  applyTheme(preferredTheme == '' ? currentSystemTheme : preferredTheme);
-
+  computeAndApplyTheme();
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    const nowSystemTheme = getSystemTheme();
-    if (nowSystemTheme == currentSystemTheme) {
-      return;
-    }
-    telemetry.log('detected system theme change from ' + currentSystemTheme + ' to ' + nowSystemTheme + '.');
-    if (!usingPreferredTheme) {
-      applyTheme(nowSystemTheme);
-    }
-    currentSystemTheme = nowSystemTheme;
-    notifyThemeSwitchListeners(nowSystemTheme);
+    computeAndApplyTheme();
   });
 }
 
@@ -92,6 +56,32 @@ export function removeThemeSwitchListener(listener: (theme: Theme) => void) {
   const index = themeSwitchListeners.indexOf(listener);
   if (index >= 0) {
     themeSwitchListeners.splice(index, 1);
+  }
+}
+
+function computeAndApplyTheme() {
+  const currentTheme = getAppliedTheme();
+  const theme = computeTheme();
+  if (currentTheme != theme) {
+    applyTheme(theme);
+    notifyThemeSwitchListeners(theme);
+  }
+  return theme;
+}
+
+function computeTheme(): Theme {
+  const theme = getPreferredTheme();
+  if (theme === '') {
+    return getSystemTheme();
+  }
+  return theme;
+}
+
+function applyTheme(theme: Theme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
   }
 }
 
