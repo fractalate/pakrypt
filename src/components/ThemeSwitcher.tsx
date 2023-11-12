@@ -11,7 +11,7 @@ export default function ThemeSwitcher() {
 
   return (
     <div className={`
-      h-screen w-screen
+      w-full
       text-[#333] bg-[#FFE]
       dark:text-[#EED] dark:bg-[#323]
     `}>

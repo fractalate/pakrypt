@@ -29,9 +29,9 @@ export interface PakFile1r0 {
 
 export interface PakFile1r0_BlockReference {
   ov: 'pakrypt.blockref:1.0',
-  id: string;
+  id: string; // Matches the id of the corresponding 'pakrypt.file:1.0' object..
   size: number;
-  pakid?: string;
+  pakid?: string; // Matches the id of the containing 'pakrypt.kap:1.0' object.
 }
 
 export interface PakNote1r0 {
@@ -59,9 +59,6 @@ export interface PakBlock1r0 {
   id: string;
   data: string; // base64 encoded binary data.
 }
-
-
-
 
 
 export function NewPak1r0(): Pak1r0 {
