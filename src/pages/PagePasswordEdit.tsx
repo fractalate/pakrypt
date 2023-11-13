@@ -50,7 +50,11 @@ export default function PagePasswordEdit({
     onUserSubmit(data);
   }
 
-  return <div>
+  return <div className="
+    min-h-screen w-screen
+    text-[#333] bg-[#FFE]
+    dark:text-[#EED] dark:bg-[#323]
+  ">
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-1">
         <label className="block" htmlFor="title">Title</label>
