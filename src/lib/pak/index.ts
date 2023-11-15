@@ -29,9 +29,9 @@ export interface PakFile1r0 {
 
 export interface PakFile1r0_BlockReference {
   ov: 'pakrypt.blockref:1.0',
-  id: string; // Matches the id of the corresponding 'pakrypt.file:1.0' object..
+  id: string; // Matches the id of the corresponding 'pakrypt.file:1.0' object.
   size: number;
-  pakid?: string; // Matches the id of the containing 'pakrypt.kap:1.0' object.
+  pakid?: string; // Matches the id of the containing 'pakrypt.pak:1.0' object.
 }
 
 export interface PakNote1r0 {

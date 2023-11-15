@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { addThemeSwitchListener, getAppliedTheme, removeThemeSwitchListener } from "../lib/theme";
-import { ThemeContext } from "../Contexts";
+import { ThemeContext } from ".";
 
 export default function ThemeContextProvider({ children }: PropsWithChildren) {
   const initialTheme = useMemo(() => getAppliedTheme(), []);

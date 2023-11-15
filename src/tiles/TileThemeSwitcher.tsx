@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { Theme, clearPreferredTheme, setPreferredTheme } from "../lib/theme";
-import { ThemeContext } from "../Contexts";
+import { ThemeContext } from "../contexts";
 
 function computeThemeText(theme: Theme): string {
   return theme;
 }
 
-export default function ThemeSwitcher() {
+export default function TileThemeSwitcher() {
   const themeText = computeThemeText(useContext(ThemeContext));
 
   return (
