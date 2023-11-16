@@ -1,5 +1,3 @@
-import { telemetry } from "./telemetry";
-
 export type Theme = 'dark' | 'light';
 
 const THEME_KEY = 'pakrypt.theme';
@@ -17,7 +15,7 @@ export function getPreferredTheme(): '' | Theme {
   } else if (theme === '' || theme === 'light' || theme === 'dark') {
     return theme;
   }
-  telemetry.error('Unsupported preferred theme ' + JSON.stringify(theme) + '. Using fallback.');
+  console.error('Unsupported preferred theme ' + JSON.stringify(theme) + '. Using fallback.');
   return '';
 }
 
@@ -25,13 +23,13 @@ export function setPreferredTheme(theme: '' | Theme): Theme {
   if (theme === '') {
     return clearPreferredTheme();
   }
-  telemetry.log('Setting local storage item ' + THEME_KEY + ' to ' + JSON.stringify(theme) + '.');
+  console.debug('Setting local storage item ' + THEME_KEY + ' to ' + JSON.stringify(theme) + '.');
   localStorage.setItem(THEME_KEY, theme);
   return computeAndApplyTheme();
 }
 
 export function clearPreferredTheme(): Theme {
-  telemetry.log('Removing local storage item ' + THEME_KEY + '.');
+  console.debug('Removing local storage item ' + THEME_KEY + '.');
   localStorage.removeItem(THEME_KEY);
   return computeAndApplyTheme();
 }

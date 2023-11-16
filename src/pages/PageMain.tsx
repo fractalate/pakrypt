@@ -23,7 +23,6 @@ export default function PageMain() {
 
   const tileComponents = tiles.map((searchResult) => <Tile key={computeTileKey(searchResult)} searchResult={searchResult} />);
 
-  // TODO: Move these styles or page object into somewhere common.
   return <div className="
     min-h-screen w-screen
     text-[#333] bg-[#FFE]

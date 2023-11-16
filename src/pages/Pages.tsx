@@ -1,7 +1,25 @@
 import { useMemo, useState } from "react"
-import { PageContext } from "../contexts"
+import { PageContext } from "../Contexts"
 import { v4 as uuid } from "uuid";
-import Page from "./Page";
+import PageMain from "./PageMain";
+import PageNewNote from "./PageNewNote";
+import PageNewPassword from "./PageNewPassword";
+
+function Page({
+  page,
+}: {
+  page: ChoosePage,
+}): JSX.Element {
+  const ov = page.ov
+  if (ov === 'pakrypt.page:main') {
+    return <PageMain />
+  } else if (ov === 'pakrypt.page:new_note') {
+    return <PageNewNote />
+  } else if (ov === 'pakrypt.page:new_password') {
+    return <PageNewPassword />
+  }
+  return ov // This will cause a type error when the if's above are not exhaustive.
+}
 
 export default function Pages() {
   const initialPage: ChosenPage = useMemo(() => {

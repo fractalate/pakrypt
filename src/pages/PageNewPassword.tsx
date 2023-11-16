@@ -1,11 +1,9 @@
 import { useContext } from "react";
-import { PageContext, PakContext } from "../contexts";
+import { PageContext, PakContext } from "../Contexts";
 import PasswordEditor from "../editors/PasswordEditor";
 import { CreatePassword, PasswordFields } from "../lib/pak";
 
 export default function PageNewPassword() {
-  console.log('rendering PageNewPassword')
-
   const pageContextState = useContext(PageContext);
   const pak = useContext(PakContext);
 
@@ -24,7 +22,6 @@ export default function PageNewPassword() {
     pageContextState.popPage()
   }
 
-  // TODO: Move these styles or page object into somewhere common.
   return <div className="
     min-h-screen w-screen
     text-[#333] bg-[#FFE]

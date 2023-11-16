@@ -1,9 +1,3 @@
-interface PageContextState {
-  pages: ChosenPage[],
-  pushPage: (page: ChoosePage) => void,
-  popPage: () => void,
-}
-
 type ChoosePage = ChoosePageMain
                 | ChoosePageNewNote
                 | ChoosePageNewPassword
@@ -13,11 +7,17 @@ interface ChoosePageMain {
 }
 
 interface ChoosePageNewNote {
-  ov: 'pakrypt.page:newnote',
+  ov: 'pakrypt.page:new_note',
 }
 
 interface ChoosePageNewPassword {
-  ov: 'pakrypt.page:newpassword',
+  ov: 'pakrypt.page:new_password',
 }
 
 type ChosenPage = [ChoosePage, string, JSX.Element];
+
+interface PageContextState {
+  pages: ChosenPage[],
+  pushPage: (page: ChoosePage) => void,
+  popPage: () => void,
+}

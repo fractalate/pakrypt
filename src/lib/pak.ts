@@ -2,7 +2,6 @@
 // id - identification
 import { v4 as uuid } from 'uuid';
 
-
 export interface Pak1r0 {
   ov: 'pakrypt.pak:1.0';
   id: string;
@@ -10,12 +9,7 @@ export interface Pak1r0 {
   blocks?: PakBlock1r0[];
 }
 
-export interface Pak2r0 {
-  ov: 'pakrypt.pak:2.0';
-  id: string;
-}
-
-export type Pak = Pak1r0 | Pak2r0;
+export type Pak = Pak1r0;
 
 export type Pak1r0_Entry = PakFile1r0
                          | PakNote1r0
@@ -160,13 +154,8 @@ export interface PasswordFields {
 export function CreatePassword(pak: Pak, password: PasswordFields): PakPassword1r0 {
   if (pak.ov === 'pakrypt.pak:1.0') {
     return CreatePassword1r0(pak, password)
-  } else if (pak.ov === 'pakrypt.pak:2.0') {
-    return CreatePassword2r0(pak, password);
   }
-  return pak // so we return never when the ifs are exhaustive
-}
-export function CreatePassword2r0(pak: Pak2r0, password: PasswordFields) {
-  return CreatePassword(pak as unknown as Pak1r0, password);
+  return pak.ov // so we return never when the ifs are exhaustive
 }
 
 export function CreatePassword1r0(pak: Pak1r0, password: PasswordFields): PakPassword1r0 {

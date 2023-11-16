@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Theme, clearPreferredTheme, setPreferredTheme } from "../lib/theme";
-import { ThemeContext } from "../contexts";
+import { ThemeContext } from "../Contexts";
 
 function computeThemeText(theme: Theme): string {
   return theme;

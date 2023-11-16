@@ -1,12 +1,12 @@
 import { useContext } from 'react'
-import { PageContext } from '../contexts'
+import { PageContext } from '../Contexts'
 
 export function TileNewPassword() {
   const { pushPage } = useContext(PageContext)
 
   function openNewPassword() {
     pushPage({
-      ov: 'pakrypt.page:newpassword',
+      ov: 'pakrypt.page:new_password',
     })
   }
   
