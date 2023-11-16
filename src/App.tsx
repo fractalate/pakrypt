@@ -1,14 +1,11 @@
 import ThemeContextProvider from './contexts/ThemeContextProvider'
-import PageContextProvider from './contexts/PageContextProvider'
-import Page from './pages/Page'
 import PakContextProvider from './contexts/PakContextProvider'
+import Pages from './pages/Pages'
 
 export default function App() {
   return <ThemeContextProvider>
     <PakContextProvider>
-      <PageContextProvider>
-        <Page />
-      </PageContextProvider>
+      <Pages />
     </PakContextProvider>
   </ThemeContextProvider>
 }

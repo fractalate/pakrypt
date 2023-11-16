@@ -1,17 +1,16 @@
 import { useContext } from 'react'
-import Button from '../components/Button'
 import { PageContext } from '../contexts'
 
 export function TileNewPassword() {
-  const { setPage } = useContext(PageContext)
+  const { pushPage } = useContext(PageContext)
 
   function openNewPassword() {
-    setPage({
+    pushPage({
       ov: 'pakrypt.page:newpassword',
     })
   }
   
   return <div>
-    <Button onClick={() => openNewPassword()}>New Password</Button>
+    <button onClick={() => openNewPassword()}>New Password</button>
   </div>
 }

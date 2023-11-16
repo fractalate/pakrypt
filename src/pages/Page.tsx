@@ -1,12 +1,13 @@
-import { useContext } from 'react'
-import { PageContext } from '../contexts'
 import PageMain from './PageMain'
 import PageNewNote from './PageNewNote'
 import PageNewPassword from './PageNewPassword'
 
-export default function Page(): JSX.Element {
-  const pageContextState = useContext(PageContext)
-  const ov = pageContextState.page.ov
+export default function Page({
+  page,
+}: {
+  page: ChoosePage,
+}): JSX.Element {
+  const ov = page.ov
   if (ov === 'pakrypt.page:main') {
     return <PageMain />
   } else if (ov === 'pakrypt.page:newnote') {

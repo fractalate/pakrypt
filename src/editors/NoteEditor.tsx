@@ -1,7 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-import Input from "../components/Input";
-import TextArea from "../components/TextArea";
-import Button from "../components/Button";
 
 interface Inputs {
   title: string;
@@ -30,7 +27,7 @@ export default function NoteEditor({
   return <form onSubmit={handleSubmit(onSubmit)}>
     <div className="p-1">
       <label className="block" htmlFor="title">Title</label>
-      <Input type="text" {...register("title", {
+      <input type="text" {...register("title", {
         required: true,
 
       })} />
@@ -38,19 +35,19 @@ export default function NoteEditor({
     </div>
     <div className="p-1">
       <label className="block" htmlFor="subtitle">Subtitle</label>
-      <Input type="text" {...register("subtitle")} />
+      <input type="text" {...register("subtitle")} />
     </div>
     <div className="p-1">
       <label className="block" htmlFor="tags">Tags</label>
-      <Input type="text" {...register("tags")} />
+      <input type="text" {...register("tags")} />
     </div>
     <div className="p-1">
       <label className="block" htmlFor="note">Note</label>
-      <TextArea {...register("note")} />
+      <textarea {...register("note")} />
     </div>
     <div className="p-1">
-      <Button type="submit">Submit</Button>
-      <Button onClick={onUserCancel}>Cancel</Button>
+      <button type="submit">Submit</button>
+      <button onClick={onUserCancel}>Cancel</button>
     </div>
   </form>
 }
