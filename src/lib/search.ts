@@ -1,4 +1,4 @@
-import { Pak1r0_Entry } from './pak'
+import { Pak, Pak1r0_Entry } from './pak'
 
 export type SearchResult = SearchResultCommand
                          | Pak1r0_Entry
@@ -24,7 +24,7 @@ export interface SearchResultNewPassword {
   ov: 'pakrypt.command:new_password',
 }
 
-export default function search(query: string): SearchResult[] {
+export default function search(query: string, _pak?: null | Pak): SearchResult[] {
   const result: SearchResult[] = []
 
   result.push({

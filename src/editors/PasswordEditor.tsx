@@ -1,10 +1,11 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from 'react-hook-form'
+import styling from '../lib/styling'
 
 interface Inputs {
-  title: string; 
-  subtitle: string;
-  username: string;
-  password: string;
+  title: string,
+  subtitle: string,
+  username: string,
+  password: string,
 }
 
 export default function PasswordEditor({
@@ -27,26 +28,26 @@ export default function PasswordEditor({
   ">
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-1">
-        <label className="block" htmlFor="title">Title</label>
-        <input type="text" {...register("title", {
+        <label htmlFor="title" className="block">Title</label>
+        <input type="text" className={styling.input.formInput} {...register("title", {
           required: true,
         })} />
       </div>
       <div className="p-1">
-        <label className="block" htmlFor="subtitle">Subtitle</label>
-        <input type="text" {...register("subtitle")} />
+        <label htmlFor="subtitle" className="block">Subtitle</label>
+        <input type="text" className={styling.input.formInput} {...register("subtitle")} />
       </div>
       <div className="p-1">
-        <label className="block" htmlFor="username">Username</label>
-        <input type="text" {...register("username")} />
+        <label htmlFor="username" className="block">Username</label>
+        <input type="text" className={styling.input.formInput} {...register("username")} />
       </div>
       <div className="p-1">
-        <label className="block" htmlFor="password">Password</label>
-        <input type="text" {...register("password")} />
+        <label htmlFor="password" className="block">Password</label>
+        <input type="text" className={styling.input.formInput} {...register("password")} />
       </div>
       <div className="p-1">
-        <button type="submit">Submit</button>
-        <button onClick={() => {
+        <button className={styling.button.formButton} type="submit">Submit</button>
+        <button className={styling.button.formButton} onClick={() => {
           onUserCancel();
         }}>Cancel</button>
       </div>

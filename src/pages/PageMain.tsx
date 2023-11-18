@@ -1,8 +1,9 @@
 import { useState } from "react";
 import search, { SearchResult } from "../lib/search";
 import Tile from "../tiles/Tile";
+import styling from "../lib/styling";
 
-export function computeTileKey(searchResult: SearchResult) {
+function computeTileKey(searchResult: SearchResult) {
   if ('id' in searchResult) {
     return searchResult.id;
   }
@@ -10,14 +11,12 @@ export function computeTileKey(searchResult: SearchResult) {
 }
 
 export default function PageMain() {
-  console.log('rendering PageMain')
   const [query, setQuery] = useState('')
   const [tiles, setTiles] = useState([] as SearchResult[])
 
   function updateQuery(query: string) {
     setQuery(query)
     const tiles = search(query);
-    console.debug('query changed, tiles =', tiles)
     setTiles(tiles);
   }
 
@@ -28,7 +27,7 @@ export default function PageMain() {
     text-[#333] bg-[#FFE]
     dark:text-[#EED] dark:bg-[#323]
   ">
-    <input type="text" value={query} onChange={(e) => updateQuery(e.target.value)} />
+    <input type="text" className={styling.input.omnibarInput + ' w-full'} value={query} onChange={(e) => updateQuery(e.target.value)} />
     <div>
       { tileComponents }
     </div>

@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { PageContext } from '../Contexts'
+import styling from '../lib/styling'
 
 export function TileNewPassword() {
   const { pushPage } = useContext(PageContext)
@@ -10,7 +11,7 @@ export function TileNewPassword() {
     })
   }
   
-  return <div>
-    <button onClick={() => openNewPassword()}>New Password</button>
+  return <div className={styling.tile.tileComponent}>
+    <button className={styling.button.formButton} onClick={() => openNewPassword()}>New Password</button>
   </div>
 }
