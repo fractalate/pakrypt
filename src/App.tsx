@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { NewPak1r0, Pak } from './lib/pak'
 import { PakContext, ThemeContext } from './Contexts'
-import { addThemeSwitchListener, getAppliedTheme, removeThemeSwitchListener } from './lib/theme';
+import { addThemeSwitchListener, getAppliedTheme, removeThemeSwitchListener } from './lib/theme'
 import Pages from './pages/Pages'
 
 function ThemeContextProvider({ children }: PropsWithChildren) {

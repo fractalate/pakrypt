@@ -1,10 +1,14 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { PageContext, PakContext } from "../Contexts";
 import PasswordEditor from "../editors/PasswordEditor";
-import { CreatePassword, PasswordFields } from "../lib/pak";
+import { FindEntry, PakPassword1r0, PasswordFields, UpdatePassword1r0 } from "../lib/pak";
 import styling from "../lib/styling";
 
-export default function PageNewPassword() {
+export default function PageEditPassword({
+  entry,
+}: {
+  entry: PakPassword1r0,
+}) {
   const pageContextState = useContext(PageContext);
   const pak = useContext(PakContext);
 
@@ -14,7 +18,10 @@ export default function PageNewPassword() {
 
   const savePassword = (data: PasswordFields) => {
     // TODO: This does not cascade changes via React to the pages, pak is edited in-place.
-    CreatePassword(pak, data)
+    // This is an issue as you return from the edit password screen to the parent component.
+    // In this case, the tile that was rendered to allow the user to edit the password won't
+    // rerender. I think this needs some more thought.
+    UpdatePassword1r0(pak, entry.id, data)
     closePage()
   }
 
@@ -28,6 +35,6 @@ export default function PageNewPassword() {
     dark:text-[#EED] dark:bg-[#323]
   ">
     <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
-    <PasswordEditor onUserSubmit={(data) => savePassword(data)} onUserCancel={() => closePage()} />
+    <PasswordEditor onUserSubmit={(data) => savePassword(data)} initialValues={entry} onUserCancel={() => closePage()} />
   </div>
 }

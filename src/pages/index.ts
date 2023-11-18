@@ -1,6 +1,9 @@
-type ChoosePage = ChoosePageMain
-                | ChoosePageNewNote
-                | ChoosePageNewPassword
+import { PakPassword1r0 } from "../lib/pak";
+
+export type ChoosePage = ChoosePageMain
+                       | ChoosePageNewNote
+                       | ChoosePageNewPassword
+                       | ChoosePageEditPassword
 
 interface ChoosePageMain {
   ov: 'pakrypt.page:main',
@@ -14,9 +17,14 @@ interface ChoosePageNewPassword {
   ov: 'pakrypt.page:new_password',
 }
 
-type ChosenPage = [ChoosePage, string, JSX.Element];
+interface ChoosePageEditPassword {
+  ov: 'pakrypt.page:edit_password',
+  entry: PakPassword1r0,
+}
 
-interface PageContextState {
+export type ChosenPage = [ChoosePage, string, JSX.Element];
+
+export interface PageContextState {
   pages: ChosenPage[],
   pushPage: (page: ChoosePage) => void,
   popPage: () => void,

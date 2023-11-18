@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 import { getAppliedTheme } from './lib/theme'
 import { Pak } from './lib/pak'
+import { ChoosePage, PageContextState } from './pages';
 
 const nullPage: ChoosePage = {
   ov: 'pakrypt.page:main',

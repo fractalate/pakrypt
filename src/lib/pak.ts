@@ -1,12 +1,12 @@
 // ov - object version
 // id - identification
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid'
 
 export interface Pak1r0 {
-  ov: 'pakrypt.pak:1.0';
-  id: string;
-  entries?: Pak1r0_Entry[];
-  blocks?: PakBlock1r0[];
+  ov: 'pakrypt.pak:1.0',
+  id: string,
+  entries?: Pak1r0_Entry[],
+  blocks?: PakBlock1r0[],
 }
 
 export type Pak = Pak1r0;
@@ -14,47 +14,46 @@ export type Pak = Pak1r0;
 export type Pak1r0_Entry = PakFile1r0
                          | PakNote1r0
                          | PakPassword1r0
-                         ;
 
 export interface PakFile1r0 {
-  ov: 'pakrypt.file:1.0';
-  id: string;
-  title: string;
-  blocks: PakFile1r0_BlockReference[];
-  tags?: string[];
+  ov: 'pakrypt.file:1.0',
+  id: string,
+  title: string,
+  blocks: PakFile1r0_BlockReference[],
+  tags?: string[],
 }
 
 export interface PakFile1r0_BlockReference {
   ov: 'pakrypt.blockref:1.0',
-  id: string; // Matches the id of the corresponding 'pakrypt.file:1.0' object.
-  size: number;
-  pakid?: string; // Matches the id of the containing 'pakrypt.pak:1.0' object.
+  id: string, // Matches the id of the corresponding 'pakrypt.file:1.0' object.
+  size: number,
+  pakid?: string, // Matches the id of the containing 'pakrypt.pak:1.0' object.
 }
 
 export interface PakNote1r0 {
-  ov: 'pakrypt.note:1.0';
-  id: string;
-  title: string;
-  subtitle: string;
-  note: string;
-  tags?: string[];
+  ov: 'pakrypt.note:1.0',
+  id: string,
+  title: string,
+  subtitle: string,
+  note: string,
+  tags?: string[],
 }
 
 export interface PakPassword1r0 {
-  ov: 'pakrypt.password:1.0';
-  id: string;
-  title: string;
-  subtitle: string;
-  username: string;
-  password: string;
-  note?: string;
-  tags?: string[];
+  ov: 'pakrypt.password:1.0',
+  id: string,
+  title: string,
+  subtitle: string,
+  username: string,
+  password: string,
+  note?: string,
+  tags?: string[],
 }
 
 export interface PakBlock1r0 {
-  ov: 'parypt.block:1.0';
-  id: string;
-  data: string; // base64 encoded binary data.
+  ov: 'parypt.block:1.0',
+  id: string,
+  data: string, // base64 encoded binary data.
 }
 
 
@@ -62,39 +61,49 @@ export function NewPak1r0(): Pak1r0 {
   return {
     ov: 'pakrypt.pak:1.0',
     id: uuid(),
-  };
+  }
 }
 
 function calculateSize(data: string): number {
-  const encodedLength = data.replace(/=*$/, '').length;
-  let remainder = encodedLength % 4; // Measured in bytes in the encoded data after the final full 4-byte block.
+  const encodedLength = data.replace(/=*$/, '').length
+  let remainder = encodedLength % 4 // Measured in bytes in the encoded data after the final full 4-byte block.
   if (remainder == 1) {
-    throw new Error('Invalid base64 encoded data. Check the length of encoded segments.');
+    throw new Error('Invalid base64 encoded data. Check the length of encoded segments.')
   } else if (remainder > 1) {
-    --remainder; // Now it measures bytes in the decoded data.
+    --remainder // Now it measures bytes in the decoded data.
   }
-  const result = Math.floor(encodedLength / 4) * 3 + remainder;
-  return result;
+  const result = Math.floor(encodedLength / 4) * 3 + remainder
+  return result
 }
 
 function addEntry(pak: Pak1r0, entry: Pak1r0_Entry) {
   if (pak.entries == null) {
-    pak.entries = [];
+    pak.entries = []
   }
-  pak.entries.push(entry);
+  pak.entries.push(entry)
+}
+
+function replaceEntry(pak: Pak1r0, entry: Pak1r0_Entry) {
+  if (pak.entries != null) {
+    for (let i = 0; i < pak.entries.length; ++i) {
+      if (pak.entries[i].id === entry.id) {
+        pak.entries[i] = entry
+      }
+    }
+  }
 }
 
 function addBlock(pak: Pak1r0, block: PakBlock1r0) {
   if (pak.blocks == null) {
-    pak.blocks = [];
+    pak.blocks = []
   }
-  pak.blocks.push(block);
+  pak.blocks.push(block)
 }
 
 export interface FileFields {
-  title: string;
-  data: string;  // base64 encoded binary data.
-  tags?: string[];
+  title: string,
+  data: string, // base64 encoded binary data.
+  tags?: string[],
 }
 
 export function CreateFile(pak: Pak1r0, file: FileFields): PakFile1r0 {
@@ -102,7 +111,7 @@ export function CreateFile(pak: Pak1r0, file: FileFields): PakFile1r0 {
     ov: 'pakrypt.blockref:1.0',
     id: uuid(),
     size: calculateSize(file.data),
-  };
+  }
 
   const entry: PakFile1r0 = {
     ov: 'pakrypt.file:1.0',
@@ -110,7 +119,7 @@ export function CreateFile(pak: Pak1r0, file: FileFields): PakFile1r0 {
     blocks: [blockref],
     title: file.title,
     tags: structuredClone(file.tags),
-  };
+  }
 
   const block: PakBlock1r0 = {
     ov: 'parypt.block:1.0',
@@ -118,17 +127,17 @@ export function CreateFile(pak: Pak1r0, file: FileFields): PakFile1r0 {
     data: file.data,
   }
 
-  addBlock(pak, block);
-  addEntry(pak, entry);
+  addBlock(pak, block)
+  addEntry(pak, entry)
 
-  return entry;
+  return entry
 }
 
 export interface NoteFields {
-  title: string;
-  subtitle: string;
-  note: string;
-  tags?: string[];
+  title: string,
+  subtitle: string,
+  note: string,
+  tags?: string[],
 }
 
 export function CreateNote(pak: Pak1r0, note: NoteFields): PakNote1r0 {
@@ -136,18 +145,18 @@ export function CreateNote(pak: Pak1r0, note: NoteFields): PakNote1r0 {
     ov: 'pakrypt.note:1.0',
     id: uuid(),
     ...structuredClone(note),
-  };
-  addEntry(pak, entry);
-  return entry;
+  }
+  addEntry(pak, entry)
+  return entry
 }
 
 export interface PasswordFields {
-  title: string;
-  subtitle: string;
-  username: string;
-  password: string;
-  note?: string;
-  tags?: string[];
+  title: string,
+  subtitle: string,
+  username: string,
+  password: string,
+  note?: string,
+  tags?: string[],
 }
 
 // TODO: Work on the return type here, it should be something, but not a particular version.
@@ -166,6 +175,17 @@ export function CreatePassword1r0(pak: Pak1r0, password: PasswordFields): PakPas
   };
   addEntry(pak, entry);
   return entry;
+}
+
+export function UpdatePassword1r0(pak: Pak1r0, id: string, password: PasswordFields) {
+  if (pak.entries != null) {
+    const entry: PakPassword1r0 = {
+      ov: 'pakrypt.password:1.0',
+      id,
+      ...structuredClone(password),
+    };
+    replaceEntry(pak, entry);
+  }
 }
 
 export function DeleteBlock(pak: Pak1r0, id: string) {
@@ -201,4 +221,16 @@ export function DeleteEntry(pak: Pak1r0, id: string): null | Pak1r0_Entry {
     }
   }
   return result;
+}
+
+export function FindEntry(pak: Pak1r0, id: string): null | Pak1r0_Entry {
+  if (pak.entries == null) {
+    return null;
+  }
+  for (const entry of pak.entries) {
+    if (entry.id === id) {
+      return entry;
+    }
+  }
+  return null;
 }

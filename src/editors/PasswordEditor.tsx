@@ -9,16 +9,25 @@ interface Inputs {
 }
 
 export default function PasswordEditor({
+  initialValues,
   onUserCancel,
   onUserSubmit,
 }: {
+  initialValues?: Inputs
   onUserSubmit: (data: Inputs) => void,
   onUserCancel: () => void,
 }) {
   const {
     register,
     handleSubmit,
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    defaultValues: {
+      title: initialValues && initialValues.title || '',
+      subtitle: initialValues && initialValues.subtitle || '',
+      username: initialValues && initialValues.username || '',
+      password: initialValues && initialValues.password || '',
+    },
+  })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onUserSubmit(data);

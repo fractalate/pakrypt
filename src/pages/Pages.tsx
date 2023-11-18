@@ -4,6 +4,8 @@ import { v4 as uuid } from "uuid";
 import PageMain from "./PageMain";
 import PageNewNote from "./PageNewNote";
 import PageNewPassword from "./PageNewPassword";
+import PageEditPassword from "./PageEditPassword";
+import { ChoosePage, ChosenPage } from ".";
 
 function Page({
   page,
@@ -17,6 +19,8 @@ function Page({
     return <PageNewNote />
   } else if (ov === 'pakrypt.page:new_password') {
     return <PageNewPassword />
+  } else if (ov === 'pakrypt.page:edit_password') {
+    return <PageEditPassword entry={ page.entry } />
   }
   return ov // This will cause a type error when the if's above are not exhaustive.
 }
