@@ -1,4 +1,4 @@
-import { PakNote1r0, PakPassword1r0 } from "../pak/Pak";
+import { PakNote1r0, PakPassword1r0 } from '../pak/Pak'
 
 export type ChoosePage = ChoosePageMain
                        | ChoosePageNewNote

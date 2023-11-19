@@ -30,7 +30,7 @@ export default function PasswordEditor({
   })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    onUserSubmit(data);
+    onUserSubmit(data)
   }
   return <div className="
     w-full
@@ -38,26 +38,26 @@ export default function PasswordEditor({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-1">
         <label htmlFor="title" className="block">Title</label>
-        <input type="text" className={styling.input.formInput} {...register("title", {
+        <input type="text" className={styling.input.formInput} {...register('title', {
           required: true,
         })} />
       </div>
       <div className="p-1">
         <label htmlFor="subtitle" className="block">Subtitle</label>
-        <input type="text" className={styling.input.formInput} {...register("subtitle")} />
+        <input type="text" className={styling.input.formInput} {...register('subtitle')} />
       </div>
       <div className="p-1">
         <label htmlFor="username" className="block">Username</label>
-        <input type="text" className={styling.input.formInput} {...register("username")} />
+        <input type="text" className={styling.input.formInput} {...register('username')} />
       </div>
       <div className="p-1">
         <label htmlFor="password" className="block">Password</label>
-        <input type="text" className={styling.input.formInput} {...register("password")} />
+        <input type="text" className={styling.input.formInput} {...register('password')} />
       </div>
       <div className="p-1">
         <button className={styling.button.formButton} type="submit">Submit</button>
         <button className={styling.button.formButton} onClick={() => {
-          onUserCancel();
+          onUserCancel()
         }}>Cancel</button>
       </div>
     </form>

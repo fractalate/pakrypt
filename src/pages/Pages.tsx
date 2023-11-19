@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react"
-import { PageContext } from "../Contexts"
-import { v4 as uuid } from "uuid";
-import PageMain from "./PageMain";
-import PageNewNote from "./PageNewNote";
-import PageNewPassword from "./PageNewPassword";
-import PageEditPassword from "./PageEditPassword";
-import { ChoosePage, ChosenPage } from ".";
+import { useMemo, useState } from 'react'
+import { PageContext } from '../Contexts'
+import { v4 as uuid } from 'uuid'
+import PageMain from './PageMain'
+import PageNewNote from './PageNewNote'
+import PageNewPassword from './PageNewPassword'
+import PageEditPassword from './PageEditPassword'
+import { ChoosePage, ChosenPage } from '.'
 
 function Page({
   page,
@@ -31,7 +31,7 @@ export default function Pages() {
       ov: 'pakrypt.page:main',
     }
     return [page, uuid(), <Page page={page} />]
-  }, []);
+  }, [])
   
   const [pages, setPages] = useState([initialPage]) // Remember: don't modify this in-place.
   

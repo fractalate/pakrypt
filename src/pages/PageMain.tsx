@@ -1,13 +1,13 @@
-import { useState } from "react";
-import search, { SearchResult } from "../lib/search";
-import Tile from "../tiles/Tile";
-import styling from "../lib/styling";
+import { useState } from 'react'
+import search, { SearchResult } from '../lib/search'
+import Tile from '../tiles/Tile'
+import styling from '../lib/styling'
 
 function computeTileKey(searchResult: SearchResult) {
   if ('id' in searchResult) {
-    return searchResult.id;
+    return searchResult.id
   }
-  return searchResult.ov;
+  return searchResult.ov
 }
 
 export default function PageMain() {
@@ -16,11 +16,11 @@ export default function PageMain() {
 
   function updateQuery(query: string) {
     setQuery(query)
-    const tiles = search(query);
-    setTiles(tiles);
+    const tiles = search(query)
+    setTiles(tiles)
   }
 
-  const tileComponents = tiles.map((searchResult) => <Tile key={computeTileKey(searchResult)} searchResult={searchResult} />);
+  const tileComponents = tiles.map((searchResult) => <Tile key={computeTileKey(searchResult)} searchResult={searchResult} />)
 
   return <div className="
     min-h-screen w-screen

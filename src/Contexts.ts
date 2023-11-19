@@ -1,12 +1,12 @@
 import { createContext } from 'react'
 import { getAppliedTheme } from './lib/theme'
-import { ChoosePage, PageContextState } from './pages';
+import { ChoosePage, PageContextState } from './pages'
 
 const nullPage: ChoosePage = {
   ov: 'pakrypt.page:main',
 }
 
-const nullJsxElement: JSX.Element = {} as JSX.Element; // TODO: What's a better null JSX element?
+const nullJsxElement: JSX.Element = {} as JSX.Element // TODO: What's a better null JSX element?
 
 const nullPageContextState: PageContextState = {
   pages: [ [nullPage, '', nullJsxElement] ],

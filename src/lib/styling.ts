@@ -34,6 +34,6 @@ const styling = {
       dark:bg-slate-700 dark:border-slate-600
     `,
   },
-};
+}
 
-export default styling;
+export default styling

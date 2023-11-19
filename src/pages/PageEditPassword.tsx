@@ -1,17 +1,17 @@
-import { useContext } from "react";
-import { PageContext } from "../Contexts";
-import PasswordEditor from "../editors/PasswordEditor";
-import { PakPassword1r0, PasswordFields, UpdatePassword1r0 } from "../pak/Pak";
-import styling from "../lib/styling";
-import { PakContext } from "../pak/PakContext";
+import { useContext } from 'react'
+import { PageContext } from '../Contexts'
+import PasswordEditor from '../editors/PasswordEditor'
+import { PakPassword1r0, PasswordFields, UpdatePassword1r0 } from '../pak/Pak'
+import styling from '../lib/styling'
+import { PakContext } from '../pak/PakContext'
 
 export default function PageEditPassword({
   entry,
 }: {
   entry: PakPassword1r0,
 }) {
-  const pageContextState = useContext(PageContext);
-  const pak = useContext(PakContext);
+  const pageContextState = useContext(PageContext)
+  const pak = useContext(PakContext)
 
   if (pak == null) {
     throw new Error('pak is null. Is this component a child component of PakContextProvider?')
