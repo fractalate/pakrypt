@@ -1,8 +1,9 @@
 import { useContext } from "react";
-import { PageContext, PakContext } from "../Contexts";
+import { PageContext } from "../Contexts";
 import PasswordEditor from "../editors/PasswordEditor";
-import { CreatePassword, PasswordFields } from "../lib/pak";
+import { CreatePassword, PasswordFields } from "../pak/Pak";
 import styling from "../lib/styling";
+import { PakContext } from "../pak/PakContext";
 
 export default function PageNewPassword() {
   const pageContextState = useContext(PageContext);

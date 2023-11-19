@@ -2,6 +2,8 @@
 // id - identification
 import { v4 as uuid } from 'uuid'
 
+// TODO: Convert this all to be functional data structures instead of edit-in-place.
+
 export interface Pak1r0 {
   ov: 'pakrypt.pak:1.0',
   id: string,
@@ -9,7 +11,7 @@ export interface Pak1r0 {
   blocks?: PakBlock1r0[],
 }
 
-export type Pak = Pak1r0;
+export type Pak = Pak1r0
 
 export type Pak1r0_Entry = PakFile1r0
                          | PakNote1r0
@@ -172,9 +174,9 @@ export function CreatePassword1r0(pak: Pak1r0, password: PasswordFields): PakPas
     ov: 'pakrypt.password:1.0',
     id: uuid(),
     ...structuredClone(password),
-  };
-  addEntry(pak, entry);
-  return entry;
+  }
+  addEntry(pak, entry)
+  return entry
 }
 
 export function UpdatePassword1r0(pak: Pak1r0, id: string, password: PasswordFields) {
@@ -183,54 +185,54 @@ export function UpdatePassword1r0(pak: Pak1r0, id: string, password: PasswordFie
       ov: 'pakrypt.password:1.0',
       id,
       ...structuredClone(password),
-    };
-    replaceEntry(pak, entry);
+    }
+    replaceEntry(pak, entry)
   }
 }
 
 export function DeleteBlock(pak: Pak1r0, id: string) {
   if (pak.blocks == null) {
-    return null;
+    return null
   }
-  const blocks = [];
+  const blocks = []
   for (const block of pak.blocks) {
     if (block.id !== id) {
-      blocks.push(block);
+      blocks.push(block)
     }
   }
-  pak.blocks = blocks.length == 0 ? undefined : blocks;
+  pak.blocks = blocks.length == 0 ? undefined : blocks
 }
 
 export function DeleteEntry(pak: Pak1r0, id: string): null | Pak1r0_Entry {
   if (pak.entries == null) {
-    return null;
+    return null
   }
-  let result: null | Pak1r0_Entry = null;
-  const entries = [];
+  let result: null | Pak1r0_Entry = null
+  const entries = []
   for (const entry of pak.entries) {
     if (entry.id === id) {
-      result = entry; // Gross.
+      result = entry
     } else {
-      entries.push(entry);
+      entries.push(entry)
     }
   }
-  pak.entries = entries.length == 0 ? undefined : entries;
+  pak.entries = entries.length == 0 ? undefined : entries
   if (result != null && result.ov == 'pakrypt.file:1.0') {
     for (const block of result.blocks) {
-      DeleteBlock(pak, block.id);
+      DeleteBlock(pak, block.id)
     }
   }
-  return result;
+  return result
 }
 
 export function FindEntry(pak: Pak1r0, id: string): null | Pak1r0_Entry {
   if (pak.entries == null) {
-    return null;
+    return null
   }
   for (const entry of pak.entries) {
     if (entry.id === id) {
-      return entry;
+      return entry
     }
   }
-  return null;
+  return null
 }

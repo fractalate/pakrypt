@@ -39,7 +39,7 @@ export default function Pages() {
     return {
       pages,
       pushPage: (page: ChoosePage) => {
-        setPages([...pages, [page, uuid(), <Page page={page} /> ]])
+        setPages([...pages, [page, uuid(), <Page page={page} />]])
       },
       popPage: () => {
         setPages(pages.slice(0, -1))

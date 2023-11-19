@@ -15,5 +15,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'semi': ['error', 'never'],
+    'quotes': ['error', 'single'],
   },
 }

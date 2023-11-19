@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { PageContext } from '../Contexts'
 import styling from '../lib/styling'
-import { PakPassword1r0 } from '../lib/pak'
+import { PakPassword1r0 } from '../pak/Pak'
 
 export function TilePassword({
   entry,

@@ -1,8 +1,9 @@
-import { useContext, useMemo } from "react";
-import { PageContext, PakContext } from "../Contexts";
+import { useContext } from "react";
+import { PageContext } from "../Contexts";
 import PasswordEditor from "../editors/PasswordEditor";
-import { FindEntry, PakPassword1r0, PasswordFields, UpdatePassword1r0 } from "../lib/pak";
+import { PakPassword1r0, PasswordFields, UpdatePassword1r0 } from "../pak/Pak";
 import styling from "../lib/styling";
+import { PakContext } from "../pak/PakContext";
 
 export default function PageEditPassword({
   entry,

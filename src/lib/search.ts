@@ -1,4 +1,4 @@
-import { Pak, Pak1r0_Entry } from './pak'
+import { Pak, Pak1r0_Entry } from '../pak/Pak'
 
 export type SearchResult = SearchResultCommand
                          | Pak1r0_Entry
