@@ -22,8 +22,8 @@ export function TilePassword({
   
   return <div className={styling.tile.tileComponent}>
     <div>{entry.title}</div>
-    <div>{entry.subtitle}</div>
-    <button className={styling.button.formButton} onClick={() => openEditPassword()}>Edit</button>
+    <div>{entry.subtitle || entry.username}</div>
+    <button className={styling.button.formButton + ' mr-1'} onClick={() => openEditPassword()}>Edit</button>
     <button className={styling.button.formButton} onClick={() => copyPassword()}>Copy Password</button>
   </div>
 }

@@ -20,15 +20,20 @@ export default function PageMain() {
     setTiles(tiles)
   }
 
-  const tileComponents = tiles.map((searchResult) => <Tile key={computeTileKey(searchResult)} searchResult={searchResult} />)
+  const tileComponents = tiles.map((searchResult) => <div className="mb-1" key={computeTileKey(searchResult)}>
+    <Tile searchResult={searchResult} />
+  </div>)
 
   return <div className="
     min-h-screen w-screen
     text-[#333] bg-[#FFE]
     dark:text-[#EED] dark:bg-[#323]
   ">
-    <input type="text" className={styling.input.omnibarInput + ' w-full'} value={query} onChange={(e) => updateQuery(e.target.value)} />
-    <div>
+    <div className="p-1">
+      <input type="text" className={styling.input.omnibarInput + ' w-full'} value={query} onChange={(e) => updateQuery(e.target.value)} />
+    </div>
+    {/* pb-1 here is so the mb-1 above in the tileComponents produced a m-1 margin between the omnibar input and the first tile. Consider learning how to use flex instead. */}
+    <div className="pb-1 px-1">
       { tileComponents }
     </div>
   </div>

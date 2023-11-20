@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid'
 import { Pak, Pak1r0_Entry } from '../pak/Pak'
 
 export type SearchResult = SearchResultCommand
@@ -43,11 +44,19 @@ export default function search(query: string, _pak?: null | Pak): SearchResult[]
     })
     result.push({
       ov: 'pakrypt.password:1.0',
-      id: 'myid',
+      id: uuid(),
       title: 'My Site is Cool',
-      subtitle: '',
+      subtitle: 'With Subtitle',
       username: 'My User',
       password: 'My Pass',
+    })
+    result.push({
+      ov: 'pakrypt.password:1.0',
+      id: uuid(),
+      title: 'No Subtitle is Cool',
+      subtitle: '',
+      username: 'ThisUser',
+      password: 'DatPass',
     })
   }
 
