@@ -12,8 +12,10 @@ export default function TileThemeSwitcher() {
 
   return (
     <div className={styling.tile.tileComponent}>
-      Theme is {themeText}
-      <br/>
+      <div>
+        Theme is {themeText}
+      </div>
+      <div className="m-1"></div>
       {/* mr-1 is because I should really learn Flex. */}
       <button className={styling.button.formButton + ' mr-1'} onClick={() => clearPreferredTheme()}>Set No Theme</button>
       {/* mr-1 is because I should really learn Flex. */}

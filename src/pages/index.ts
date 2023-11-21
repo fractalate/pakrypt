@@ -1,12 +1,17 @@
 import { PakNote1r0, PakPassword1r0 } from '../pak/Pak'
 
 export type ChoosePage = ChoosePageMain
+                       | ChoosePageDemo
                        | ChoosePageNewNote
                        | ChoosePageNewPassword
                        | ChoosePageEditPassword
 
 interface ChoosePageMain {
   ov: 'pakrypt.page:main',
+}
+
+interface ChoosePageDemo {
+  ov: 'pakrypt.page:demo',
 }
 
 interface ChoosePageNewNote {

@@ -3,7 +3,7 @@ import { PageContext } from '../Contexts'
 import styling from '../lib/styling'
 import { PakPassword1r0 } from '../pak/Pak'
 
-export function TilePassword({
+export default function TilePassword({
   entry,
 }: {
   entry: PakPassword1r0,
@@ -23,6 +23,8 @@ export function TilePassword({
   return <div className={styling.tile.tileComponent}>
     <div>{entry.title}</div>
     <div>{entry.subtitle || entry.username}</div>
+    <div className="m-1"></div>
+    {/* mr-1 is because I should really learn Flex. */}
     <button className={styling.button.formButton + ' mr-1'} onClick={() => openEditPassword()}>Edit</button>
     <button className={styling.button.formButton} onClick={() => copyPassword()}>Copy Password</button>
   </div>

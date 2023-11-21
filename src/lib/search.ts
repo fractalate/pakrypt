@@ -8,6 +8,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultNewFile
                                 | SearchResultNewNote
                                 | SearchResultNewPassword
+                                | SearchResultDemo
 
 export interface SearchResultThemeSwitcher {
   ov: 'pakrypt.command:theme_switcher',
@@ -25,6 +26,10 @@ export interface SearchResultNewPassword {
   ov: 'pakrypt.command:new_password',
 }
 
+export interface SearchResultDemo {
+  ov: 'pakrypt.command:demo',
+}
+
 export default function search(query: string, _pak?: null | Pak): SearchResult[] {
   const result: SearchResult[] = []
 
@@ -33,6 +38,9 @@ export default function search(query: string, _pak?: null | Pak): SearchResult[]
   })
 
   if (query.length > 0) {
+    result.push({
+      ov: 'pakrypt.command:demo',
+    })
     result.push({
       ov: 'pakrypt.command:new_file',
     })
