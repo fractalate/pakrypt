@@ -11,38 +11,18 @@ class TimeBomb {
   constructor(name: string, ticks: number) {
     this.name = name
     this.message = 'BOOM! ' + name + ' blew up after ' + ticks + ' ticks!'
-    this.ticks = ticks
-    console.log(this.name + ': ' + (this.ticks) + '!')
-    if (!(this.ticks > 0)) {
-      throw new Explosion(this.message)
-    }
+    this.ticks = ticks + 1
+    this.tick()
   }
 
   tick() {
-    if (this.ticks > 0) {
-      console.log(this.name + ': ' + (--this.ticks) + '!')
-    }
-    if (this.ticks == 0) {
-      throw new Explosion(this.message)
-    }
-}
-
-  _tick() {
-  }
-}
-
-class ControlledBomb {
-  control: string
-  bomb: TimeBomb
-
-  constructor(control: string, bomb: TimeBomb) {
-    this.control = control
-    this.bomb = bomb
-  }
-
-  tick() {
-    if (localStorage.getItem('bomb.control.' + this.control)) {
-      this.bomb.tick()
+    if (localStorage.getItem('bomb.control.' + this.name)) {
+      if (this.ticks > 0) {
+        console.log(this.name + ': ' + (--this.ticks) + '!')
+      }
+      if (this.ticks == 0) {
+        throw new Explosion(this.message)
+      }
     }
   }
 }
@@ -128,12 +108,13 @@ interface InputsEntryAdd {
 }
 
 export default function PageDemo() {
-  const b = useMemo(() => {
-    return new ControlledBomb('bbb', new TimeBomb('bbb', 2))
-  }, [])
-
   try {
+    const b = useMemo(() => {
+      return new TimeBomb('bbb', 2)
+    }, [])
+
     b.tick()
+  
     const container0 = useMemo(() => {
       let container = newMyContainer()
       container = entryAdd(container, 'Gremlins', 2)
