@@ -1,9 +1,13 @@
 const styling = {
   button: {
     formButton: `
-      p-1 border rounded
-      bg-slate-300 border-slate-200
-      dark:bg-[#5c535c] dark:border-[#5c535c]
+      px-2 py-2 border rounded
+      text-orange-950
+      font-medium
+      bg-orange-300/50 border-orange-500/50
+      hover:bg-orange-400/50 transition-colors
+      focus-visible:border-orange-700 
+      dark:bg-[#5c535c] dark:border-[#5c535c] dark:text-zinc-50 dark:hover:bg-[#311c31]
     `,
   },
   input: {
@@ -27,13 +31,19 @@ const styling = {
   },
   tile: {
     tileComponent: `
-      p-2
-      rounded-xl border
+      px-4
+      py-4
+      rounded-md border
       shadow
-      bg-orange-50 border-slate-200
+      flex 
+      flex-col
+      items-start
+      gap-2
+      shadow-orange-200/30
+      bg-orange-50 border-orange-300/30
       dark:bg-[#000]/25 dark:border-[#000]/25
     `,
   },
-}
+};
 
-export default styling
+export default styling;
