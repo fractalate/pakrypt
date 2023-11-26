@@ -77,10 +77,10 @@ function entryAdd(container: MyContainer, name: string, value: number): MyContai
 }
 
 function entryUpdate(container: MyContainer, name: string, value: number): MyContainer {
-  let updated = false;
+  let updated = false
   const entries = container.entries.map((entry) => {
     if (entry.name === name) {
-      updated = true;
+      updated = true
       return { ...entry, value }
     }
     return entry

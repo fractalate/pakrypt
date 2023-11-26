@@ -1,4 +1,4 @@
-import { Pak } from "./Pak";
+import { Pak } from './Pak'
 
 interface PakManager {
 }
