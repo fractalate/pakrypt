@@ -2,6 +2,8 @@
 // id - identification
 import { v4 as uuid } from 'uuid'
 
+// 2023-11-26 -- Redo this so it's functional style copying of objects so the UI can work better.
+
 // TODO: Avoid structuredClone for functional-style data structure copying because it appears that in some contexts it clones string values where I believe it doesn't actually have to (avoid wasting memory for block data).
 
 export interface Pak1r0 {
