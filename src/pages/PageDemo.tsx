@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 // 2023-11-26 -- Expand the functionality here to be able to have a record be deleted, but don't ruin the in-progress editing of an entry. it can show something to indicate it will be re-instating a new record when it's finally saved. An alternative user-facing functionality could be to disable editing and make a warning in that spot to indicate the backing data is deleted.
+// 2023-11-26 -- There are a lot of eslint issues in this file that aren't spacing related. Study them and fix them here.
 
 class Explosion extends Error {}
 
