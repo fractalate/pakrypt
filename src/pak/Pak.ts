@@ -2,7 +2,7 @@
 // id - identification
 import { v4 as uuid } from 'uuid'
 
-// 2023-11-26 -- Redo this so it's functional style copying of objects so the UI can work better.
+// TODO: Make some unit tests.
 
 export interface Pak {
   ov: 'pakrypt.pak:1.0',
@@ -77,28 +77,71 @@ function calculateSize(data: string): number {
   return result
 }
 
-function addEntry(pak: Pak, entry: PakEntry) {
-  if (pak.entries == null) {
-    pak.entries = []
+function addEntry(pak: Pak, entry: PakEntry): Pak {
+  return {
+    ov: 'pakrypt.pak:1.0',
+    id: pak.id,
+    entries: pak.entries == null ? [entry] : [...pak.entries, entry],
+    blocks: pak.blocks,
   }
-  pak.entries.push(entry)
 }
 
-function replaceEntry(pak: Pak, entry: PakEntry) {
-  if (pak.entries != null) {
-    for (let i = 0; i < pak.entries.length; ++i) {
-      if (pak.entries[i].id === entry.id) {
-        pak.entries[i] = entry
+function replaceEntry(pak: Pak, entry: PakEntry): Pak {
+  const entries = pak.entries == null ? undefined : [...pak.entries]
+  if (entries != null) {
+    for (let i = 0; i < entries.length; ++i) {
+      if (entries[i].id === entry.id) {
+        entries[i] = entry
       }
     }
   }
+  return {
+    ov: 'pakrypt.pak:1.0',
+    id: pak.id,
+    entries,
+    blocks: pak.blocks,
+  }
 }
 
-function addBlock(pak: Pak, block: PakBlock) {
-  if (pak.blocks == null) {
-    pak.blocks = []
+function removeEntry(pak: Pak, id: string): Pak {
+  let entries = pak.entries
+  if (entries != null) {
+    entries = entries.filter((entry) => entry.id != id)
+    if (entries.length == 0) {
+      entries = undefined
+    }
+  }  
+  return {
+    ov: 'pakrypt.pak:1.0',
+    id: pak.id,
+    entries,
+    blocks: pak.blocks,
   }
-  pak.blocks.push(block)
+}
+
+function addBlock(pak: Pak, block: PakBlock): Pak {
+  return {
+    ov: 'pakrypt.pak:1.0',
+    id: pak.id,
+    entries: pak.entries,
+    blocks: pak.blocks == null ? [block] : [...pak.blocks, block],
+  }
+}
+
+function removeBlock(pak: Pak, id: string): Pak {
+  let blocks = pak.blocks
+  if (blocks != null) {
+    blocks = blocks.filter((block) => block.id != id)
+    if (blocks.length == 0) {
+      blocks = undefined
+    }
+  }  
+  return {
+    ov: 'pakrypt.pak:1.0',
+    id: pak.id,
+    entries: pak.entries,
+    blocks,
+  }
 }
 
 export interface FileFields {
@@ -107,7 +150,7 @@ export interface FileFields {
   tags?: string[],
 }
 
-export function CreateFile(pak: Pak, file: FileFields): PakFile {
+export function CreateFile(pak: Pak, file: FileFields): [Pak, PakFile] {
   const blockref: PakFile_BlockReference = {
     ov: 'pakrypt.blockref:1.0',
     id: uuid(),
@@ -128,10 +171,10 @@ export function CreateFile(pak: Pak, file: FileFields): PakFile {
     data: file.data,
   }
 
-  addBlock(pak, block)
-  addEntry(pak, entry)
+  pak = addBlock(pak, block)
+  pak = addEntry(pak, entry)
 
-  return entry
+  return [pak, entry]
 }
 
 export interface NoteFields {
@@ -141,14 +184,14 @@ export interface NoteFields {
   tags?: string[],
 }
 
-export function CreateNote(pak: Pak, note: NoteFields): PakNote {
+export function CreateNote(pak: Pak, note: NoteFields): [Pak, PakNote] {
   const entry: PakNote = {
     ov: 'pakrypt.note:1.0',
     id: uuid(),
     ...structuredClone(note),
   }
-  addEntry(pak, entry)
-  return entry
+  pak = addEntry(pak, entry)
+  return [pak, entry]
 }
 
 export interface PasswordFields {
@@ -160,72 +203,55 @@ export interface PasswordFields {
   tags?: string[],
 }
 
-// TODO: Work on the return type here, it should be something, but not a particular version.
 export function CreatePassword(pak: Pak, password: PasswordFields): [Pak, PakPassword] {
-  if (pak.ov === 'pakrypt.pak:1.0') {
-    return CreatePassword1r0(pak, password)
-  }
-  return pak.ov // so we return never when the ifs are exhaustive
-}
-
-export function CreatePassword1r0(pak: Pak, password: PasswordFields): [Pak, PakPassword] {
-  pak = structuredClone(pak)
   const entry: PakPassword = {
     ov: 'pakrypt.password:1.0',
     id: uuid(),
-    ...structuredClone(password),
+    title: password.title,
+    subtitle: password.subtitle,
+    username: password.username,
+    password: password.password,
+    note: password.note,
+    tags: password.tags == null ? password.tags : [...password.tags],
   }
-  addEntry(pak, entry)
+  pak = addEntry(pak, entry)
   return [pak, entry]
 }
 
 export function UpdatePassword(pak: Pak, id: string, password: PasswordFields): Pak {
-  pak = structuredClone(pak)
-  if (pak.entries != null) {
-    const entry: PakPassword = {
-      ov: 'pakrypt.password:1.0',
-      id,
-      ...structuredClone(password),
-    }
-    replaceEntry(pak, entry)
+  if (pak.entries == null) {
+    return pak
   }
+  const entry: PakPassword = {
+    ov: 'pakrypt.password:1.0',
+    id,
+    title: password.title,
+    subtitle: password.subtitle,
+    username: password.username,
+    password: password.password,
+    note: password.note,
+    tags: password.tags == null ? password.tags : [...password.tags],
+  }
+  pak = replaceEntry(pak, entry)
   return pak
 }
 
 export function DeleteBlock(pak: Pak, id: string): Pak {
-  pak = structuredClone(pak)
-  if (pak.blocks != null) {
-    const blocks = []
-    for (const block of pak.blocks) {
-      if (block.id !== id) {
-        blocks.push(block)
-      }
-    }
-    pak.blocks = blocks.length == 0 ? undefined : blocks
-  }
-  return pak
+  return removeBlock(pak, id)
 }
 
-export function DeleteEntry(pak: Pak, id: string): [Pak, null | PakEntry] {
-  pak = structuredClone(pak)
-  let result: null | PakEntry = null
+export function DeleteEntry(pak: Pak, id: string): Pak {
   if (pak.entries != null) {
-    const entries = []
     for (const entry of pak.entries) {
-      if (entry.id === id) {
-        result = entry
-      } else {
-        entries.push(entry)
-      }
-    }
-    pak.entries = entries.length == 0 ? undefined : entries
-    if (result != null && result.ov == 'pakrypt.file:1.0') {
-      for (const block of result.blocks) {
-        DeleteBlock(pak, block.id)
+      if (entry.id === id && entry.ov === 'pakrypt.file:1.0') {
+        for (const block of entry.blocks) {
+          pak = removeBlock(pak, block.id)
+        }
       }
     }
   }
-  return [pak, result]
+  pak = removeEntry(pak, id)
+  return pak
 }
 
 export function FindEntry(pak: Pak, id: string): null | PakEntry {
