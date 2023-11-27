@@ -4,37 +4,35 @@ import { v4 as uuid } from 'uuid'
 
 // 2023-11-26 -- Redo this so it's functional style copying of objects so the UI can work better.
 
-// TODO: Avoid structuredClone for functional-style data structure copying because it appears that in some contexts it clones string values where I believe it doesn't actually have to (avoid wasting memory for block data).
-
-export interface Pak1r0 {
+export interface Pak {
   ov: 'pakrypt.pak:1.0',
   id: string,
-  entries?: Pak1r0_Entry[],
-  blocks?: PakBlock1r0[],
+  entries?: PakEntry[],
+  blocks?: PakBlock[],
 }
 
-export type Pak = Pak1r0
+export type PakEntry = (
+  | PakFile
+  | PakNote
+  | PakPassword
+)
 
-export type Pak1r0_Entry = PakFile1r0
-                         | PakNote1r0
-                         | PakPassword1r0
-
-export interface PakFile1r0 {
+export interface PakFile {
   ov: 'pakrypt.file:1.0',
   id: string,
   title: string,
-  blocks: PakFile1r0_BlockReference[],
+  blocks: PakFile_BlockReference[],
   tags?: string[],
 }
 
-export interface PakFile1r0_BlockReference {
+export interface PakFile_BlockReference {
   ov: 'pakrypt.blockref:1.0',
   id: string, // Matches the id of the corresponding 'pakrypt.file:1.0' object.
   size: number,
   pakid?: string, // Matches the id of the containing 'pakrypt.pak:1.0' object.
 }
 
-export interface PakNote1r0 {
+export interface PakNote {
   ov: 'pakrypt.note:1.0',
   id: string,
   title: string,
@@ -43,7 +41,7 @@ export interface PakNote1r0 {
   tags?: string[],
 }
 
-export interface PakPassword1r0 {
+export interface PakPassword {
   ov: 'pakrypt.password:1.0',
   id: string,
   title: string,
@@ -54,14 +52,13 @@ export interface PakPassword1r0 {
   tags?: string[],
 }
 
-export interface PakBlock1r0 {
+export interface PakBlock {
   ov: 'parypt.block:1.0',
   id: string,
   data: string, // base64 encoded binary data.
 }
 
-
-export function NewPak1r0(): Pak1r0 {
+export function NewPak(): Pak {
   return {
     ov: 'pakrypt.pak:1.0',
     id: uuid(),
@@ -80,14 +77,14 @@ function calculateSize(data: string): number {
   return result
 }
 
-function addEntry(pak: Pak1r0, entry: Pak1r0_Entry) {
+function addEntry(pak: Pak, entry: PakEntry) {
   if (pak.entries == null) {
     pak.entries = []
   }
   pak.entries.push(entry)
 }
 
-function replaceEntry(pak: Pak1r0, entry: Pak1r0_Entry) {
+function replaceEntry(pak: Pak, entry: PakEntry) {
   if (pak.entries != null) {
     for (let i = 0; i < pak.entries.length; ++i) {
       if (pak.entries[i].id === entry.id) {
@@ -97,7 +94,7 @@ function replaceEntry(pak: Pak1r0, entry: Pak1r0_Entry) {
   }
 }
 
-function addBlock(pak: Pak1r0, block: PakBlock1r0) {
+function addBlock(pak: Pak, block: PakBlock) {
   if (pak.blocks == null) {
     pak.blocks = []
   }
@@ -110,14 +107,14 @@ export interface FileFields {
   tags?: string[],
 }
 
-export function CreateFile(pak: Pak1r0, file: FileFields): PakFile1r0 {
-  const blockref: PakFile1r0_BlockReference = {
+export function CreateFile(pak: Pak, file: FileFields): PakFile {
+  const blockref: PakFile_BlockReference = {
     ov: 'pakrypt.blockref:1.0',
     id: uuid(),
     size: calculateSize(file.data),
   }
 
-  const entry: PakFile1r0 = {
+  const entry: PakFile = {
     ov: 'pakrypt.file:1.0',
     id: uuid(),
     blocks: [blockref],
@@ -125,7 +122,7 @@ export function CreateFile(pak: Pak1r0, file: FileFields): PakFile1r0 {
     tags: structuredClone(file.tags),
   }
 
-  const block: PakBlock1r0 = {
+  const block: PakBlock = {
     ov: 'parypt.block:1.0',
     id: blockref.id,
     data: file.data,
@@ -144,8 +141,8 @@ export interface NoteFields {
   tags?: string[],
 }
 
-export function CreateNote(pak: Pak1r0, note: NoteFields): PakNote1r0 {
-  const entry: PakNote1r0 = {
+export function CreateNote(pak: Pak, note: NoteFields): PakNote {
+  const entry: PakNote = {
     ov: 'pakrypt.note:1.0',
     id: uuid(),
     ...structuredClone(note),
@@ -164,16 +161,16 @@ export interface PasswordFields {
 }
 
 // TODO: Work on the return type here, it should be something, but not a particular version.
-export function CreatePassword(pak: Pak, password: PasswordFields): [Pak, PakPassword1r0] {
+export function CreatePassword(pak: Pak, password: PasswordFields): [Pak, PakPassword] {
   if (pak.ov === 'pakrypt.pak:1.0') {
     return CreatePassword1r0(pak, password)
   }
   return pak.ov // so we return never when the ifs are exhaustive
 }
 
-export function CreatePassword1r0(pak: Pak1r0, password: PasswordFields): [Pak1r0, PakPassword1r0] {
+export function CreatePassword1r0(pak: Pak, password: PasswordFields): [Pak, PakPassword] {
   pak = structuredClone(pak)
-  const entry: PakPassword1r0 = {
+  const entry: PakPassword = {
     ov: 'pakrypt.password:1.0',
     id: uuid(),
     ...structuredClone(password),
@@ -182,10 +179,10 @@ export function CreatePassword1r0(pak: Pak1r0, password: PasswordFields): [Pak1r
   return [pak, entry]
 }
 
-export function UpdatePassword1r0(pak: Pak1r0, id: string, password: PasswordFields): Pak1r0 {
+export function UpdatePassword(pak: Pak, id: string, password: PasswordFields): Pak {
   pak = structuredClone(pak)
   if (pak.entries != null) {
-    const entry: PakPassword1r0 = {
+    const entry: PakPassword = {
       ov: 'pakrypt.password:1.0',
       id,
       ...structuredClone(password),
@@ -195,7 +192,7 @@ export function UpdatePassword1r0(pak: Pak1r0, id: string, password: PasswordFie
   return pak
 }
 
-export function DeleteBlock(pak: Pak1r0, id: string): Pak1r0 {
+export function DeleteBlock(pak: Pak, id: string): Pak {
   pak = structuredClone(pak)
   if (pak.blocks != null) {
     const blocks = []
@@ -209,9 +206,9 @@ export function DeleteBlock(pak: Pak1r0, id: string): Pak1r0 {
   return pak
 }
 
-export function DeleteEntry(pak: Pak1r0, id: string): [Pak1r0, null | Pak1r0_Entry] {
+export function DeleteEntry(pak: Pak, id: string): [Pak, null | PakEntry] {
   pak = structuredClone(pak)
-  let result: null | Pak1r0_Entry = null
+  let result: null | PakEntry = null
   if (pak.entries != null) {
     const entries = []
     for (const entry of pak.entries) {
@@ -231,7 +228,7 @@ export function DeleteEntry(pak: Pak1r0, id: string): [Pak1r0, null | Pak1r0_Ent
   return [pak, result]
 }
 
-export function FindEntry(pak: Pak1r0, id: string): null | Pak1r0_Entry {
+export function FindEntry(pak: Pak, id: string): null | PakEntry {
   if (pak.entries == null) {
     return null
   }

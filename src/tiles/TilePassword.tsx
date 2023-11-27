@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 import { PageContext } from '../Contexts'
 import styling from '../lib/styling'
-import { PakPassword1r0 } from '../pak/Pak'
+import { PakPassword } from '../pak/Pak'
 
 export default function TilePassword({
   entry,
 }: {
-  entry: PakPassword1r0,
+  entry: PakPassword,
 }) {
   const { pushPage } = useContext(PageContext)
 

@@ -1,9 +1,9 @@
 import { PropsWithChildren, useState } from 'react'
-import { Pak1r0_Entry } from './Pak'
+import { PakEntry } from './Pak'
 import { PakEntryContext } from './PakContext'
 
 export default function PakEntryContextProvider({ children }: PropsWithChildren) {
-  const [entry, _setEntry] = useState(null as null | Pak1r0_Entry)
+  const [entry] = useState(null as null | PakEntry)
 
   return <PakEntryContext.Provider value={entry}>
     {children}

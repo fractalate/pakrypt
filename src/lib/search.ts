@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid'
-import { Pak, Pak1r0_Entry } from '../pak/Pak'
+import { Pak, PakEntry } from '../pak/Pak'
 
 export type SearchResult = SearchResultCommand
-                         | Pak1r0_Entry
+                         | PakEntry
 
 export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultNewFile
@@ -30,12 +30,18 @@ export interface SearchResultDemo {
   ov: 'pakrypt.command:demo',
 }
 
-export default function search(query: string, _pak?: null | Pak): SearchResult[] {
+export default function search(query: string, pak?: null | Pak): SearchResult[] {
   const result: SearchResult[] = []
 
   result.push({
     ov: 'pakrypt.command:theme_switcher',
   })
+
+  if (pak != null && pak.entries != null) {
+    for (const entry of pak.entries) {
+      result.push(entry)
+    }
+  }
 
   if (query.length > 0) {
     result.push({

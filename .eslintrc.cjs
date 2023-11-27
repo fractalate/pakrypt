@@ -8,7 +8,10 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: [
+    'react-refresh',
+    '@stylistic',
+  ],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -16,5 +19,16 @@ module.exports = {
     ],
     'semi': ['error', 'never'],
     'quotes': ['error', 'single'],
+    '@stylistic/comma-dangle': ['error', 'always-multiline'],
+    '@stylistic/member-delimiter-style': ['error', {
+      'multiline': {
+        'delimiter': 'comma',
+        'requireLast': true,
+      },
+      'singleline': {
+        'delimiter': 'comma',
+        'requireLast': false,
+      },
+    }],
   },
 }

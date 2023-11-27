@@ -1,14 +1,14 @@
 import { useContext } from 'react'
 import { PageContext } from '../Contexts'
 import PasswordEditor from '../editors/PasswordEditor'
-import { PakPassword1r0, PasswordFields, UpdatePassword1r0 } from '../pak/Pak'
+import { PakPassword, PasswordFields, UpdatePassword } from '../pak/Pak'
 import styling from '../lib/styling'
 import { PakContext } from '../pak/PakContext'
 
 export default function PageEditPassword({
   entry,
 }: {
-  entry: PakPassword1r0,
+  entry: PakPassword,
 }) {
   const pageContextState = useContext(PageContext)
   const pak = useContext(PakContext)
@@ -22,7 +22,7 @@ export default function PageEditPassword({
     // This is an issue as you return from the edit password screen to the parent component.
     // In this case, the tile that was rendered to allow the user to edit the password won't
     // rerender. I think this needs some more thought.
-    UpdatePassword1r0(pak, entry.id, data)
+    UpdatePassword(pak, entry.id, data)
     closePage()
   }
 

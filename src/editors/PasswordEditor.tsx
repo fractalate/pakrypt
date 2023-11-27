@@ -13,7 +13,7 @@ export default function PasswordEditor({
   onUserCancel,
   onUserSubmit,
 }: {
-  initialValues?: Inputs
+  initialValues?: Inputs,
   onUserSubmit: (data: Inputs) => void,
   onUserCancel: () => void,
 }) {
