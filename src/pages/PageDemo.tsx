@@ -83,13 +83,13 @@ export default function PageDemo() {
   const [container, setContainer] = useState(container0)
   const [editing0, setEditing0] = useState(null as null | string)
   const [editingRef0, setEditingRef0] = useState(null as null | MyEntry)
+  // TODO: Figure out how to do these deletion references without one list manipulating the state of the other.
   const [entries0DelIdx, setEntries0DelIdx] = useState(-1)
   const [entries0DelEntry, setEntries0DelEntry] = useState(null as null | MyEntry)
   const [editing1, setEditing1] = useState(null as null | string)
   const [editingRef1, setEditingRef1] = useState(null as null | MyEntry)
   const [entries1DelIdx, setEntries1DelIdx] = useState(-1)
   const [entries1DelEntry, setEntries1DelEntry] = useState(null as null | MyEntry)
-
 
   const {
     register,
