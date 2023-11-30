@@ -83,8 +83,13 @@ export default function PageDemo() {
   const [container, setContainer] = useState(container0)
   const [editing0, setEditing0] = useState(null as null | string)
   const [editingRef0, setEditingRef0] = useState(null as null | MyEntry)
+  const [entries0DelIdx, setEntries0DelIdx] = useState(-1)
+  const [entries0DelEntry, setEntries0DelEntry] = useState(null as null | MyEntry)
   const [editing1, setEditing1] = useState(null as null | string)
   const [editingRef1, setEditingRef1] = useState(null as null | MyEntry)
+  const [entries1DelIdx, setEntries1DelIdx] = useState(-1)
+  const [entries1DelEntry, setEntries1DelEntry] = useState(null as null | MyEntry)
+
 
   const {
     register,
@@ -105,7 +110,13 @@ export default function PageDemo() {
   } = useForm<InputsEntryEdit>()
 
   const onSubmitEdit0: SubmitHandler<InputsEntryEdit> = (data) => {
-    setContainer(entryUpdate(container, data.name, data.value))
+    if (entries1DelEntry == null) {
+      setContainer(entryUpdate(container, data.name, data.value))
+    } else {
+      setContainer(entryAdd(container, data.name, data.value))
+      setEntries1DelEntry(null)
+      setEntries1DelIdx(-1)
+    }
     setEditing0(null)
     setEditingRef0(null)
     resetEdit0()
@@ -119,13 +130,31 @@ export default function PageDemo() {
   } = useForm<InputsEntryEdit>()
 
   const onSubmitEdit1: SubmitHandler<InputsEntryEdit> = (data) => {
-    setContainer(entryUpdate(container, data.name, data.value))
+    if (entries0DelEntry == null) {
+      setContainer(entryUpdate(container, data.name, data.value))
+    } else {
+      setContainer(entryAdd(container, data.name, data.value))
+      setEntries0DelEntry(null)
+      setEntries0DelIdx(-1)
+    }
     setEditing1(null)
     setEditingRef1(null)
     resetEdit1()
   }
 
-  const entries0 = container.entries.map((entry) => <div key={ entry.name } className="my-1 p-1 bg-gray-100">
+  const entries0forReal = entries1DelEntry == null ? [...container.entries] : [
+    ...container.entries.slice(0, entries1DelIdx),
+    entries1DelEntry,
+    ...container.entries.slice(entries1DelIdx),
+  ]
+
+  const entries1forReal = entries0DelEntry == null ? [...container.entries] : [
+    ...container.entries.slice(0, entries0DelIdx),
+    entries0DelEntry,
+    ...container.entries.slice(entries0DelIdx),
+  ]
+
+  const entries0 = entries0forReal.map((entry) => <div key={ entry.name } className="my-1 p-1 bg-gray-100">
     <div>
       { entry.name } = { (entry.name === editing0) ?
           <form className="inline" onSubmit={handleSubmitEdit0(onSubmitEdit0)}>
@@ -144,6 +173,13 @@ export default function PageDemo() {
               setValueEdit0('value', entry.value)
             }}>Edit</button>
             <button className="ml-2 mr-1 p-2 rounded-xl bg-red-500 text-white shadow" onClick={() => {
+              if (editing1 == entry.name) {
+                const idx = container.entries.indexOf(entry)
+                if (idx >= 0) {
+                  setEntries0DelIdx(idx)
+                  setEntries0DelEntry(entry)
+                }
+              }
               setContainer(entryDelete(container, entry.name))
             }}>Delete</button>
           </>
@@ -151,7 +187,7 @@ export default function PageDemo() {
     </div>
   </div>)
 
-  const entries1 = container.entries.map((entry) => <div key={ entry.name } className="my-1 p-1 bg-gray-100">
+  const entries1 = entries1forReal.map((entry) => <div key={ entry.name } className="my-1 p-1 bg-gray-100">
     <div>
       { entry.name } = { (entry.name === editing1) ?
           <form className="inline" onSubmit={handleSubmitEdit1(onSubmitEdit1)}>
@@ -170,6 +206,13 @@ export default function PageDemo() {
               setValueEdit1('value', entry.value)
             }}>Edit</button>
             <button className="ml-2 mr-1 p-2 rounded-xl bg-red-500 text-white shadow" onClick={() => {
+              if (editing0 == entry.name) {
+                const idx = container.entries.indexOf(entry)
+                if (idx >= 0) {
+                  setEntries1DelIdx(idx)
+                  setEntries1DelEntry(entry)
+                }
+              }
               setContainer(entryDelete(container, entry.name))
             }}>Delete</button>
           </>
@@ -193,9 +236,11 @@ export default function PageDemo() {
         <button type="submit" className="p-2 rounded-xl bg-blue-500 text-white shadow">+ Add</button>
       </form>
     </div>
+    <div className="my-10"></div>
     <div className="m-1 p-1 bg-gray-300">
       { entries0 }
     </div>
+    <div className="my-10"></div>
     <div className="m-1 p-1 bg-gray-300">
       { entries1 }
     </div>
