@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 import { Pak, PakEntry } from '../pak/Pak'
 
 export type SearchResult = SearchResultCommand
@@ -9,6 +8,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultNewNote
                                 | SearchResultNewPassword
                                 | SearchResultDemo
+                                | SearchResultHelp
 
 export interface SearchResultThemeSwitcher {
   ov: 'pakrypt.command:theme_switcher',
@@ -30,47 +30,63 @@ export interface SearchResultDemo {
   ov: 'pakrypt.command:demo',
 }
 
+export interface SearchResultHelp {
+  ov: 'pakrypt.command:help',
+}
+
+function tagsMatchQuery(tags: string[], query: string): boolean {
+  for (const tag of tags) {
+    if (tag.toLowerCase().indexOf(query) >= 0) {
+      return true
+    }
+  }
+  return false
+}
+
+function getSubtitle(entry: PakEntry): string {
+  if ('subtitle' in entry) {
+    return entry.subtitle
+  }
+  return ''
+}
+
+function entryMatchesQuery(entry: PakEntry, query: string): boolean {
+  if (query.length == 0) {
+    return false
+  }
+  return entry.title.toLowerCase().indexOf(query) >= 0
+    || getSubtitle(entry).toLowerCase().indexOf(query) >= 0
+    || (entry.tags != null && tagsMatchQuery(entry.tags, query))
+}
+
 export default function search(query: string, pak?: null | Pak): SearchResult[] {
+  query = query.trim().toLowerCase()
+
   const result: SearchResult[] = []
 
-  result.push({
-    ov: 'pakrypt.command:theme_switcher',
-  })
+  if (query == '*' || /(hel?p?)$/i.test(query)) {
+    result.push({
+      ov: 'pakrypt.command:help',
+    })
+  }
 
   if (pak != null && pak.entries != null) {
     for (const entry of pak.entries) {
-      result.push(entry)
+      if (query == '*' || entryMatchesQuery(entry, query)) {
+        result.push(entry)
+      }
     }
   }
 
-  if (query.length > 0) {
-    result.push({
-      ov: 'pakrypt.command:demo',
-    })
-    result.push({
-      ov: 'pakrypt.command:new_file',
-    })
-    result.push({
-      ov: 'pakrypt.command:new_note',
-    })
+  if (query == '*' || /(new?|pas?s?w?o?r?d?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:new_password',
     })
+  }
+
+  if (query == '*' || /(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.password:1.0',
-      id: uuid(),
-      title: 'My Site is Cool',
-      subtitle: 'With Subtitle',
-      username: 'My User',
-      password: 'My Pass',
-    })
-    result.push({
-      ov: 'pakrypt.password:1.0',
-      id: uuid(),
-      title: 'No Subtitle is Cool',
-      subtitle: '',
-      username: 'ThisUser',
-      password: 'DatPass',
+      ov: 'pakrypt.command:theme_switcher',
     })
   }
 

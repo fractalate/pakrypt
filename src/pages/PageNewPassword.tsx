@@ -7,15 +7,15 @@ import { PakContext } from '../pak/PakContext'
 
 export default function PageNewPassword() {
   const pageContextState = useContext(PageContext)
-  const pak = useContext(PakContext)
+  const { pak, setPak } = useContext(PakContext)
 
   if (pak == null) {
     throw new Error('pak is null. Is this component a child component of PakContextProvider?')
   }
 
   const savePassword = (data: PasswordFields) => {
-    // TODO: This does not cascade changes via React to the pages, pak is edited in-place.
-    CreatePassword(pak, data)
+    const [newPak] = CreatePassword(pak, data)
+    setPak(newPak)
     closePage()
   }
 

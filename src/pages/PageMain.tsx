@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import search, { SearchResult } from '../lib/search'
 import Tile from '../tiles/Tile'
 import styling from '../lib/styling'
+import { PakContext } from '../pak/PakContext'
 
 function computeTileKey(searchResult: SearchResult) {
   if ('id' in searchResult) {
@@ -12,13 +13,8 @@ function computeTileKey(searchResult: SearchResult) {
 
 export default function PageMain() {
   const [query, setQuery] = useState('')
-  const [tiles, setTiles] = useState([] as SearchResult[])
-
-  function updateQuery(query: string) {
-    setQuery(query)
-    const tiles = search(query)
-    setTiles(tiles)
-  }
+  const { pak } = useContext(PakContext)
+  const tiles = useMemo(() => search(query, pak), [query, pak])
 
   const tileComponents = tiles.map((searchResult) => <div className="mb-1" key={computeTileKey(searchResult)}>
     <Tile searchResult={searchResult} />
@@ -30,7 +26,7 @@ export default function PageMain() {
     dark:text-[#EED] dark:bg-[#323]
   ">
     <div className="p-1">
-      <input type="text" className={styling.input.omnibarInput + ' w-full'} value={query} onChange={(e) => updateQuery(e.target.value)} />
+      <input type="text" className={styling.input.omnibarInput + ' w-full'} placeholder="Type &quot;help&quot; for help." value={query} onChange={(e) => setQuery(e.target.value)} />
     </div>
     {/* pb-1 here is so the mb-1 above in the tileComponents produced a m-1 margin between the omnibar input and the first tile. Consider learning how to use flex instead. */}
     <div className="pb-1 px-1">

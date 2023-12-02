@@ -21,6 +21,10 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     </div>
   } else if (searchResult.ov === 'pakrypt.command:demo') {
     return <TileDemo />
+  } else if (searchResult.ov === 'pakrypt.command:help') {
+    return <div className={styling.tile.tileComponent}>
+      { searchResult.ov }
+    </div>
   } else if (searchResult.ov === 'pakrypt.password:1.0') {
     return <PakEntryContext.Provider value={searchResult}>
       <TilePassword entry={searchResult} />

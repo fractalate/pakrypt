@@ -31,8 +31,7 @@ function Page({
 export default function Pages() {
   const initialPage: ChosenPage = useMemo(() => {
     const page: ChoosePage = {
-      ov: 'pakrypt.page:demo', // TODO: Turn this back to :main
-      //ov: 'pakrypt.page:main',
+      ov: 'pakrypt.page:main',
     }
     return [page, uuid(), <Page page={page} />]
   }, [])

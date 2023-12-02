@@ -4,9 +4,15 @@ import { PakContext } from './PakContext'
 
 export default function PakContextProvider({ children }: PropsWithChildren) {
   const initialPak = useMemo(() => NewPak(), [])
-  const [pak] = useState(initialPak as null | Pak)
+  const [pak, setPak] = useState(initialPak as null | Pak)
+  const value = {
+    pak,
+    setPak: (pak: null | Pak) => {
+      setPak(pak)
+    },
+  }
 
-  return <PakContext.Provider value={pak}>
+  return <PakContext.Provider value={value}>
     {children}
   </PakContext.Provider>
 }
