@@ -25,7 +25,7 @@ export default function NoteEditor({
     onUserSubmit(data)
   }
 
-  return <form onSubmit={handleSubmit(onSubmit)}>
+  return <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
     <div className="p-1">
       <label htmlFor="title" className="block">Title</label>
       <input type="text" className={styling.input.formInput + ' w-full'} {...register('title', {

@@ -35,7 +35,7 @@ export default function PasswordEditor({
   return <div className="
     w-full
   ">
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="p-1">
         <label htmlFor="title" className="block">Title</label>
         <input type="text" className={styling.input.formInput} {...register('title', {
