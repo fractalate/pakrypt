@@ -68,6 +68,6 @@ Four main components of this application:
 
 * [ ] Password page needs some styles.
 * [ ] Delete records.
-* [ ] Copy password implementation.
+* [*] Copy password implementation.
 
 * [ ] Can I navigate the page with arrow keys?
