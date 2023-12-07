@@ -61,8 +61,9 @@ Four main components of this application:
 ## TODO
 
 * [*] Make help tile in search results last unless you type exactly "help".
-* [ ] Flesh out the help tile.
 * [ ] Differentiate tiles with styles based on command vs. entry tile.
+* [ ] Search results orderings.
+* [*] Flesh out the help tile.
 * [ ] Password editor needs some fields to not be remembered for autofill and don't show autofill.
 
 * [ ] Password page needs some styles.
