@@ -26,12 +26,19 @@ const styling = {
     `,
   },
   tile: {
-    tileComponent: `
+    tileComponentCommand: `
       p-2
       rounded-xl border
       shadow
       bg-orange-50 border-slate-200
-      dark:bg-[#000]/25 dark:border-[#000]/25
+      dark:bg-[#FFF]/5 dark:border-[#FFF]/5
+    `,
+    tileComponentEntry: `
+      p-2
+      rounded-xl border
+      shadow
+      bg-orange-100 border-slate-200
+      dark:bg-[#000]/40 dark:border-[#000]/40
     `,
   },
 }

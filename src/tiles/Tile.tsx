@@ -13,11 +13,11 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
   } else if (searchResult.ov === 'pakrypt.command:theme_switcher') {
     return <TileThemeSwitcher />
   } else if (searchResult.ov === 'pakrypt.command:new_file') {
-    return <div className={styling.tile.tileComponent}>
+    return <div className={styling.tile.tileComponentCommand}>
       { searchResult.ov }
     </div>
   } else if (searchResult.ov === 'pakrypt.command:new_note') {
-    return <div className={styling.tile.tileComponent}>
+    return <div className={styling.tile.tileComponentCommand}>
       { searchResult.ov }
     </div>
   } else if (searchResult.ov === 'pakrypt.command:demo') {
@@ -29,11 +29,11 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
       <TilePassword entry={searchResult} />
     </PakEntryContext.Provider>
   } else if (searchResult.ov === 'pakrypt.file:1.0') {
-    return <div className={styling.tile.tileComponent}>
+    return <div className={styling.tile.tileComponentEntry}>
       { searchResult.ov }
     </div>
   } else if (searchResult.ov === 'pakrypt.note:1.0') {
-    return <div className={styling.tile.tileComponent}>
+    return <div className={styling.tile.tileComponentEntry}>
       { searchResult.ov }
     </div>
   }

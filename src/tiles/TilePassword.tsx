@@ -20,7 +20,7 @@ export default function TilePassword({
   function copyPassword() {
   }
   
-  return <div className={styling.tile.tileComponent}>
+  return <div className={styling.tile.tileComponentEntry}>
     <div>{entry.title}</div>
     <div>{entry.subtitle || entry.username}</div>
     <div className="m-1"></div>

@@ -11,7 +11,7 @@ export default function TileThemeSwitcher() {
   const themeText = computeThemeText(useContext(ThemeContext))
 
   return (
-    <div className={styling.tile.tileComponent}>
+    <div className={styling.tile.tileComponentCommand}>
       <div>
         Theme is {themeText}
       </div>
