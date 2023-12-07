@@ -63,8 +63,10 @@ export default function search(query: string, pak?: null | Pak): SearchResult[] 
   query = query.trim().toLowerCase()
 
   const result: SearchResult[] = []
+  let explicitHelp = false
 
-  if (query == '*' || /(hel?p?)$/i.test(query)) {
+  if (/^(help)$/i.test(query)) {
+    explicitHelp = true
     result.push({
       ov: 'pakrypt.command:help',
     })
@@ -87,6 +89,12 @@ export default function search(query: string, pak?: null | Pak): SearchResult[] 
   if (query == '*' || /(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:theme_switcher',
+    })
+  }
+
+  if (!explicitHelp && (query == '*' || /(hel?p?)$/i.test(query))) {
+    result.push({
+      ov: 'pakrypt.command:help',
     })
   }
 

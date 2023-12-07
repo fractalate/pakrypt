@@ -57,3 +57,16 @@ Four main components of this application:
   - Locks us into English.
 * Mobile design first, but consider Desktop as well.
 * Dark modes.
+
+## TODO
+
+* [*] Make help tile in search results last unless you type exactly "help".
+* [ ] Flesh out the help tile.
+* [ ] Differentiate tiles with styles based on command vs. entry tile.
+* [ ] Password editor needs some fields to not be remembered for autofill and don't show autofill.
+
+* [ ] Password page needs some styles.
+* [ ] Delete records.
+* [ ] Copy password implementation.
+
+* [ ] Can I navigate the page with arrow keys?
