@@ -30,6 +30,7 @@ function Page({
 
 export default function Pages() {
   const initialPage: ChosenPage = useMemo(() => {
+    console.log('Pages useMemo factory called!')
     const page: ChoosePage = {
       ov: 'pakrypt.page:main',
     }

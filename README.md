@@ -71,3 +71,4 @@ Four main components of this application:
 * [*] Copy password implementation.
 
 * [ ] Can I navigate the page with arrow keys?
+* [ ] Saving a new password is kind of weird for the user experience.

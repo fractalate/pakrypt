@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styling from '../lib/styling'
+import { useState } from 'react'
 
 interface Inputs {
   title: string,
@@ -10,11 +11,13 @@ interface Inputs {
 
 export default function PasswordEditor({
   initialValues,
-  onUserCancel,
   onUserSubmit,
+  onUserDelete,
+  onUserCancel,
 }: {
   initialValues?: Inputs,
   onUserSubmit: (data: Inputs) => void,
+  onUserDelete: () => void,
   onUserCancel: () => void,
 }) {
   const {
@@ -28,6 +31,8 @@ export default function PasswordEditor({
       password: initialValues && initialValues.password || '',
     },
   })
+
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onUserSubmit(data)
@@ -59,6 +64,17 @@ export default function PasswordEditor({
         <button className={styling.button.formButton} onClick={() => {
           onUserCancel()
         }}>Cancel</button>
+        {!confirmDelete && <button className={styling.button.formButton} onClick={() => {
+          setConfirmDelete(true)
+        }}>Delete</button>}
+        {confirmDelete && <>
+          <button className={styling.button.formButton} onClick={() => {
+            setConfirmDelete(false)
+          }}>Keep</button>
+          <button className={styling.button.formButton} onClick={() => {
+            onUserDelete()
+          }}>Confirm</button>
+        </>}
       </div>
     </form>
   </div>
