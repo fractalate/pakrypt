@@ -24,6 +24,7 @@ export default function PageEditPassword({
 
   const deletePassword = () => {
     setPak(DeleteEntry(pak, entry.id))
+    closePage()
   }
 
   function closePage() {
