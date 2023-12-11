@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { PageContext } from '../Contexts'
 import PasswordEditor from '../editors/PasswordEditor'
-import { PakPassword, PasswordFields, UpdatePassword } from '../pak/Pak'
+import { DeleteEntry, PakPassword, PasswordFields, UpdatePassword } from '../pak/Pak'
 import styling from '../lib/styling'
 import { PakContext } from '../pak/PakContext'
 
@@ -22,6 +22,10 @@ export default function PageEditPassword({
     closePage()
   }
 
+  const deletePassword = () => {
+    setPak(DeleteEntry(pak, entry.id))
+  }
+
   function closePage() {
     pageContextState.popPage()
   }
@@ -32,6 +36,11 @@ export default function PageEditPassword({
     dark:text-[#EED] dark:bg-[#323]
   ">
     <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
-    <PasswordEditor onUserSubmit={(data) => savePassword(data)} initialValues={entry} onUserCancel={() => closePage()} />
+    <PasswordEditor
+      initialValues={entry}
+      onUserSubmit={(data) => savePassword(data)}
+      onUserDelete={() => deletePassword()}
+      onUserCancel={() => closePage()}
+    />
   </div>
 }

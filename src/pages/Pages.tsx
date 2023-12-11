@@ -30,6 +30,7 @@ function Page({
 
 export default function Pages() {
   const initialPage: ChosenPage = useMemo(() => {
+    console.log('Pages useMemo factory called!')
     const page: ChoosePage = {
       ov: 'pakrypt.page:main',
     }
@@ -45,6 +46,12 @@ export default function Pages() {
         setPages([...pages, [page, uuid(), <Page page={page} />]])
       },
       popPage: () => {
+        // TODO: Clean this up.
+        console.log('Pages popPage called!')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((window as any).stuff) {
+          throw new Error('WHY!')
+        }
         setPages(pages.slice(0, -1))
       },
     }

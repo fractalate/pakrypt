@@ -23,12 +23,17 @@ export default function PageNewPassword() {
     pageContextState.popPage()
   }
 
+  // TODO: no delete.
   return <div className="
     min-h-screen w-screen
     text-[#333] bg-[#FFE]
     dark:text-[#EED] dark:bg-[#323]
   ">
     <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
-    <PasswordEditor onUserSubmit={(data) => savePassword(data)} onUserCancel={() => closePage()} />
+    <PasswordEditor
+      onUserSubmit={(data) => savePassword(data)}
+      onUserCancel={() => closePage()}
+      onUserDelete={() => {}}
+    />
   </div>
 }
