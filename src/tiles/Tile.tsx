@@ -1,6 +1,5 @@
 import { SearchResult } from '../lib/search'
 import styling from '../lib/styling'
-import { PakEntryContext } from '../pak/PakContext'
 import TileDemo from './TileDemo'
 import TileHelp from './TileHelp'
 import TileNewPassword from './TileNewPassword'
@@ -25,9 +24,7 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
   } else if (searchResult.ov === 'pakrypt.command:help') {
     return <TileHelp />
   } else if (searchResult.ov === 'pakrypt.password:1.0') {
-    return <PakEntryContext.Provider value={searchResult}>
-      <TilePassword entry={searchResult} />
-    </PakEntryContext.Provider>
+    return <TilePassword entry={searchResult} />
   } else if (searchResult.ov === 'pakrypt.file:1.0') {
     return <div className={styling.tile.tileComponentEntry}>
       { searchResult.ov }

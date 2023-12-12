@@ -1,6 +1,8 @@
 import { createContext } from 'react'
 import { getAppliedTheme } from './lib/theme'
 import { ChoosePage, PageContextState } from './pages'
+import { PakmanStateContextState } from './pak/Pakman'
+import { Pak } from './pak/Pak'
 
 const nullPage: ChoosePage = {
   ov: 'pakrypt.page:main',
@@ -14,5 +16,12 @@ const nullPageContextState: PageContextState = {
   popPage: () => {},
 }
 
+const nullPakmanStateContextState: PakmanStateContextState = {
+  pakman: { ov: 'pakrypt.pakmanstate:unloaded' },
+  setPakman: () => {},
+}
+
 export const PageContext = createContext(nullPageContextState)
-export const ThemeContext = createContext(getAppliedTheme()) // See also: The ThemeContextProvider component.
+export const ThemeContext = createContext(getAppliedTheme())
+export const PakmanStateContext = createContext(nullPakmanStateContextState)
+export const PakContext = createContext(null as null | Pak)

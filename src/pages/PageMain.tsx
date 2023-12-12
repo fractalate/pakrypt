@@ -2,7 +2,9 @@ import { useContext, useMemo, useState } from 'react'
 import search, { SearchResult } from '../lib/search'
 import Tile from '../tiles/Tile'
 import styling from '../lib/styling'
-import { PakContext } from '../pak/PakContext'
+import { PakmanStateContext } from '../Contexts'
+import { Pakman } from '../pak/Pakman'
+import { Pak } from '../pak/Pak'
 
 function computeTileKey(searchResult: SearchResult) {
   if ('id' in searchResult) {
@@ -11,10 +13,17 @@ function computeTileKey(searchResult: SearchResult) {
   return searchResult.ov
 }
 
+function uglyTypesToPak(pakman: Pakman): null | Pak {
+  if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+    return pakman.pak
+  }
+  return null
+}
+
 export default function PageMain() {
   const [query, setQuery] = useState('')
-  const { pak } = useContext(PakContext)
-  const tiles = useMemo(() => search(query, pak), [query, pak])
+  const { pakman } = useContext(PakmanStateContext)
+  const tiles = useMemo(() => search(query, uglyTypesToPak(pakman)), [query, pakman])
 
   const tileComponents = tiles.map((searchResult) => <div className="mb-1" key={computeTileKey(searchResult)}>
     <Tile searchResult={searchResult} />

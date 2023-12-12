@@ -1,21 +1,22 @@
 import { useContext } from 'react'
-import { PageContext } from '../Contexts'
+import { PageContext, PakmanStateContext } from '../Contexts'
 import PasswordEditor from '../editors/PasswordEditor'
 import { CreatePassword, PasswordFields } from '../pak/Pak'
 import styling from '../lib/styling'
-import { PakContext } from '../pak/PakContext'
+import { PakmanSave } from '../pak/Pakman'
 
 export default function PageNewPassword() {
   const pageContextState = useContext(PageContext)
-  const { pak, setPak } = useContext(PakContext)
+  const { pakman, setPakman } = useContext(PakmanStateContext)
 
-  if (pak == null) {
-    throw new Error('pak is null. Is this component a child component of PakContextProvider?')
+  if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
+    throw new Error('pak is not unlocked.')
   }
 
   const savePassword = (data: PasswordFields) => {
-    const [newPak] = CreatePassword(pak, data)
-    setPak(newPak)
+    const [pak] = CreatePassword(pakman.pak, data)
+    const [newPakman] = PakmanSave(pakman, pak)
+    setPakman(newPakman)
     closePage()
   }
 

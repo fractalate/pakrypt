@@ -1,7 +1,22 @@
 import { PropsWithChildren, useMemo, useState } from 'react'
-import { CreatePassword, NewPak, Pak } from './Pak'
-import { PakContext } from './PakContext'
+import { PakmanStateContext } from './Contexts'
+import { Pakman } from './pak/Pakman'
 
+export default function PakmanStateContextProvider({ children }: PropsWithChildren) {
+  const initialPakman = useMemo(() => {
+    return {
+      ov: 'pakrypt.pakmanstate:unloaded',
+    } as Pakman
+  }, [])
+
+  const [pakman, setPakman] = useState(initialPakman)
+
+  return <PakmanStateContext.Provider value={{ pakman, setPakman }}>
+    { children }
+  </PakmanStateContext.Provider>
+}
+
+/*
 export default function PakContextProvider({ children }: PropsWithChildren) {
   const initialPak = useMemo(() => {
     let pak: null | Pak = null
@@ -58,3 +73,4 @@ export default function PakContextProvider({ children }: PropsWithChildren) {
     {children}
   </PakContext.Provider>
 }
+*/
