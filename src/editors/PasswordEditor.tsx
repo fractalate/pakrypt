@@ -34,6 +34,8 @@ export default function PasswordEditor({
 
   const [confirmDelete, setConfirmDelete] = useState(false)
 
+  // TODO: Disable the Delete button when this is for a new password.
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onUserSubmit(data)
   }

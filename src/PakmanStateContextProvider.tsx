@@ -1,23 +1,9 @@
 import { PropsWithChildren, useMemo, useState } from 'react'
 import { PakmanStateContext } from './Contexts'
 import { Pakman } from './pak/Pakman'
+import { CreatePassword, NewPak, Pak } from './pak/Pak'
 
 export default function PakmanStateContextProvider({ children }: PropsWithChildren) {
-  const initialPakman = useMemo(() => {
-    return {
-      ov: 'pakrypt.pakmanstate:unloaded',
-    } as Pakman
-  }, [])
-
-  const [pakman, setPakman] = useState(initialPakman)
-
-  return <PakmanStateContext.Provider value={{ pakman, setPakman }}>
-    { children }
-  </PakmanStateContext.Provider>
-}
-
-/*
-export default function PakContextProvider({ children }: PropsWithChildren) {
   const initialPak = useMemo(() => {
     let pak: null | Pak = null
     for (const key of Object.keys(localStorage)) {
@@ -53,24 +39,23 @@ export default function PakContextProvider({ children }: PropsWithChildren) {
         password: 'password1',
       })[0]
     }
-  
     return pak
   }, [])
-  const [pak, setPak] = useState(initialPak as null | Pak)
-  const value = {
-    pak,
-    setPak: (pak: null | Pak) => {
-      if (pak == null) {
-        localStorage.removeItem('pakrypt.pak[default]')
-      } else {
-        localStorage.setItem('pakrypt.pak[default]', JSON.stringify(pak))
-      }
-      setPak(pak)
-    },
-  }
 
-  return <PakContext.Provider value={value}>
-    {children}
-  </PakContext.Provider>
+  // TODO: This should load from localStorge.
+  const initialPakman = useMemo(() => {
+    return {
+      ov: 'pakrypt.pakmanstate:unlocked',
+      name: 'default',
+      data: JSON.stringify(initialPak),
+      key: '',
+      pak: initialPak,
+    } as Pakman
+  }, [initialPak])
+
+  const [pakman, setPakman] = useState(initialPakman)
+
+  return <PakmanStateContext.Provider value={{ pakman, setPakman }}>
+    { children }
+  </PakmanStateContext.Provider>
 }
-*/

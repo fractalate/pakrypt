@@ -67,7 +67,7 @@ Four main components of this application:
 * [*] Password editor needs some fields to not be remembered for autofill and don't show autofill.
 
 * [ ] Password page needs some styles.
-* [ ] Delete records.
+* [*] Delete records.
 * [*] Copy password implementation.
 
 * [ ] Can I navigate the page with arrow keys?
