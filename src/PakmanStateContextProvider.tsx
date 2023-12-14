@@ -1,11 +1,9 @@
 import { PropsWithChildren, useMemo, useState } from 'react'
 import { PakmanStateContext } from './Contexts'
 import { Pakman } from './pak/Pakman'
-import { CreatePassword, NewPak, Pak } from './pak/Pak'
 
 export default function PakmanStateContextProvider({ children }: PropsWithChildren) {
-  const initialPak = useMemo(() => {
-    let pak: null | Pak = null
+  const pakData = useMemo(() => {
     for (const key of Object.keys(localStorage)) {
       // "pakrypt.pak[default]"
       if (/^pakrypt.pak\[\w+\]$/.test(key)) {
@@ -13,45 +11,50 @@ export default function PakmanStateContextProvider({ children }: PropsWithChildr
         if (pakData == null) {
           continue
         }
-        // TODO: Handling error? Ensuring proper structure?
-        pak = JSON.parse(pakData)
+        return pakData
       }
     }
-
-    if (pak == null) {
-      pak = NewPak()
-      pak = CreatePassword(pak, {
-        title: 'Whelp Another Site',
-        subtitle: '',
-        username: 'megauser',
-        password: 'password',
-      })[0]
-      pak = CreatePassword(pak, {
-        title: 'Lines vs. Strips',
-        subtitle: 'lvs.cochleoid.com',
-        username: 'anonymous',
-        password: 'person',
-      })[0]
-      pak = CreatePassword(pak, {
-        title: 'how2recycle.info',
-        subtitle: 'Recycle Now!',
-        username: 'reusedusername',
-        password: 'password1',
-      })[0]
-    }
-    return pak
+    return null
   }, [])
 
+  /*
+  const initialPak = useMemo(() => {
+    let pak = NewPak()
+    pak = CreatePassword(pak, {
+      title: 'Whelp Another Site',
+      subtitle: '',
+      username: 'megauser',
+      password: 'password',
+    })[0]
+    pak = CreatePassword(pak, {
+      title: 'Lines vs. Strips',
+      subtitle: 'lvs.cochleoid.com',
+      username: 'anonymous',
+      password: 'person',
+    })[0]
+    pak = CreatePassword(pak, {
+      title: 'how2recycle.info',
+      subtitle: 'Recycle Now!',
+      username: 'reusedusername',
+      password: 'password1',
+    })[0]
+    return pak
+  }, [pakData])
+  */
+
   // TODO: This should load from localStorge.
-  const initialPakman = useMemo(() => {
+  const initialPakman = useMemo((): Pakman => {
+    if (pakData == null) {
+      return {
+        ov: 'pakrypt.pakmanstate:unloaded',
+      }
+    }
     return {
-      ov: 'pakrypt.pakmanstate:unlocked',
+      ov: 'pakrypt.pakmanstate:loaded',
       name: 'default',
-      data: JSON.stringify(initialPak),
-      key: '',
-      pak: initialPak,
+      data: pakData,
     } as Pakman
-  }, [initialPak])
+  }, [pakData])
 
   const [pakman, setPakman] = useState(initialPakman)
 

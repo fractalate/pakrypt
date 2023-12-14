@@ -22,7 +22,7 @@ export interface PakmanUnlocked {
   ov: 'pakrypt.pakmanstate:unlocked',
   name: string,
   data: string,
-  key: string, // TODO: I don't want to carry this all around. Can I make the crypto key and pass it around?
+  key: CryptoKey,
   pak: Pak,
 }
 
@@ -86,7 +86,7 @@ export function PakmanUnlock(pakman: PakmanLoaded): [Pakman, PakmanUnlockResult]
       ov: 'pakrypt.pakmanstate:unlocked',
       name: pakman.name,
       data: pakman.data,
-      key: 'TODO', // TODO
+      key: null as unknown as CryptoKey, // TODO: Not right.
       pak: pak,
     }, { ov: 'pakrypt.pakmanunlockresult:success' }]
   } catch (err) {
