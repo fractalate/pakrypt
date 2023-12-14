@@ -4,18 +4,19 @@ import PasswordEditor from '../editors/PasswordEditor'
 import { CreatePassword, PasswordFields } from '../pak/Pak'
 import styling from '../lib/styling'
 import { PakmanSave } from '../pak/Pakman'
+import PageNotUnlocked from './PageNotUnlocked'
 
 export default function PageNewPassword() {
   const pageContextState = useContext(PageContext)
   const { pakman, setPakman } = useContext(PakmanStateContext)
 
   if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
-    throw new Error('pak is not unlocked.')
+    return <PageNotUnlocked />
   }
 
-  const savePassword = (data: PasswordFields) => {
+  const savePassword = async (data: PasswordFields) => {
     const [pak] = CreatePassword(pakman.pak, data)
-    const [newPakman] = PakmanSave(pakman, pak)
+    const [newPakman] = await PakmanSave(pakman, pak)
     setPakman(newPakman)
     closePage()
   }

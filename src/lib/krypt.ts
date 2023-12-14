@@ -1,11 +1,11 @@
 import { Base64 } from 'js-base64'
 
 const DEFAULT_SALT_SIZE = 16
-//const DEFAULT_IV_SIZE = 16
+const DEFAULT_IV_SIZE = 16
 const DEFAULT_KEY_SIZE = 256
 const DEFAULT_COST = 750 * 1000
 
-interface Encrypted {
+export interface Encrypted {
   version: string,
   salt: Uint8Array,
   iv: Uint8Array,
@@ -14,8 +14,8 @@ interface Encrypted {
   ciphertext: Uint8Array,
 }
 
-export function GetEncrypted(encrypted: string): Encrypted {
-  const parts = encrypted.split('$')
+export function GetEncrypted(data: string): Encrypted {
+  const parts = data.split('$')
 
   if (typeof parts[0] !== 'string') throw new Error('TODO')
   if (typeof parts[1] !== 'string') throw new Error('TODO')
@@ -34,7 +34,6 @@ export function GetEncrypted(encrypted: string): Encrypted {
   if (String(key_size) != parts[4]) throw new Error('TODO') // TODO: Is there another way?
   const ciphertext = Base64.toUint8Array(Base64.decode(parts[5]))
 
-
   return {
     version,
     salt,
@@ -45,19 +44,19 @@ export function GetEncrypted(encrypted: string): Encrypted {
   }
 }
 
-export async function DeriveKey(passphrase: string): Promise<CryptoKey> {
-  const salt = new Uint8Array(DEFAULT_SALT_SIZE)
-  window.crypto.getRandomValues(salt)
-  return _DeriveKey(new TextEncoder().encode(passphrase), salt, DEFAULT_COST, DEFAULT_KEY_SIZE)
+export function PutEncrypted(enc: Encrypted): string {
+  return [
+    enc.version,
+    Base64.encode(Base64.fromUint8Array(enc.salt)),
+    Base64.encode(Base64.fromUint8Array(enc.iv)),
+    '' + enc.cost,
+    '' + enc.key_size,
+    Base64.encode(Base64.fromUint8Array(enc.ciphertext)),
+  ].join('$')
 }
 
-export async function DeriveKeyWithEncrypted(passphrase: string, enc: Encrypted) {
+export async function DeriveKeyWithEncrypted(passphrase: string, enc: Encrypted): Promise<CryptoKey> {
   return _DeriveKey(new TextEncoder().encode(passphrase), enc.salt, DEFAULT_COST, DEFAULT_KEY_SIZE)
-}
-
-export async function DemoFunction() {
-  console.log('it runs')
-  console.log(await DeriveKey('passphrase'))
 }
 
 async function _DeriveKey(passphrase: Uint8Array, salt: Uint8Array, cost: number, key_size: number): Promise<CryptoKey> {
@@ -85,9 +84,7 @@ async function _DeriveKey(passphrase: Uint8Array, salt: Uint8Array, cost: number
   )
 }
 
-export async function Decrypt(key: CryptoKey, encrypted: string) {
-  const enc = GetEncrypted(encrypted)
-
+export async function Decrypt(key: CryptoKey, enc: Encrypted): Promise<Uint8Array> {
   const cleartext = await window.crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
@@ -96,5 +93,30 @@ export async function Decrypt(key: CryptoKey, encrypted: string) {
     key,
     enc.ciphertext,
   )
-  return cleartext
+  return new Uint8Array(cleartext)
+}
+
+export async function Encrypt(key: CryptoKey, buffer: Uint8Array): Promise<Encrypted> {
+  const salt = new Uint8Array(DEFAULT_SALT_SIZE)
+  await window.crypto.getRandomValues(salt)
+  const iv = new Uint8Array(DEFAULT_IV_SIZE)
+  await window.crypto.getRandomValues(iv)
+  const cost = DEFAULT_COST
+  const key_size = DEFAULT_KEY_SIZE
+  const ciphertext = new Uint8Array(await window.crypto.subtle.encrypt(
+    {
+      name: 'AES-GCM',
+      iv: iv,
+    },
+    key,
+    buffer,
+  ))
+  return {
+    version: '0',
+    salt,
+    iv,
+    cost,
+    key_size,
+    ciphertext,
+  }
 }

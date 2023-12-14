@@ -17,16 +17,16 @@ export default function PageEditPassword({
     throw new Error('pakman is not unlocked.')
   }
 
-  const savePassword = (data: PasswordFields) => {
+  const savePassword = async (data: PasswordFields) => {
     const pak = UpdatePassword(pakman.pak, entry.id, data)
-    const [nextPakman] = PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanSave(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }
 
-  const deletePassword = () => {
+  const deletePassword = async () => {
     const pak = DeleteEntry(pakman.pak, entry.id)
-    const [nextPakman] = PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanSave(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }
