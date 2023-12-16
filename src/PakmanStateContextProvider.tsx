@@ -1,14 +1,23 @@
 import { PropsWithChildren, useMemo, useState } from 'react'
 import { PakmanStateContext } from './Contexts'
-import { Pakman, PakmanLoadDefault } from './pak/Pakman'
+import { Pakman, PakmanLoadLast, PakmanSetLast } from './pak/Pakman'
 
 export default function PakmanStateContextProvider({ children }: PropsWithChildren) {
   const initialPakman = useMemo((): Pakman => {
-    const [pakman] = PakmanLoadDefault()
+    const [pakman] = PakmanLoadLast()
     return pakman
   }, [])
 
-  const [pakman, setPakman] = useState(initialPakman)
+  const [pakman, _setPakman] = useState(initialPakman)
+
+  function setPakman(pakman: Pakman) {
+    if (pakman.ov == 'pakrypt.pakmanstate:unloaded') {
+      PakmanSetLast(null)
+    } else {
+      PakmanSetLast(pakman.name)
+    }
+    _setPakman(pakman)
+  }
 
   return <PakmanStateContext.Provider value={{ pakman, setPakman }}>
     { children }

@@ -49,6 +49,10 @@ export function ListPaks(): Array<string> {
   return result
 }
 
+export function PakmanClose(): PakmanUnloaded {
+  return { ov: 'pakrypt.pakmanstate:unloaded' }
+}
+
 export async function PakmanNew(name: string, passphrase: string): Promise<[PakmanUnlocked, PakmanNewResult]> {
   const pak = NewPak()
   const pakData = JSON.stringify(pak)
@@ -115,8 +119,24 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
   ]
 }
 
-export function PakmanLoadDefault(): [Pakman, PakmanLoadResult] {
-  return PakmanLoad('default')
+export function PakmanLoadLast(): [Pakman, PakmanLoadResult] {
+  const lastPakName = localStorage.getItem('pakrypt.lastpak')
+  if (!lastPakName) {
+    return [{ 
+      ov: 'pakrypt.pakmanstate:unloaded',
+    }, {
+      ov: 'pakrypt.pakmanloadresult:success',
+    }]
+  }
+  return PakmanLoad(lastPakName)
+}
+
+export function PakmanSetLast(name: null | string) {
+  if (name == null || name == '') {
+    localStorage.removeItem('pakrypt.lastpak')
+  } else {
+    localStorage.setItem('pakrypt.lastpak', name)
+  }
 }
 
 export type PakmanUnlockResult = (
