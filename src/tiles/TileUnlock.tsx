@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PakmanStateContext } from '../Contexts'
 import styling from '../lib/styling'
 import {  PakmanUnlock } from '../pak/Pakman'
@@ -10,6 +10,7 @@ interface Inputs {
 
 export default function TileUnlock() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
+  const [ message, setMessage ] = useState('')
   const {
     register,
     handleSubmit,
@@ -20,9 +21,12 @@ export default function TileUnlock() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // TODO: Do someting if the passphrase is bad. See the 2nd item of the returned array.
-    const [newPakman] = await PakmanUnlock(pakman, data.passphrase)
+    setMessage('')
+    const [newPakman, result] = await PakmanUnlock(pakman, data.passphrase)
     setPakman(newPakman)
+    if (result.ov != 'pakrypt.pakmanunlockresult:success') {
+      setMessage(result.ov)
+    }
   }
   
   return <div className={styling.tile.tileComponentCommand}>
@@ -32,5 +36,8 @@ export default function TileUnlock() {
       })} />
       <button className={styling.button.formButton} type="submit">Unlock</button>
     </form>
+    <div>
+      {message}
+    </div>
   </div>
 }

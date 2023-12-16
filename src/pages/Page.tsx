@@ -3,6 +3,8 @@ import PageNewNote from './PageNewNote'
 import PageNewPassword from './PageNewPassword'
 import PageEditPassword from './PageEditPassword'
 import PageDemo from './PageDemo'
+import PageOpenPak from './PageOpenPak'
+import PageNewPak from './PageNewPak'
 import { ChoosePage } from '.'
 
 export default function Page({
@@ -21,6 +23,10 @@ export default function Page({
     return <PageEditPassword entry={ page.entry } />
   } else if (ov === 'pakrypt.page:demo') {
     return <PageDemo />
+  } else if (ov === 'pakrypt.page:openpak') {
+    return <PageOpenPak />
+  } else if (ov === 'pakrypt.page:newpak') {
+    return <PageNewPak />
   }
   return ov // This will cause a type error when the if's above are not exhaustive.
 }

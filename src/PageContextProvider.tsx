@@ -23,6 +23,9 @@ export default function PageContextProvider() {
       popPage: () => {
         setPages(pages.slice(0, -1))
       },
+      replacePage: (page: ChoosePage) => {
+        setPages([...pages.slice(0, -1), [page, uuid(), <Page page={page} />]])
+      },
     }
   }, [pages, setPages])
   

@@ -57,7 +57,13 @@ export function PutEncrypted(enc: Encrypted): string {
 }
 
 export async function DeriveKeyWithEncrypted(passphrase: string, enc: Encrypted): Promise<CryptoKey> {
-  return _DeriveKey(new TextEncoder().encode(passphrase), enc.salt, DEFAULT_COST, DEFAULT_KEY_SIZE)
+  return _DeriveKey(new TextEncoder().encode(passphrase), enc.salt, enc.cost, enc.key_size)
+}
+
+export async function DeriveKey(passphrase: string): Promise<[CryptoKey, Uint8Array]> {
+  const salt = new Uint8Array(DEFAULT_SALT_SIZE)
+  window.crypto.getRandomValues(salt)
+  return [await _DeriveKey(new TextEncoder().encode(passphrase), salt, DEFAULT_COST, DEFAULT_KEY_SIZE), salt]
 }
 
 async function _DeriveKey(passphrase: Uint8Array, salt: Uint8Array, cost: number, key_size: number): Promise<CryptoKey> {
@@ -68,7 +74,8 @@ async function _DeriveKey(passphrase: Uint8Array, salt: Uint8Array, cost: number
     false,
     ['deriveKey'],
   )
-  return await window.crypto.subtle.deriveKey(
+  console.log(passphrase, salt, cost, key_size)
+  const key = await window.crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
       salt: salt,
@@ -83,6 +90,7 @@ async function _DeriveKey(passphrase: Uint8Array, salt: Uint8Array, cost: number
     true,
     ['encrypt', 'decrypt'],
   )
+  return key
 }
 
 export async function Decrypt(key: CryptoKey, enc: Encrypted): Promise<Uint8Array> {
@@ -97,9 +105,7 @@ export async function Decrypt(key: CryptoKey, enc: Encrypted): Promise<Uint8Arra
   return new Uint8Array(cleartext)
 }
 
-export async function Encrypt(key: CryptoKey, buffer: Uint8Array): Promise<Encrypted> {
-  const salt = new Uint8Array(DEFAULT_SALT_SIZE)
-  await window.crypto.getRandomValues(salt)
+export async function Encrypt(key: CryptoKey, salt: Uint8Array, buffer: Uint8Array): Promise<Encrypted> {
   const iv = new Uint8Array(DEFAULT_IV_SIZE)
   await window.crypto.getRandomValues(iv)
   const cost = DEFAULT_COST
@@ -121,3 +127,53 @@ export async function Encrypt(key: CryptoKey, buffer: Uint8Array): Promise<Encry
     ciphertext,
   }
 }
+
+/*
+export async function DoCryptoTest() {
+  async function encryptIt() {
+    console.log('encoding...')
+    const cleartext = new TextEncoder().encode('cleartext')
+    console.log('deriving key...')
+    const [key, salt] = await DeriveKey('password')
+    console.log(key)
+    const raw = await crypto.subtle.exportKey('raw', key)
+    console.log('exported key', new Uint8Array(raw))
+    console.log('encrypting...')
+    const enc = await Encrypt(key, salt, cleartext)
+    console.log(enc)
+    const data = PutEncrypted(enc)
+    console.log('produced', data)
+    return data
+  }
+
+  async function decryptIt(data: string) {
+    console.log('decrypting', data)
+    const enc = GetEncrypted(data)
+    console.log(enc)
+    console.log('deriving key...')
+    const key = await DeriveKeyWithEncrypted('password', enc)
+    console.log(key)
+    const raw = await crypto.subtle.exportKey('raw', key)
+    console.log('exported key', new Uint8Array(raw))
+    console.log('decrypting...')
+    const cleartext = await Decrypt(key, enc)
+    console.log('decoding...')
+    if (new TextDecoder().decode(cleartext) !== 'cleartext') {
+      throw Error('Encrypt/decrypt error!')
+    }
+    console.log('all good')
+  }
+
+  const input = new TextEncoder().encode('test')
+  const encoded = Base64.encode(Base64.fromUint8Array(input))
+  const decoded = Base64.toUint8Array(Base64.decode(encoded))
+  const output = new TextDecoder().decode(decoded)
+
+  console.log('input', input)
+  console.log('decoded', decoded)
+  console.log('output', output)
+
+  const data = await encryptIt()
+  await decryptIt(data)
+}
+*/

@@ -14,6 +14,7 @@ const nullPageContextState: PageContextState = {
   pages: [ [nullPage, '', nullJsxElement] ],
   pushPage: () => {},
   popPage: () => {},
+  replacePage: () => {},
 }
 
 const nullPakmanStateContextState: PakmanStateContextState = {

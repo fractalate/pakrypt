@@ -1,5 +1,5 @@
-import { Decrypt, DeriveKeyWithEncrypted, Encrypt, Encrypted, GetEncrypted, PutEncrypted } from '../lib/krypt'
-import { Pak } from './Pak'
+import { Decrypt, DeriveKey, DeriveKeyWithEncrypted, Encrypt, Encrypted, GetEncrypted, PutEncrypted } from '../lib/krypt'
+import { NewPak, Pak } from './Pak'
 
 export interface PakmanStateContextState {
   pakman: Pakman,
@@ -25,6 +25,49 @@ export interface PakmanUnlocked {
   enc: Encrypted,
   key: CryptoKey,
   pak: Pak,
+}
+
+export type PakmanNewResult = (
+  | PakmanNewResultSuccess
+)
+export interface PakmanNewResultSuccess {
+  ov: 'pakrypt.pakmannewresult:success',
+}
+
+export function ListPaks(): Array<string> {
+  const result: Array<string> = []
+  for (let i = 0; i < localStorage.length; ++i) {
+    const key = localStorage.key(i)
+    if (key == null) {
+      continue
+    }
+    const m = /pakrypt.pak\[(\w+)\]/.exec(key)
+    if (m) {
+      result.push(m[1])
+    }
+  }
+  return result
+}
+
+export async function PakmanNew(name: string, passphrase: string): Promise<[PakmanUnlocked, PakmanNewResult]> {
+  const pak = NewPak()
+  const pakData = JSON.stringify(pak)
+
+  const [key, salt] = await DeriveKey(passphrase)
+  const enc = await Encrypt(key, salt, new TextEncoder().encode(pakData))
+
+  const pakman: PakmanUnlocked = {
+    ov: 'pakrypt.pakmanstate:unlocked',
+    name,
+    enc,
+    key,
+    pak,
+  }
+  const [finalPakman, result] = await PakmanSave(pakman, pak)
+  if (result.ov != 'pakrypt.pakmansaveresult:success') {
+    throw new Error('Save on new failed: ' + JSON.stringify(result))
+  }
+  return [finalPakman, { ov: 'pakrypt.pakmannewresult:success' }]
 }
 
 export type PakmanLoadResult = (
@@ -102,6 +145,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   try {
     buffer = await Decrypt(key, pakman.enc)
   } catch (err) {
+    console.error(err)
     return [pakman, {
       ov: 'pakrypt.pakmanunlockresult:decrypterror',
     }]
@@ -111,6 +155,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   try {
     data = new TextDecoder().decode(buffer)
   } catch (err) {
+    console.error(err)
     return [pakman, { ov: 'pakrypt.pakmanunlockresult:decodeerror' }]
   }
 
@@ -119,6 +164,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
     pak = JSON.parse(data) // TODO: Validate the JSON structure maybe.
   } catch (err) {
     if (err instanceof SyntaxError) {
+      console.error(err)
       return [pakman, { ov: 'pakrypt.pakmanunlockresult:integrityerror' }]
     }
     throw err
@@ -151,7 +197,7 @@ export interface PakmanSaveResultSuccess {
 export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
   const storage = `pakrypt.pak[${pakman.name}]`
   const buffer = new TextEncoder().encode(JSON.stringify(pak))
-  const enc = await Encrypt(pakman.key, buffer)
+  const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
 
   const data = PutEncrypted(enc)
   localStorage.setItem(storage, data)

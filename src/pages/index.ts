@@ -6,6 +6,8 @@ export type ChoosePage = (
   | ChoosePageNewNote
   | ChoosePageNewPassword
   | ChoosePageEditPassword
+  | ChoosePageOpenPak
+  | ChoosePageNewPak
 )
 
 interface ChoosePageMain {
@@ -35,10 +37,19 @@ interface ChoosePageEditPassword {
   onCancel?: () => void,
 }
 
+interface ChoosePageOpenPak {
+  ov: 'pakrypt.page:openpak',
+}
+
+interface ChoosePageNewPak {
+  ov: 'pakrypt.page:newpak',
+}
+
 export type ChosenPage = [ChoosePage, string, JSX.Element];
 
 export interface PageContextState {
   pages: ChosenPage[],
   pushPage: (page: ChoosePage) => void,
   popPage: () => void,
+  replacePage: (page: ChoosePage) => void,
 }
