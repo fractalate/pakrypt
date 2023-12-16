@@ -1,4 +1,5 @@
-import { Pak, PakEntry } from '../pak/Pak'
+import { PakEntry } from '../pak/Pak'
+import { Pakman } from '../pak/Pakman'
 
 export type SearchResult = SearchResultCommand
                          | PakEntry
@@ -9,9 +10,34 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultNewPassword
                                 | SearchResultDemo
                                 | SearchResultHelp
+                                | SearchResultLock
+                                | SearchResultUnlock
+                                | SearchResultNewPak
+                                | SearchResultOpenPak
+                                | SearchResultClosePak
 
 export interface SearchResultThemeSwitcher {
   ov: 'pakrypt.command:theme_switcher',
+}
+
+export interface SearchResultLock {
+  ov: 'pakrypt.command:lock',
+}
+
+export interface SearchResultUnlock {
+  ov: 'pakrypt.command:unlock',
+}
+
+export interface SearchResultNewPak {
+  ov: 'pakrypt.command:newpak',
+}
+
+export interface SearchResultOpenPak {
+  ov: 'pakrypt.command:openpak',
+}
+
+export interface SearchResultClosePak {
+  ov: 'pakrypt.command:closepak',
 }
 
 export interface SearchResultNewFile {
@@ -59,40 +85,80 @@ function entryMatchesQuery(entry: PakEntry, query: string): boolean {
     || (entry.tags != null && tagsMatchQuery(entry.tags, query))
 }
 
-export default function search(query: string, pak?: null | Pak): SearchResult[] {
+export default function search(query: string, pakman: Pakman): SearchResult[] {
   query = query.trim().toLowerCase()
 
   const result: SearchResult[] = []
   let explicitHelp = false
 
-  if (/^(help)$/i.test(query)) {
+  if (/^(^help)$/i.test(query)) {
     explicitHelp = true
     result.push({
       ov: 'pakrypt.command:help',
     })
   }
 
-  if (pak != null && pak.entries != null) {
-    for (const entry of pak.entries) {
-      if (query == '*' || entryMatchesQuery(entry, query)) {
-        result.push(entry)
+  if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+    if (pakman.pak.entries != null) {
+      for (const entry of pakman.pak.entries) {
+        if (query == '*' || entryMatchesQuery(entry, query)) {
+          result.push(entry)
+        }
       }
     }
   }
 
-  if (query == '*' || /(new?|pas?s?w?o?r?d?)$/i.test(query)) {
+  if (query == '*' || /(^new?|^pas?s?w?o?r?d?)$/i.test(query)) {
+    if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+      result.push({
+        ov: 'pakrypt.command:new_password',
+      })
+    }
+  }
+
+  if (query == '*' || /(^unl?o?c?k?|^pak?)$/i.test(query)) {
+    if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
+      result.push({
+        ov: 'pakrypt.command:unlock',
+      })
+    }
+  }
+
+  if (query == '*' || /(^loc?k?|^pak?)$/i.test(query)) {
+    if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+      result.push({
+        ov: 'pakrypt.command:lock',
+      })
+    }
+  }
+
+  if (query == '*' || /(^ope?n?|^pak?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.command:new_password',
+      ov: 'pakrypt.command:openpak',
     })
   }
 
-  if (query == '*' || /(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
+  if (query == '*' || /(^new?|^pak?)$/i.test(query)) {
+    result.push({
+      ov: 'pakrypt.command:newpak',
+    })
+  }
+
+  if (query == '*' || /(^clo?s?e?|^pak?)$/i.test(query)) {
+    if (pakman.ov != 'pakrypt.pakmanstate:unloaded') {
+      result.push({
+        ov: 'pakrypt.command:closepak',
+      })
+    }
+  }
+
+  if (query == '*' || /(^the?m?e?|^dar?k?|^lig?h?t?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:theme_switcher',
     })
   }
 
-  if (!explicitHelp && (query == '*' || /(hel?p?)$/i.test(query))) {
+  if (!explicitHelp && (query == '*' || /(^hel?p?)$/i.test(query))) {
     result.push({
       ov: 'pakrypt.command:help',
     })

@@ -1,16 +1,31 @@
 import { SearchResult } from '../lib/search'
 import styling from '../lib/styling'
+import TileClosePak from './TileClosePak'
 import TileDemo from './TileDemo'
 import TileHelp from './TileHelp'
+import TileLock from './TileLock'
+import TileNewPak from './TileNewPak'
 import TileNewPassword from './TileNewPassword'
+import TileOpenPak from './TileOpenPak'
 import TilePassword from './TilePassword'
 import TileThemeSwitcher from './TileThemeSwitcher'
+import TileUnlock from './TileUnlock'
 
 export default function Tile({ searchResult }: { searchResult: SearchResult }): JSX.Element {
   if (searchResult.ov === 'pakrypt.command:new_password') {
     return <TileNewPassword />
   } else if (searchResult.ov === 'pakrypt.command:theme_switcher') {
     return <TileThemeSwitcher />
+  } else if (searchResult.ov === 'pakrypt.command:unlock') {
+    return <TileUnlock />
+  } else if (searchResult.ov === 'pakrypt.command:lock') {
+    return <TileLock />
+  } else if (searchResult.ov === 'pakrypt.command:newpak') {
+    return <TileNewPak />
+  } else if (searchResult.ov === 'pakrypt.command:openpak') {
+    return <TileOpenPak />
+  } else if (searchResult.ov === 'pakrypt.command:closepak') {
+    return <TileClosePak />
   } else if (searchResult.ov === 'pakrypt.command:new_file') {
     return <div className={styling.tile.tileComponentCommand}>
       { searchResult.ov }

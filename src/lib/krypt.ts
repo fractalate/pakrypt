@@ -29,9 +29,10 @@ export function GetEncrypted(data: string): Encrypted {
   const salt = Base64.toUint8Array(Base64.decode(parts[1]))
   const iv = Base64.toUint8Array(Base64.decode(parts[2]))
   const cost = parseInt(parts[3])
-  if (String(cost) != parts[3]) throw new Error('TODO') // TODO: Is there another way?
+  // the js convention to check parseInt was valid by comparing   x == parseInt(x)   converts x to a number internally so we do it explicitly here (via Number which does the appropriate conversion as opposed to when called as a constructor which does not).
+  if (cost != Number(parts[3])) throw new Error('TODO')
   const key_size = parseInt(parts[4])
-  if (String(key_size) != parts[4]) throw new Error('TODO') // TODO: Is there another way?
+  if (key_size != Number(parts[4])) throw new Error('TODO')
   const ciphertext = Base64.toUint8Array(Base64.decode(parts[5]))
 
   return {

@@ -133,6 +133,14 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   }, { ov: 'pakrypt.pakmanunlockresult:success' }]
 }
 
+export function PakmanLock(pakman: PakmanUnlocked): PakmanLoaded {
+  return {
+    ov: 'pakrypt.pakmanstate:loaded',
+    name: pakman.name,
+    enc: pakman.enc,
+  }
+}
+
 export type PakmanSaveResult = (
   | PakmanSaveResultSuccess
 )
@@ -140,9 +148,7 @@ export interface PakmanSaveResultSuccess {
   ov: 'pakrypt.pakmansaveresult:success',
 }
 
-export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[Pakman, PakmanSaveResult]> {
-  // TODO: Do encryption!
-
+export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
   const storage = `pakrypt.pak[${pakman.name}]`
   const buffer = new TextEncoder().encode(JSON.stringify(pak))
   const enc = await Encrypt(pakman.key, buffer)
