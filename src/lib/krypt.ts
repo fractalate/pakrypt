@@ -74,7 +74,6 @@ async function _DeriveKey(passphrase: Uint8Array, salt: Uint8Array, cost: number
     false,
     ['deriveKey'],
   )
-  console.log(passphrase, salt, cost, key_size)
   const key = await window.crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
