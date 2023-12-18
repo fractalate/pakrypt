@@ -20,7 +20,7 @@ function getSoYouCan(pakman: Pakman): JSX.Element {
   } else if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
     return <><b>unlock your pak</b></>
   } else if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
-    return <>view and manage your data</>
+    return <>view and manage your data; e.g. make a <b>new password</b>, <b>note</b>, or <b>file</b></>
   }
   return pakman // Relying on type == never here.
 }
@@ -35,6 +35,8 @@ export default function TileHelp() {
     <p className="mt-2 mb-2">Commands:</p>
     <ul className="list-disc list-inside">
       <li><b>new password</b></li>
+      <li><b>new note</b></li>
+      <li><b>new file</b></li>
       <li><b>unlock pak</b></li>
       <li><b>lock pak</b></li>
       <li><b>open pak</b></li>
