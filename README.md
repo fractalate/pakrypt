@@ -60,15 +60,18 @@ Four main components of this application:
 
 ## TODO
 
-* [*] Make help tile in search results last unless you type exactly "help".
-* [*] Differentiate tiles with styles based on command vs. entry tile.
-* [*] Search results orderings.
-* [*] Flesh out the help tile.
-* [*] Password editor needs some fields to not be remembered for autofill and don't show autofill.
-
-* [ ] Password page needs some styles.
-* [*] Delete records.
-* [*] Copy password implementation.
-
+* [X] New Pak - passphrase confirm, probably a reveal toggle.
+* [ ] Completing an activity should take you to something sensical on the main page.
+* [ ] Call out making a new password in the help.
+* [ ] Delete a pak.
+* [ ] Rename a pak.
+* [ ] Change passphrase on pak.
+* [ ] Export pak.
+* [ ] Import pak.
+* [ ] New note.
+* [ ] New file.
+* [ ] Whole app styling.
 * [ ] Can I navigate the page with arrow keys?
-* [ ] Saving a new password is kind of weird for the user experience.
+* [ ] Broken search "new pak"
+
+* [ ] Disable "View Saved Logins" in firefox.

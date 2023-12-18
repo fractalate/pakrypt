@@ -7,7 +7,7 @@ export default function TileLock() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
 
   if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
-    return <>xxx</>
+    return <></>
   }
 
   const doLock = () => {
