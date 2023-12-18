@@ -5,6 +5,7 @@ import PageEditPassword from './PageEditPassword'
 import PageDemo from './PageDemo'
 import PageOpenPak from './PageOpenPak'
 import PageNewPak from './PageNewPak'
+import PageDeletePak from './PageDeletePak'
 import { ChoosePage } from '.'
 
 export default function Page({
@@ -27,6 +28,8 @@ export default function Page({
     return <PageOpenPak />
   } else if (ov === 'pakrypt.page:newpak') {
     return <PageNewPak />
+  } else if (ov === 'pakrypt.page:deletepak') {
+    return <PageDeletePak />
   }
   return ov // This will cause a type error when the if's above are not exhaustive.
 }

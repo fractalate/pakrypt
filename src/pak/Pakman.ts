@@ -139,6 +139,15 @@ export function PakmanSetLast(name: null | string) {
   }
 }
 
+export function PakmanDelete(name: string) {
+  const lastPakName = localStorage.getItem('pakrypt.lastpak')
+  if (lastPakName === name) {
+    PakmanSetLast(null)
+  }
+  const storage = `pakrypt.pak[${name}]`
+  localStorage.removeItem(storage)
+}
+
 export type PakmanUnlockResult = (
   | PakmanUnlockResultSuccess
   | PakmanUnlockResultDecryptError

@@ -63,8 +63,8 @@ Four main components of this application:
 * [x] New Pak - passphrase confirm, probably a reveal toggle.
 * [x] Completing an activity should take you to something sensical on the main page.
 * [x] Call out making a new password in the help.
-* [ ] Broken search "new pak"
-* [ ] Delete a pak.
+* [x] Broken search "new pak"
+* [x] Delete a pak.
 * [ ] Rename a pak.
 * [ ] Change passphrase on pak.
 * [ ] Export pak.

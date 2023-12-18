@@ -1,6 +1,7 @@
 import { SearchResult } from '../lib/search'
 import styling from '../lib/styling'
 import TileClosePak from './TileClosePak'
+import TileDeletePak from './TileDeletePak'
 import TileDemo from './TileDemo'
 import TileHelp from './TileHelp'
 import TileLock from './TileLock'
@@ -48,6 +49,8 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     return <div className={styling.tile.tileComponentEntry}>
       { searchResult.ov }
     </div>
+  } else if (searchResult.ov === 'pakrypt.command:deletepak') {
+    return <TileDeletePak />
   }
   return searchResult
 }

@@ -4,6 +4,7 @@ import { Pakman } from '../pak/Pakman'
 export type SearchResult = SearchResultCommand
                          | PakEntry
 
+// TODO: Order these.
 export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultNewFile
                                 | SearchResultNewNote
@@ -15,6 +16,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultNewPak
                                 | SearchResultOpenPak
                                 | SearchResultClosePak
+                                | SearchResultDeletePak
 
 export interface SearchResultThemeSwitcher {
   ov: 'pakrypt.command:theme_switcher',
@@ -38,6 +40,10 @@ export interface SearchResultOpenPak {
 
 export interface SearchResultClosePak {
   ov: 'pakrypt.command:closepak',
+}
+
+export interface SearchResultDeletePak {
+  ov: 'pakrypt.command:deletepak',
 }
 
 export interface SearchResultNewFile {
@@ -150,6 +156,12 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
         ov: 'pakrypt.command:closepak',
       })
     }
+  }
+
+  if (query == '*' || /^(del?e?t?e? ?p?a?k?|pak?)$/i.test(query)) {
+    result.push({
+      ov: 'pakrypt.command:deletepak',
+    })
   }
 
   if (query == '*' || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
