@@ -63,6 +63,7 @@ Four main components of this application:
 * [x] New Pak - passphrase confirm, probably a reveal toggle.
 * [x] Completing an activity should take you to something sensical on the main page.
 * [x] Call out making a new password in the help.
+* [ ] Broken search "new pak"
 * [ ] Delete a pak.
 * [ ] Rename a pak.
 * [ ] Change passphrase on pak.
@@ -72,7 +73,6 @@ Four main components of this application:
 * [ ] New file.
 * [ ] Whole app styling.
 * [ ] Can I navigate the page with arrow keys?
-* [ ] Broken search "new pak"
 * [ ] Disable delete when creating new password.
 * [ ] Add confirm steps when overwriting things (paks).
 

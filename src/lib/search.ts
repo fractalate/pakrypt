@@ -91,7 +91,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   const result: SearchResult[] = []
   let explicitHelp = false
 
-  if (/^(^help)$/i.test(query)) {
+  if (/^(help)$/i.test(query)) {
     explicitHelp = true
     result.push({
       ov: 'pakrypt.command:help',
@@ -108,7 +108,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /(^new?|^pas?s?w?o?r?d?)$/i.test(query)) {
+  if (query == '*' || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_password',
@@ -116,7 +116,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /(^unl?o?c?k?|^pak?)$/i.test(query)) {
+  if (query == '*' || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
       result.push({
         ov: 'pakrypt.command:unlock',
@@ -124,7 +124,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /(^loc?k?|^pak?)$/i.test(query)) {
+  if (query == '*' || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:lock',
@@ -132,19 +132,19 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /(^ope?n?|^pak?)$/i.test(query)) {
+  if (query == '*' || /^(ope?n? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:openpak',
     })
   }
 
-  if (query == '*' || /(^new?|^pak?)$/i.test(query)) {
+  if (query == '*' || /^(new? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:newpak',
     })
   }
 
-  if (query == '*' || /(^clo?s?e?|^pak?)$/i.test(query)) {
+  if (query == '*' || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov != 'pakrypt.pakmanstate:unloaded') {
       result.push({
         ov: 'pakrypt.command:closepak',
@@ -152,13 +152,13 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /(^the?m?e?|^dar?k?|^lig?h?t?)$/i.test(query)) {
+  if (query == '*' || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:theme_switcher',
     })
   }
 
-  if (!explicitHelp && (query == '*' || /(^hel?p?)$/i.test(query))) {
+  if (!explicitHelp && (query == '*' || /^(hel?p?)$/i.test(query))) {
     result.push({
       ov: 'pakrypt.command:help',
     })
