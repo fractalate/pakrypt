@@ -60,8 +60,8 @@ Four main components of this application:
 
 ## TODO
 
-* [X] New Pak - passphrase confirm, probably a reveal toggle.
-* [ ] Completing an activity should take you to something sensical on the main page.
+* [x] New Pak - passphrase confirm, probably a reveal toggle.
+* [x] Completing an activity should take you to something sensical on the main page.
 * [ ] Call out making a new password in the help.
 * [ ] Delete a pak.
 * [ ] Rename a pak.
@@ -73,5 +73,7 @@ Four main components of this application:
 * [ ] Whole app styling.
 * [ ] Can I navigate the page with arrow keys?
 * [ ] Broken search "new pak"
+* [ ] Disable delete when creating new password.
+* [ ] Add confirm steps when overwriting things (paks).
 
 * [ ] Disable "View Saved Logins" in firefox.

@@ -12,6 +12,7 @@ export default function PageEditPassword({
 }) {
   const pageContextState = useContext(PageContext)
   const { pakman, setPakman } = useContext(PakmanStateContext)
+  // Note: no setQuery on save here because it interferes with the flow: search for all of some kind of thing and edit them all, one after another.
 
   if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
     throw new Error('pakman is not unlocked.')

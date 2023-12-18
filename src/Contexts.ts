@@ -4,6 +4,11 @@ import { ChoosePage, PageContextState } from './pages'
 import { PakmanStateContextState } from './pak/Pakman'
 import { Pak } from './pak/Pak'
 
+interface QueryBarContextState { // TODO: Type belongs somewhere else?
+  query: string,
+  setQuery: (query: string) => void,
+}
+
 const nullPage: ChoosePage = {
   ov: 'pakrypt.page:main',
 }
@@ -22,7 +27,13 @@ const nullPakmanStateContextState: PakmanStateContextState = {
   setPakman: () => {},
 }
 
+const nullQueryBarContextState: QueryBarContextState = {
+  query: '',
+  setQuery: () => {},
+}
+
 export const PageContext = createContext(nullPageContextState)
 export const ThemeContext = createContext(getAppliedTheme())
 export const PakmanStateContext = createContext(nullPakmanStateContextState)
 export const PakContext = createContext(null as null | Pak)
+export const QueryBarContext = createContext(nullQueryBarContextState)

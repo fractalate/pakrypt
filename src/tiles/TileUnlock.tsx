@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { PakmanStateContext } from '../Contexts'
+import { PakmanStateContext, QueryBarContext } from '../Contexts'
 import styling from '../lib/styling'
 import {  PakmanUnlock } from '../pak/Pakman'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -10,6 +10,7 @@ interface Inputs {
 
 export default function TileUnlock() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
+  const { setQuery } = useContext(QueryBarContext)
   const [ message, setMessage ] = useState('')
   const {
     register,
@@ -23,8 +24,10 @@ export default function TileUnlock() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setMessage('')
     const [newPakman, result] = await PakmanUnlock(pakman, data.passphrase)
-    setPakman(newPakman)
-    if (result.ov != 'pakrypt.pakmanunlockresult:success') {
+    if (result.ov == 'pakrypt.pakmanunlockresult:success') {
+      setPakman(newPakman)
+      setQuery('')
+    } else {
       setMessage(result.ov)
     }
   }

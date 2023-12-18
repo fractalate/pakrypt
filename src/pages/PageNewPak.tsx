@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { PageContext, PakmanStateContext } from '../Contexts'
+import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import styling from '../lib/styling'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { PakmanNew, PakmanSave } from '../pak/Pakman'
@@ -14,6 +14,7 @@ export default function PageNewPak() {
   const { popPage } = useContext(PageContext)
   const { setPakman } = useContext(PakmanStateContext)
   const [ message, setMessage ] = useState('')
+  const { setQuery } = useContext(QueryBarContext)
   const {
     handleSubmit,
     register,
@@ -27,6 +28,7 @@ export default function PageNewPak() {
       const [newPakman2] = await PakmanSave(newPakman, newPakman.pak)
       newPakman = newPakman2
       setPakman(newPakman)
+      setQuery('')
       popPage()
     } else {
       setMessage('Passphrases do not match! Try again.')
@@ -35,6 +37,7 @@ export default function PageNewPak() {
     }
   }
 
+  // TODO: Find some other way to detect when the field changes. onChange maybe?
   const [opassphrase, setOpassphrase] = useState('')
   const passphrase = watch('passphrase')
   const [opassphrase2, setOpassphrase2] = useState('')

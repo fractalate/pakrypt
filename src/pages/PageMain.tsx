@@ -1,8 +1,8 @@
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useMemo } from 'react'
 import search, { SearchResult } from '../lib/search'
 import Tile from '../tiles/Tile'
 import styling from '../lib/styling'
-import { PakmanStateContext } from '../Contexts'
+import { PakmanStateContext, QueryBarContext } from '../Contexts'
 
 function computeTileKey(searchResult: SearchResult) {
   if ('id' in searchResult) {
@@ -12,7 +12,7 @@ function computeTileKey(searchResult: SearchResult) {
 }
 
 export default function PageMain() {
-  const [query, setQuery] = useState('')
+  const { query, setQuery } = useContext(QueryBarContext)
   const { pakman } = useContext(PakmanStateContext)
   const tiles = useMemo(() => search(query, pakman), [query, pakman])
 
