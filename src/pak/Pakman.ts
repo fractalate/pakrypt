@@ -168,6 +168,7 @@ export interface PakmanUnlockResultIntegrityError {
 }
 
 export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
+  // TODO: Re-key on unlock so the salt changes periodically.
   const key = await DeriveKeyWithEncrypted(passphrase, pakman.enc)
 
   let buffer
@@ -223,19 +224,40 @@ export interface PakmanSaveResultSuccess {
   ov: 'pakrypt.pakmansaveresult:success',
 }
 
-export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
+export async function PakmanRenameAndSave(pakman: PakmanLoaded | PakmanUnlocked, name: string): Promise<[PakmanLoaded | PakmanUnlocked, PakmanSaveResult]> {
+  pakman = { ...pakman, name }
+  if (pakman.ov === 'pakrypt.pakmanstate:loaded') {
+    return PakmanSaveWhileLocked(pakman)
+  }
+  return PakmanSave(pakman, pakman.pak)
+}
+
+// TODO: Remove template, accepting only an unlocked.
+export async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T, pak: Pak): Promise<[T, PakmanSaveResult]> {
+  const isUnlocked = pakman.ov === 'pakrypt.pakmanstate:unlocked'
   const storage = `pakrypt.pak[${pakman.name}]`
-  const buffer = new TextEncoder().encode(JSON.stringify(pak))
-  const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
+  
+  let enc = pakman.enc
+  if (isUnlocked) {
+    const buffer = new TextEncoder().encode(JSON.stringify(pak))
+    enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
+  }
 
   const data = PutEncrypted(enc)
   localStorage.setItem(storage, data)
+
+  if (isUnlocked) {
+    return [{ ...pakman, enc, pak }, { ov: 'pakrypt.pakmansaveresult:success' }]
+  }
   
-  return [{
-    ov: 'pakrypt.pakmanstate:unlocked',
-    name: pakman.name,
-    enc,
-    key: pakman.key,
-    pak,
-  }, { ov: 'pakrypt.pakmansaveresult:success' }]
+  return [pakman, { ov: 'pakrypt.pakmansaveresult:success' }]
+}
+
+export async function PakmanSaveWhileLocked(pakman: PakmanLoaded): Promise<[PakmanLoaded, PakmanSaveResult]> {
+  const storage = `pakrypt.pak[${pakman.name}]`
+  const enc = pakman.enc
+  const data = PutEncrypted(enc)
+  localStorage.setItem(storage, data)
+
+  return [{ ...pakman, enc }, { ov: 'pakrypt.pakmansaveresult:success' }]
 }

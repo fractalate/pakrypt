@@ -1,3 +1,4 @@
+import { ChoosePage } from '.'
 import PageMain from './PageMain'
 import PageNewNote from './PageNewNote'
 import PageNewPassword from './PageNewPassword'
@@ -6,7 +7,7 @@ import PageDemo from './PageDemo'
 import PageOpenPak from './PageOpenPak'
 import PageNewPak from './PageNewPak'
 import PageDeletePak from './PageDeletePak'
-import { ChoosePage } from '.'
+import PageCopyPak from './PageCopyPak'
 
 export default function Page({
   page,
@@ -26,6 +27,8 @@ export default function Page({
     return <PageDemo />
   } else if (ov === 'pakrypt.page:openpak') {
     return <PageOpenPak />
+  } else if (ov === 'pakrypt.page:copypak') {
+    return <PageCopyPak />
   } else if (ov === 'pakrypt.page:newpak') {
     return <PageNewPak />
   } else if (ov === 'pakrypt.page:deletepak') {

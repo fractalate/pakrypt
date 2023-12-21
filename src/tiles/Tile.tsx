@@ -1,6 +1,7 @@
 import { SearchResult } from '../lib/search'
 import styling from '../lib/styling'
 import TileClosePak from './TileClosePak'
+import TileCopyPak from './TileCopyPak'
 import TileDeletePak from './TileDeletePak'
 import TileDemo from './TileDemo'
 import TileHelp from './TileHelp'
@@ -25,6 +26,8 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     return <TileNewPak />
   } else if (searchResult.ov === 'pakrypt.command:openpak') {
     return <TileOpenPak />
+  } else if (searchResult.ov === 'pakrypt.command:copypak') {
+    return <TileCopyPak />
   } else if (searchResult.ov === 'pakrypt.command:closepak') {
     return <TileClosePak />
   } else if (searchResult.ov === 'pakrypt.command:new_file') {

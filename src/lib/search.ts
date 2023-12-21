@@ -15,6 +15,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultUnlock
                                 | SearchResultNewPak
                                 | SearchResultOpenPak
+                                | SearchResultCopyPak
                                 | SearchResultClosePak
                                 | SearchResultDeletePak
 
@@ -36,6 +37,10 @@ export interface SearchResultNewPak {
 
 export interface SearchResultOpenPak {
   ov: 'pakrypt.command:openpak',
+}
+
+export interface SearchResultCopyPak {
+  ov: 'pakrypt.command:copypak',
 }
 
 export interface SearchResultClosePak {
@@ -142,6 +147,14 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     result.push({
       ov: 'pakrypt.command:openpak',
     })
+  }
+
+  if (query == '*' || /^(cop?y? ?p?a?k?|pak?)$/i.test(query)) {
+    if (pakman.ov !== 'pakrypt.pakmanstate:unloaded') {
+      result.push({
+        ov: 'pakrypt.command:copypak',
+      })
+    }
   }
 
   if (query == '*' || /^(new? ?p?a?k?|pak?)$/i.test(query)) {

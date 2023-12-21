@@ -65,15 +65,18 @@ Four main components of this application:
 * [x] Call out making a new password in the help.
 * [x] Broken search "new pak"
 * [x] Delete a pak.
-* [ ] Rename a pak.
+* [x] ~~Rename a pak~~. Copy pak (give a new name).
 * [ ] Change passphrase on pak.
 * [ ] Export pak.
 * [ ] Import pak.
 * [ ] New note.
 * [ ] New file.
 * [ ] Whole app styling.
-* [ ] Can I navigate the page with arrow keys?
 * [ ] Disable delete when creating new password.
 * [ ] Add confirm steps when overwriting things (paks).
+* [ ] Some way to know which pak is open.
+* [ ] Password delete/confirm process should be cleaner.
+* [ ] Can I navigate the page with arrow keys?
+* [ ] Audit `==` vs `===`.
 
 * [ ] Disable "View Saved Logins" in firefox.
