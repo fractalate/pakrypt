@@ -231,8 +231,9 @@ export interface PakmanSaveResultSuccess {
 
 export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase: string): Promise<[PakmanUnlocked, PakmanSaveResult]> {
   const [key, salt] = await DeriveKey(passphrase)
+  const buffer = new TextEncoder().encode(JSON.stringify(pakman.pak))
   // TODO: Doing this encrypt here, then in PakmanSave is not ideal.
-  const enc = await Encrypt(key, salt, new TextEncoder().encode(JSON.stringify(pakman.pak)))
+  const enc = await Encrypt(key, salt, buffer)
   pakman = { ...pakman, key, enc }
   return PakmanSave(pakman, pakman.pak)
 }
@@ -245,25 +246,16 @@ export async function PakmanRenameAndSave(pakman: PakmanLoaded | PakmanUnlocked,
   return PakmanSave(pakman, pakman.pak)
 }
 
-// TODO: Remove template, accepting only an unlocked.
-export async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T, pak: Pak): Promise<[T, PakmanSaveResult]> {
-  const isUnlocked = pakman.ov === 'pakrypt.pakmanstate:unlocked'
+export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
   const storage = `pakrypt.pak[${pakman.name}]`
   
-  let enc = pakman.enc
-  if (isUnlocked) {
-    const buffer = new TextEncoder().encode(JSON.stringify(pak))
-    enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
-  }
+  const buffer = new TextEncoder().encode(JSON.stringify(pak))
+  const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
 
   const data = PutEncrypted(enc)
   localStorage.setItem(storage, data)
 
-  if (isUnlocked) {
-    return [{ ...pakman, enc, pak }, { ov: 'pakrypt.pakmansaveresult:success' }]
-  }
-  
-  return [pakman, { ov: 'pakrypt.pakmansaveresult:success' }]
+  return [{ ...pakman, enc, pak }, { ov: 'pakrypt.pakmansaveresult:success' }]
 }
 
 export async function PakmanSaveWhileLocked(pakman: PakmanLoaded): Promise<[PakmanLoaded, PakmanSaveResult]> {
