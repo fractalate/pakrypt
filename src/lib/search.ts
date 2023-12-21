@@ -18,6 +18,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultCopyPak
                                 | SearchResultClosePak
                                 | SearchResultDeletePak
+                                | SearchResultChangePassphrase
 
 export interface SearchResultThemeSwitcher {
   ov: 'pakrypt.command:theme_switcher',
@@ -61,6 +62,10 @@ export interface SearchResultNewNote {
 
 export interface SearchResultNewPassword {
   ov: 'pakrypt.command:new_password',
+}
+
+export interface SearchResultChangePassphrase {
+  ov: 'pakrypt.command:changepassphrase',
 }
 
 export interface SearchResultDemo {
@@ -175,6 +180,14 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     result.push({
       ov: 'pakrypt.command:deletepak',
     })
+  }
+
+  if (query == '*' || /^(cha?n?g?e? ?p?a?s?s?p?h?r?a?s?e?|pas?s?p?h?r?a?s?e?)$/i.test(query)) {
+    if (pakman.ov === 'pakrypt.pakmanstate:unlocked') {
+      result.push({
+        ov: 'pakrypt.command:changepassphrase',
+      })
+    }
   }
 
   if (query == '*' || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {

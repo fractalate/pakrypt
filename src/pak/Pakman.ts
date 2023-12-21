@@ -224,6 +224,14 @@ export interface PakmanSaveResultSuccess {
   ov: 'pakrypt.pakmansaveresult:success',
 }
 
+export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase: string): Promise<[PakmanUnlocked, PakmanSaveResult]> {
+  const [key, salt] = await DeriveKey(passphrase)
+  // TODO: Doing this encrypt here, then in PakmanSave is not ideal.
+  const enc = await Encrypt(key, salt, new TextEncoder().encode(JSON.stringify(pakman.pak)))
+  pakman = { ...pakman, key, enc }
+  return PakmanSave(pakman, pakman.pak)
+}
+
 export async function PakmanRenameAndSave(pakman: PakmanLoaded | PakmanUnlocked, name: string): Promise<[PakmanLoaded | PakmanUnlocked, PakmanSaveResult]> {
   pakman = { ...pakman, name }
   if (pakman.ov === 'pakrypt.pakmanstate:loaded') {

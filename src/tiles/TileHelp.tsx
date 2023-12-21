@@ -40,8 +40,10 @@ export default function TileHelp() {
       <li><b>unlock pak</b></li>
       <li><b>lock pak</b></li>
       <li><b>open pak</b></li>
+      <li><b>copy pak</b></li>
       <li><b>new pak</b></li>
       <li><b>close pak</b></li>
+      <li><b>change passphrase</b></li>
       <li><b>theme</b> or <b>light</b> or <b>dark</b> to switch the theme.</li>
       <li><b>*</b> (asterisk) to list all items and commands.</li>
     </ul>

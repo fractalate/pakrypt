@@ -10,6 +10,7 @@ export type ChoosePage = (
   | ChoosePageCopyPak
   | ChoosePageNewPak
   | ChoosePageDeletePak
+  | ChoosePageChangePassphrase
 )
 
 interface ChoosePageMain {
@@ -53,6 +54,10 @@ interface ChoosePageNewPak {
 
 interface ChoosePageDeletePak {
   ov: 'pakrypt.page:deletepak',
+}
+
+interface ChoosePageChangePassphrase {
+  ov: 'pakrypt.page:changepassphrase',
 }
 
 export type ChosenPage = [ChoosePage, string, JSX.Element];

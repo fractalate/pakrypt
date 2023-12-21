@@ -1,5 +1,6 @@
 import { SearchResult } from '../lib/search'
 import styling from '../lib/styling'
+import TileChangePassphrase from './TileChangePassphrase'
 import TileClosePak from './TileClosePak'
 import TileCopyPak from './TileCopyPak'
 import TileDeletePak from './TileDeletePak'
@@ -54,6 +55,8 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     </div>
   } else if (searchResult.ov === 'pakrypt.command:deletepak') {
     return <TileDeletePak />
+  } else if (searchResult.ov === 'pakrypt.command:changepassphrase') {
+    return <TileChangePassphrase />
   }
   return searchResult
 }
