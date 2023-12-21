@@ -9,6 +9,7 @@ import PageNewPak from './PageNewPak'
 import PageDeletePak from './PageDeletePak'
 import PageCopyPak from './PageCopyPak'
 import PageChangePassphrase from './PageChangePassphrase'
+import PageExportPak from './PageExportPak'
 
 export default function Page({
   page,
@@ -36,6 +37,8 @@ export default function Page({
     return <PageDeletePak />
   } else if (ov === 'pakrypt.page:changepassphrase') {
     return <PageChangePassphrase />
+  } else if (ov === 'pakrypt.page:exportpak') {
+    return <PageExportPak />
   }
   return ov // This will cause a type error when the if's above are not exhaustive.
 }

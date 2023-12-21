@@ -67,7 +67,7 @@ Four main components of this application:
 * [x] Delete a pak.
 * [x] ~~Rename a pak~~. Copy pak (give a new name).
 * [x] Change passphrase on pak.
-* [ ] Export pak.
+* [x] Export pak.
 * [ ] Import pak.
 * [ ] New note.
 * [ ] New file.

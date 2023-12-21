@@ -18,6 +18,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultCopyPak
                                 | SearchResultClosePak
                                 | SearchResultDeletePak
+                                | SearchResultExportPak
                                 | SearchResultChangePassphrase
 
 export interface SearchResultThemeSwitcher {
@@ -52,6 +53,10 @@ export interface SearchResultDeletePak {
   ov: 'pakrypt.command:deletepak',
 }
 
+export interface SearchResultExportPak {
+  ov: 'pakrypt.command:exportpak',
+}
+
 export interface SearchResultNewFile {
   ov: 'pakrypt.command:new_note',
 }
@@ -68,6 +73,7 @@ export interface SearchResultChangePassphrase {
   ov: 'pakrypt.command:changepassphrase',
 }
 
+// TODO: Remove the demo page.
 export interface SearchResultDemo {
   ov: 'pakrypt.command:demo',
 }
@@ -179,6 +185,12 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   if (query == '*' || /^(del?e?t?e? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:deletepak',
+    })
+  }
+
+  if (query == '*' || /^(exp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
+    result.push({
+      ov: 'pakrypt.command:exportpak',
     })
   }
 

@@ -89,11 +89,16 @@ export interface PakmanLoadResultCorrupt {
   ov: 'pakrypt.pakmanloadresult:corrupt',
 }
 
+export function PakmanLoadRaw(name: string): null | string {
+  const storage = `pakrypt.pak[${name}]`
+  const data = localStorage.getItem(storage)
+  return data
+}
+
 // Would it be an issue to use UUIDs as the name for these?
 // I would need some way to remember the UUID of the last opened file.
 export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
-  const storage = `pakrypt.pak[${name}]`
-  const data = localStorage.getItem(storage)
+  const data = PakmanLoadRaw(name)
   if (!data) {
     return [
       { ov: 'pakrypt.pakmanstate:unloaded' },
