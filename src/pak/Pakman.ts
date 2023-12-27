@@ -95,6 +95,11 @@ export function PakmanLoadRaw(name: string): null | string {
   return data
 }
 
+export function PakmanSaveRaw(name: string, data: string) {
+  const storage = `pakrypt.pak[${name}]`
+  localStorage.setItem(storage, data)
+}
+
 // Would it be an issue to use UUIDs as the name for these?
 // I would need some way to remember the UUID of the last opened file.
 export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {

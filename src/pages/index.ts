@@ -12,6 +12,7 @@ export type ChoosePage = (
   | ChoosePageDeletePak
   | ChoosePageExportPak
   | ChoosePageChangePassphrase
+  | ChoosePageImportPak
 )
 
 interface ChoosePageMain {
@@ -59,6 +60,10 @@ interface ChoosePageDeletePak {
 
 interface ChoosePageExportPak {
   ov: 'pakrypt.page:exportpak',
+}
+
+interface ChoosePageImportPak {
+  ov: 'pakrypt.page:importpak',
 }
 
 interface ChoosePageChangePassphrase {

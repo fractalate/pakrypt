@@ -1,15 +1,16 @@
 import { ChoosePage } from '.'
-import PageMain from './PageMain'
-import PageNewNote from './PageNewNote'
-import PageNewPassword from './PageNewPassword'
 import PageEditPassword from './PageEditPassword'
 import PageDemo from './PageDemo'
-import PageOpenPak from './PageOpenPak'
-import PageNewPak from './PageNewPak'
-import PageDeletePak from './PageDeletePak'
-import PageCopyPak from './PageCopyPak'
 import PageChangePassphrase from './PageChangePassphrase'
+import PageCopyPak from './PageCopyPak'
+import PageDeletePak from './PageDeletePak'
 import PageExportPak from './PageExportPak'
+import PageImportPak from './PageImportPak'
+import PageMain from './PageMain'
+import PageNewNote from './PageNewNote'
+import PageNewPak from './PageNewPak'
+import PageNewPassword from './PageNewPassword'
+import PageOpenPak from './PageOpenPak'
 
 export default function Page({
   page,
@@ -39,6 +40,8 @@ export default function Page({
     return <PageChangePassphrase />
   } else if (ov === 'pakrypt.page:exportpak') {
     return <PageExportPak />
+  } else if (ov === 'pakrypt.page:importpak') {
+    return <PageImportPak />
   }
   return ov // This will cause a type error when the if's above are not exhaustive.
 }

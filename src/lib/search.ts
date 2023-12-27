@@ -19,6 +19,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultClosePak
                                 | SearchResultDeletePak
                                 | SearchResultExportPak
+                                | SearchResultImportPak
                                 | SearchResultChangePassphrase
 
 export interface SearchResultThemeSwitcher {
@@ -55,6 +56,10 @@ export interface SearchResultDeletePak {
 
 export interface SearchResultExportPak {
   ov: 'pakrypt.command:exportpak',
+}
+
+export interface SearchResultImportPak {
+  ov: 'pakrypt.command:importpak',
 }
 
 export interface SearchResultNewFile {
@@ -191,6 +196,12 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   if (query == '*' || /^(exp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:exportpak',
+    })
+  }
+
+  if (query == '*' || /^(imp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
+    result.push({
+      ov: 'pakrypt.command:importpak',
     })
   }
 

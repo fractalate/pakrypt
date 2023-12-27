@@ -7,6 +7,7 @@ import TileDeletePak from './TileDeletePak'
 import TileDemo from './TileDemo'
 import TileExportPak from './TileExportPak'
 import TileHelp from './TileHelp'
+import TileImportPak from './TileImportPak'
 import TileLock from './TileLock'
 import TileNewPak from './TileNewPak'
 import TileNewPassword from './TileNewPassword'
@@ -60,6 +61,8 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     return <TileChangePassphrase />
   } else if (searchResult.ov === 'pakrypt.command:exportpak') {
     return <TileExportPak />
+  } else if (searchResult.ov === 'pakrypt.command:importpak') {
+    return <TileImportPak />
   }
   return searchResult
 }

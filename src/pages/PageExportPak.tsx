@@ -11,6 +11,8 @@ function downloadString(filename: string, content: string) {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
+  // Should revoke, but safari on ios encounters an error if you do.
+  //window.URL.revokeObjectURL(url);
 }
 
 export default function PageExportPak() {

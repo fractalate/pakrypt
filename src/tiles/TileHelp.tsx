@@ -30,6 +30,7 @@ export default function TileHelp() {
 
   const yourPakIs = getYourPakIs(pakman)
   const soYouCan = getSoYouCan(pakman)
+  // TODO: Pre-release: Ensure this list of commands reflects the set of commands that can be performed.
   return <div className={styling.tile.tileComponentCommand}>
     <p className="mb-2">Use the search bar to find your things. Your things are bundled together in a "pak". Your pak is {yourPakIs}. So you can {soYouCan}.</p>
     <p className="mt-2 mb-2">Commands:</p>
@@ -40,6 +41,8 @@ export default function TileHelp() {
       <li><b>unlock pak</b></li>
       <li><b>lock pak</b></li>
       <li><b>open pak</b></li>
+      <li><b>export pak</b></li>
+      <li><b>import pak</b></li>
       <li><b>copy pak</b></li>
       <li><b>new pak</b></li>
       <li><b>close pak</b></li>
