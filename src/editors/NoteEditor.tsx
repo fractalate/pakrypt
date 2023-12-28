@@ -10,11 +10,13 @@ interface Inputs {
 
 export default function NoteEditor({
   initialValues,
+  showDelete,
   onUserSubmit,
   onUserDelete,
   onUserCancel,
 }: {
   initialValues?: Inputs,
+  showDelete: boolean,
   onUserSubmit: (data: Inputs) => void,
   onUserDelete: () => void,
   onUserCancel: () => void,
@@ -58,19 +60,21 @@ export default function NoteEditor({
     <div className="p-1">
       <button type="submit" className={styling.button.formButton}>Submit</button>
       <button className={styling.button.formButton} onClick={onUserCancel}>Cancel</button>
-      {!confirmDelete && <button className={styling.button.formButton} onClick={(e) => {
-        e.preventDefault()
-        setConfirmDelete(true)
-      }}>Delete</button>}
-      {confirmDelete && <>
-        <button className={styling.button.formButton} onClick={(e) => {
+      {showDelete && <>
+        {!confirmDelete && <button className={styling.button.formButton} onClick={(e) => {
           e.preventDefault()
-          setConfirmDelete(false)
-        }}>Keep</button>
-        <button className={styling.button.formButton} onClick={(e) => {
-          e.preventDefault()
-          onUserDelete()
-        }}>Confirm</button>
+          setConfirmDelete(true)
+        }}>Delete</button>}
+        {confirmDelete && <>
+          <button className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            setConfirmDelete(false)
+          }}>Keep</button>
+          <button className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            onUserDelete()
+          }}>Confirm</button>
+        </>}
       </>}
     </div>
   </form>

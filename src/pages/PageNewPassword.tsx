@@ -34,6 +34,7 @@ export default function PageNewPassword() {
   ">
     <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
     <PasswordEditor
+      showDelete={false}
       onUserSubmit={(data) => savePassword(data)}
       onUserDelete={() => {}}
       onUserCancel={() => closePage()}

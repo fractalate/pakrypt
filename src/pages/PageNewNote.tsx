@@ -34,6 +34,7 @@ export default function PageNewNote() {
   ">
     <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
     <NoteEditor
+      showDelete={false}
       onUserSubmit={(data) => saveNote(data)}
       onUserDelete={() => {}}
       onUserCancel={() => closePage()}
