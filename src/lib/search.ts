@@ -113,6 +113,8 @@ function entryMatchesQuery(entry: PakEntry, query: string): boolean {
 }
 
 export default function search(query: string, pakman: Pakman): SearchResult[] {
+  const showEverything = query === '*' || query === ' '
+
   query = query.trim().toLowerCase()
 
   const result: SearchResult[] = []
@@ -128,14 +130,14 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
     if (pakman.pak.entries != null) {
       for (const entry of pakman.pak.entries) {
-        if (query == '*' || entryMatchesQuery(entry, query)) {
+        if (showEverything || entryMatchesQuery(entry, query)) {
           result.push(entry)
         }
       }
     }
   }
 
-  if (query == '*' || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
+  if (showEverything || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_password',
@@ -143,7 +145,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
+  if (showEverything || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_note',
@@ -151,7 +153,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
       result.push({
         ov: 'pakrypt.command:unlock',
@@ -159,7 +161,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:lock',
@@ -167,13 +169,13 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(ope?n? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(ope?n? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:openpak',
     })
   }
 
-  if (query == '*' || /^(cop?y? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(cop?y? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov !== 'pakrypt.pakmanstate:unloaded') {
       result.push({
         ov: 'pakrypt.command:copypak',
@@ -181,13 +183,13 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(new? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(new? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:newpak',
     })
   }
 
-  if (query == '*' || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov != 'pakrypt.pakmanstate:unloaded') {
       result.push({
         ov: 'pakrypt.command:closepak',
@@ -195,25 +197,25 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(del?e?t?e? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(del?e?t?e? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:deletepak',
     })
   }
 
-  if (query == '*' || /^(exp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(exp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:exportpak',
     })
   }
 
-  if (query == '*' || /^(imp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
+  if (showEverything || /^(imp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:importpak',
     })
   }
 
-  if (query == '*' || /^(cha?n?g?e? ?p?a?s?s?p?h?r?a?s?e?|pas?s?p?h?r?a?s?e?)$/i.test(query)) {
+  if (showEverything || /^(cha?n?g?e? ?p?a?s?s?p?h?r?a?s?e?|pas?s?p?h?r?a?s?e?)$/i.test(query)) {
     if (pakman.ov === 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:changepassphrase',
@@ -221,13 +223,13 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (query == '*' || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
+  if (showEverything || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:theme_switcher',
     })
   }
 
-  if (!explicitHelp && (query == '*' || /^(hel?p?)$/i.test(query))) {
+  if (!explicitHelp && (showEverything || /^(hel?p?)$/i.test(query))) {
     result.push({
       ov: 'pakrypt.command:help',
     })

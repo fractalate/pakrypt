@@ -72,8 +72,10 @@ Four main components of this application:
 * [x] New note.
 * [x] Disable delete when creating new password.
 * [x] Some way to know which pak is open.
-* [ ] Sub-beta release.
+* [x] Sub-beta release.
+* [ ] Alternate asterisk for mobile.
 
+* [ ] Figure out build process with alternate "base" in vite.config.js.
 * [ ] New file.
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
 * [ ] Password delete/confirm process should be cleaner.

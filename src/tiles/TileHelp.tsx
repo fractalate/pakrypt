@@ -48,7 +48,7 @@ export default function TileHelp() {
       <li><b>close pak</b></li>
       <li><b>change passphrase</b></li>
       <li><b>theme</b> or <b>light</b> or <b>dark</b> to switch the theme.</li>
-      <li><b>*</b> (asterisk) to list all items and commands.</li>
+      <li><b>*</b> (asterisk) or (space bar) to list all items and commands.</li>
     </ul>
   </div>
 }
