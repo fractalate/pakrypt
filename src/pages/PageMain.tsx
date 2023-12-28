@@ -24,9 +24,9 @@ export default function PageMain() {
   if (pakman.ov == 'pakrypt.pakmanstate:unloaded') {
     message = 'No pak. ' + message
   } else if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
-    message = 'Locked. ' + message
+    message = '"' + pakman.name + '" is locked. ' + message
   } else if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
-    message = 'Ready! ' + message
+    message = '"' + pakman.name + '" is ready! ' + message
   }
 
   return <div className="

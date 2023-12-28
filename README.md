@@ -71,11 +71,11 @@ Four main components of this application:
 * [x] Import pak.
 * [x] New note.
 * [x] Disable delete when creating new password.
-* [ ] Add confirm steps when overwriting things (paks).
-* [ ] Some way to know which pak is open.
+* [x] Some way to know which pak is open.
 * [ ] Sub-beta release.
 
 * [ ] New file.
+* [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
 * [ ] Password delete/confirm process should be cleaner.
 * [ ] Can I navigate the page with arrow keys?
 * [ ] Audit the ov's.
