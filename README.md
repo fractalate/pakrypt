@@ -75,6 +75,7 @@ Four main components of this application:
 * [x] Sub-beta release.
 * [ ] Alternate asterisk for mobile.
 
+* [ ] Show version and license information somewhere.
 * [ ] Figure out build process with alternate "base" in vite.config.js.
 * [ ] New file.
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
