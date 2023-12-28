@@ -41,7 +41,7 @@ export function ListPaks(): Array<string> {
     if (key == null) {
       continue
     }
-    const m = /pakrypt.pak\[(\w+)\]/.exec(key)
+    const m = /^pakrypt.pak\[(.+)\]$/.exec(key)
     if (m) {
       result.push(m[1])
     }
