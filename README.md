@@ -68,15 +68,20 @@ Four main components of this application:
 * [x] ~~Rename a pak~~. Copy pak (give a new name).
 * [x] Change passphrase on pak.
 * [x] Export pak.
-* [ ] Import pak.
+* [x] Import pak.
 * [ ] New note.
 * [ ] New file.
-* [ ] Whole app styling.
 * [ ] Disable delete when creating new password.
 * [ ] Add confirm steps when overwriting things (paks).
 * [ ] Some way to know which pak is open.
+* [ ] Sub-beta release.
+
 * [ ] Password delete/confirm process should be cleaner.
 * [ ] Can I navigate the page with arrow keys?
+* [ ] Audit the ov's.
 * [ ] Audit `==` vs `===`.
+* [ ] Whole app styling.
+* [ ] Maybe have some persistent visual about the locked state of the pak to keep the status visible when the "Locked" or similar text in the search bar is covered by a search.
+
 
 * [ ] Disable "View Saved Logins" in firefox.

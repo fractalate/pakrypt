@@ -4,6 +4,7 @@ export type ChoosePage = (
   | ChoosePageMain
   | ChoosePageDemo
   | ChoosePageNewNote
+  | ChoosePageEditNote
   | ChoosePageNewPassword
   | ChoosePageEditPassword
   | ChoosePageOpenPak
@@ -25,6 +26,13 @@ interface ChoosePageDemo {
 
 interface ChoosePageNewNote {
   ov: 'pakrypt.page:new_note',
+  onSave?: (entry: PakNote) => void,
+  onCancel?: () => void,
+}
+
+interface ChoosePageEditNote {
+  ov: 'pakrypt.page:edit_note',
+  entry: PakNote,
   onSave?: (entry: PakNote) => void,
   onCancel?: () => void,
 }

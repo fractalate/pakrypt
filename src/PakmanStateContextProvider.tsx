@@ -16,6 +16,7 @@ export default function PakmanStateContextProvider({ children }: PropsWithChildr
     } else {
       PakmanSetLast(pakman.name)
     }
+    console.log('really gonna do it', pakman)
     _setPakman(pakman)
   }
 

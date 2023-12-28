@@ -9,8 +9,10 @@ import TileExportPak from './TileExportPak'
 import TileHelp from './TileHelp'
 import TileImportPak from './TileImportPak'
 import TileLock from './TileLock'
+import TileNewNote from './TileNewNote'
 import TileNewPak from './TileNewPak'
 import TileNewPassword from './TileNewPassword'
+import TileNote from './TileNote'
 import TileOpenPak from './TileOpenPak'
 import TilePassword from './TilePassword'
 import TileThemeSwitcher from './TileThemeSwitcher'
@@ -38,9 +40,7 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
       { searchResult.ov }
     </div>
   } else if (searchResult.ov === 'pakrypt.command:new_note') {
-    return <div className={styling.tile.tileComponentCommand}>
-      { searchResult.ov }
-    </div>
+    return <TileNewNote />
   } else if (searchResult.ov === 'pakrypt.command:demo') {
     return <TileDemo />
   } else if (searchResult.ov === 'pakrypt.command:help') {
@@ -52,9 +52,7 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
       { searchResult.ov }
     </div>
   } else if (searchResult.ov === 'pakrypt.note:1.0') {
-    return <div className={styling.tile.tileComponentEntry}>
-      { searchResult.ov }
-    </div>
+    return <TileNote entry={searchResult} />
   } else if (searchResult.ov === 'pakrypt.command:deletepak') {
     return <TileDeletePak />
   } else if (searchResult.ov === 'pakrypt.command:changepassphrase') {

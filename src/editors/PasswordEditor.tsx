@@ -66,14 +66,17 @@ export default function PasswordEditor({
         <button className={styling.button.formButton} onClick={() => {
           onUserCancel()
         }}>Cancel</button>
-        {!confirmDelete && <button className={styling.button.formButton} onClick={() => {
+        {!confirmDelete && <button className={styling.button.formButton} onClick={(e) => {
+          e.preventDefault()
           setConfirmDelete(true)
         }}>Delete</button>}
         {confirmDelete && <>
-          <button className={styling.button.formButton} onClick={() => {
+          <button className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
             setConfirmDelete(false)
           }}>Keep</button>
-          <button className={styling.button.formButton} onClick={() => {
+          <button className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
             onUserDelete()
           }}>Confirm</button>
         </>}

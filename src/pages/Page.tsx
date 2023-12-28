@@ -11,6 +11,7 @@ import PageNewNote from './PageNewNote'
 import PageNewPak from './PageNewPak'
 import PageNewPassword from './PageNewPassword'
 import PageOpenPak from './PageOpenPak'
+import PageEditNote from './PageEditNote'
 
 export default function Page({
   page,
@@ -22,6 +23,8 @@ export default function Page({
     return <PageMain />
   } else if (ov === 'pakrypt.page:new_note') {
     return <PageNewNote />
+  } else if (ov === 'pakrypt.page:edit_note') {
+    return <PageEditNote entry={ page.entry } />
   } else if (ov === 'pakrypt.page:new_password') {
     return <PageNewPassword />
   } else if (ov === 'pakrypt.page:edit_password') {

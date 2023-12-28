@@ -63,11 +63,11 @@ export interface SearchResultImportPak {
 }
 
 export interface SearchResultNewFile {
-  ov: 'pakrypt.command:new_note',
+  ov: 'pakrypt.command:new_file',
 }
 
 export interface SearchResultNewNote {
-  ov: 'pakrypt.command:new_file',
+  ov: 'pakrypt.command:new_note',
 }
 
 export interface SearchResultNewPassword {
@@ -139,6 +139,14 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_password',
+      })
+    }
+  }
+
+  if (query == '*' || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
+    if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+      result.push({
+        ov: 'pakrypt.command:new_note',
       })
     }
   }

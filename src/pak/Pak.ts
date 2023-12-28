@@ -236,6 +236,22 @@ export function UpdatePassword(pak: Pak, id: string, password: PasswordFields): 
   return pak
 }
 
+export function UpdateNote(pak: Pak, id: string, note: NoteFields): Pak {
+  if (pak.entries == null) {
+    return pak
+  }
+  const entry: PakNote = {
+    ov: 'pakrypt.note:1.0',
+    id,
+    title: note.title,
+    subtitle: note.subtitle,
+    note: note.note,
+    tags: note.tags == null ? note.tags : [...note.tags],
+  }
+  pak = replaceEntry(pak, entry)
+  return pak
+}
+
 export function DeleteBlock(pak: Pak, id: string): Pak {
   return removeBlock(pak, id)
 }
