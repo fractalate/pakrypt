@@ -60,21 +60,6 @@ Four main components of this application:
 
 ## TODO
 
-* [x] New Pak - passphrase confirm, probably a reveal toggle.
-* [x] Completing an activity should take you to something sensical on the main page.
-* [x] Call out making a new password in the help.
-* [x] Broken search "new pak"
-* [x] Delete a pak.
-* [x] ~~Rename a pak~~. Copy pak (give a new name).
-* [x] Change passphrase on pak.
-* [x] Export pak.
-* [x] Import pak.
-* [x] New note.
-* [x] Disable delete when creating new password.
-* [x] Some way to know which pak is open.
-* [x] Sub-beta release.
-* [ ] Alternate asterisk for mobile.
-
 * [ ] Show version and license information somewhere.
 * [ ] Figure out build process with alternate "base" in vite.config.js.
 * [ ] New file.
