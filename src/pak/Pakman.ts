@@ -178,8 +178,7 @@ export interface PakmanUnlockResultIntegrityError {
 }
 
 export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
-  // TODO: Re-key on unlock so the salt changes periodically.
-  const key = await DeriveKeyWithEncrypted(passphrase, pakman.enc)
+  let key = await DeriveKeyWithEncrypted(passphrase, pakman.enc)
 
   let buffer
   try {
@@ -210,10 +209,15 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
     throw err
   }
 
+  const [newKey, salt] = await DeriveKey(passphrase)
+  key = newKey
+  buffer = new TextEncoder().encode(JSON.stringify(pak))
+  const enc = await Encrypt(newKey, salt, buffer)
+
   return [{
     ov: 'pakrypt.pakmanstate:unlocked',
     name: pakman.name,
-    enc: pakman.enc,
+    enc: enc,
     key: key,
     pak: pak,
   }, { ov: 'pakrypt.pakmanunlockresult:success' }]

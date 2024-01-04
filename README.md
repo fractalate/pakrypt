@@ -66,10 +66,12 @@ Four main components of this application:
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
 * [ ] Password delete/confirm process should be cleaner.
 * [ ] Can I navigate the page with arrow keys?
+* [ ] Escape to go to search.
 * [ ] Audit the ov's.
 * [ ] Audit `==` vs `===`.
 * [ ] Whole app styling.
 * [ ] Maybe have some persistent visual about the locked state of the pak to keep the status visible when the "Locked" or similar text in the search bar is covered by a search.
-
+* [ ] Monthly code review until 1.0 go-live.
+* [ ] Rotating salt on save.
 
 * [ ] Disable "View Saved Logins" in firefox.
