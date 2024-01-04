@@ -35,6 +35,7 @@ export default function TileHelp() {
     <p className="mb-2">Use the search bar to find your things. Your things are bundled together in a "pak". Your pak is {yourPakIs}. So you can {soYouCan}.</p>
     <p className="mt-2 mb-2">Commands:</p>
     <ul className="list-disc list-inside">
+      <li><b>version</b></li>
       <li><b>new password</b></li>
       <li><b>new note</b></li>
       <li><b>new file</b></li>

@@ -20,6 +20,7 @@ export type SearchResultCommand = SearchResultThemeSwitcher
                                 | SearchResultDeletePak
                                 | SearchResultExportPak
                                 | SearchResultImportPak
+                                | SearchResultVersion
                                 | SearchResultChangePassphrase
 
 export interface SearchResultThemeSwitcher {
@@ -78,6 +79,10 @@ export interface SearchResultChangePassphrase {
   ov: 'pakrypt.command:changepassphrase',
 }
 
+export interface SearchResultVersion {
+  ov: 'pakrypt.command:version',
+}
+
 // TODO: Remove the demo page.
 export interface SearchResultDemo {
   ov: 'pakrypt.command:demo',
@@ -119,11 +124,19 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
 
   const result: SearchResult[] = []
   let explicitHelp = false
+  let explicitVersion = false
 
   if (/^(help)$/i.test(query)) {
     explicitHelp = true
     result.push({
       ov: 'pakrypt.command:help',
+    })
+  }
+
+  if (/^(version)$/i.test(query)) {
+    explicitVersion = true
+    result.push({
+      ov: 'pakrypt.command:version',
     })
   }
 
@@ -232,6 +245,12 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   if (!explicitHelp && (showEverything || /^(hel?p?)$/i.test(query))) {
     result.push({
       ov: 'pakrypt.command:help',
+    })
+  }
+
+  if (!explicitVersion && (showEverything || /^(ver?s?i?o?n?)$/i.test(query))) {
+    result.push({
+      ov: 'pakrypt.command:version',
     })
   }
 

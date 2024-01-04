@@ -2,6 +2,7 @@
   "name": "pakrypt",
   "version": "0.9.0",
   "license": "MIT",
+  "copyright": "Copyright (c) 2023-2024 Kate Novak",
   "author": "Kate Novak <kje@cochleoid.com>",
   "repository": {
     "url": "https://github.com/fractalate/pakrypt"

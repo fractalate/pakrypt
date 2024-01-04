@@ -17,6 +17,7 @@ import TileOpenPak from './TileOpenPak'
 import TilePassword from './TilePassword'
 import TileThemeSwitcher from './TileThemeSwitcher'
 import TileUnlock from './TileUnlock'
+import TileVersion from './TileVersion'
 
 export default function Tile({ searchResult }: { searchResult: SearchResult }): JSX.Element {
   if (searchResult.ov === 'pakrypt.command:new_password') {
@@ -61,6 +62,8 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     return <TileExportPak />
   } else if (searchResult.ov === 'pakrypt.command:importpak') {
     return <TileImportPak />
+  } else if (searchResult.ov === 'pakrypt.command:version') {
+    return <TileVersion />
   }
   return searchResult
 }

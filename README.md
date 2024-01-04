@@ -60,7 +60,7 @@ Four main components of this application:
 
 ## TODO
 
-* [ ] Show version and license information somewhere.
+* [x] Show version and license information somewhere.
 * [ ] Figure out build process with alternate "base" in vite.config.js.
 * [ ] New file.
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
@@ -71,7 +71,8 @@ Four main components of this application:
 * [ ] Audit `==` vs `===`.
 * [ ] Whole app styling.
 * [ ] Maybe have some persistent visual about the locked state of the pak to keep the status visible when the "Locked" or similar text in the search bar is covered by a search.
-* [ ] Monthly code review until 1.0 go-live.
-* [ ] Rotating salt on save.
+* [ ] Monthly code review until 1.0 go-live. (3 places for version number)
+* [x] Rotating salt on save.
+* [ ] How to import json files?
 
 * [ ] Disable "View Saved Logins" in firefox.
