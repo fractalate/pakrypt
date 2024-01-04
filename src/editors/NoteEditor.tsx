@@ -57,20 +57,23 @@ export default function NoteEditor({
       <label htmlFor="note" className="block">Note</label>
       <textarea className={styling.textarea.formTextArea + ' w-full'} {...register('note')} />
     </div>
-    <div className="p-1">
-      <button type="submit" className={styling.button.formButton}>Submit</button>
-      <button className={styling.button.formButton} onClick={onUserCancel}>Cancel</button>
+    <div className="p-1  flex gap-2">
+      <button type="submit" className={styling.button.formButton + ' w-1/4'}>Submit</button>
+      <button className={styling.button.formButton + ' w-1/4'} onClick={onUserCancel}>Cancel</button>
       {showDelete && <>
-        {!confirmDelete && <button className={styling.button.formButton} onClick={(e) => {
-          e.preventDefault()
-          setConfirmDelete(true)
-        }}>Delete</button>}
+        {!confirmDelete && <>
+          <button className={styling.button.formButton + ' w-1/4'} onClick={(e) => {
+            e.preventDefault()
+            setConfirmDelete(true)
+          }}>Delete</button>
+          <div className={'w-1/4'}></div>
+        </>}
         {confirmDelete && <>
-          <button className={styling.button.formButton} onClick={(e) => {
+          <button className={styling.button.formButton + ' w-1/4'} onClick={(e) => {
             e.preventDefault()
             setConfirmDelete(false)
           }}>Keep</button>
-          <button className={styling.button.formButton} onClick={(e) => {
+          <button className={styling.button.dangerButton + ' w-1/4'} onClick={(e) => {
             e.preventDefault()
             onUserDelete()
           }}>Confirm</button>

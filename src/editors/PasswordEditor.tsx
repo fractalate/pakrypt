@@ -63,22 +63,25 @@ export default function PasswordEditor({
         <label htmlFor="password" className="block">Password</label>
         <input type="text" className={styling.input.formInput} {...register('password')} />
       </div>
-      <div className="p-1">
-        <button className={styling.button.formButton} type="submit">Submit</button>
-        <button className={styling.button.formButton} onClick={() => {
+      <div className="p-1 flex gap-2">
+        <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>
+        <button className={styling.button.formButton + ' w-1/4'} onClick={() => {
           onUserCancel()
         }}>Cancel</button>
         {showDelete && <>
-          {!confirmDelete && <button className={styling.button.formButton} onClick={(e) => {
-            e.preventDefault()
-            setConfirmDelete(true)
-          }}>Delete</button>}
+          {!confirmDelete && <>
+            <button className={styling.button.formButton + ' w-1/4'} onClick={(e) => {
+              e.preventDefault()
+              setConfirmDelete(true)
+            }}>Delete</button>
+            <div className={'w-1/4'}></div>
+          </>}
           {confirmDelete && <>
-            <button className={styling.button.formButton} onClick={(e) => {
+            <button className={styling.button.formButton + ' w-1/4'} onClick={(e) => {
               e.preventDefault()
               setConfirmDelete(false)
             }}>Keep</button>
-            <button className={styling.button.formButton} onClick={(e) => {
+            <button className={styling.button.dangerButton + ' w-1/4'} onClick={(e) => {
               e.preventDefault()
               onUserDelete()
             }}>Confirm</button>

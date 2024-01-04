@@ -64,7 +64,9 @@ Four main components of this application:
 * [ ] Figure out build process with alternate "base" in vite.config.js.
 * [ ] New file.
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
-* [ ] Password delete/confirm process should be cleaner.
+
+* [x] Password delete/confirm process should be cleaner.
+
 * [ ] Can I navigate the page with arrow keys?
 * [ ] Escape to go to search.
 * [ ] Audit the ov's.
@@ -73,6 +75,5 @@ Four main components of this application:
 * [ ] Maybe have some persistent visual about the locked state of the pak to keep the status visible when the "Locked" or similar text in the search bar is covered by a search.
 * [ ] Monthly code review until 1.0 go-live. (3 places for version number)
 * [x] Rotating salt on save.
-* [ ] How to import json files?
 
 * [ ] Disable "View Saved Logins" in firefox.
