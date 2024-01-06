@@ -28,6 +28,7 @@ export default function PageNewPassword() {
   }
 
   return <div className={styling.page.regular}>
+    <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
     <PasswordEditor
       showDelete={false}
       onUserSubmit={(data) => savePassword(data)}

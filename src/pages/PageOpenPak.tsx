@@ -10,8 +10,8 @@ export default function PageOpenPak() {
   const [ message, setMessage ] = useState('')
   const { setQuery } = useContext(QueryBarContext)
 
-  const items = paks.map((name) => <div key={name}>
-    <button className={styling.button.formButton} onClick={() => {
+  const items = paks.map((name) => <div key={name} className="flex flex-col">
+    <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
       const [pakman, result] = PakmanLoad(name)
       if (result.ov == 'pakrypt.pakmanloadresult:success') {
         setPakman(pakman)
@@ -29,16 +29,21 @@ export default function PageOpenPak() {
   </div>)
 
   return <div className={styling.page.regular}>
-    <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
-    { items }
+    <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
     { items.length == 0 && <div>
-      No paks.
-      <button className={styling.button.formButton} onClick={() => {
-        replacePage({
-          ov: 'pakrypt.page:new_pak',
-        })
-      }}>New Pak</button>
+      No paks to open.
     </div>}
-    { message }
+    { items.length > 0 && <div>
+      Please select a pak to open.
+    </div>}
+    <div className="flex flex-col gap-2">
+      { items }
+    </div>
+    <div>{ message }</div>
+    { items.length == 0 && <button className={styling.button.formButton} onClick={() => {
+      replacePage({
+        ov: 'pakrypt.page:new_pak',
+      })
+    }}>New Pak</button>}
   </div>
 }

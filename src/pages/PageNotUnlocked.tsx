@@ -10,7 +10,7 @@ export default function PageNotUnlocked() {
   }
 
   return <div className={styling.page.regular}>
-    The Pak is not unlocked. Press the button to close.
-    <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
+    <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
+    <div>The pak is not unlocked. Press the button to close.</div>
   </div>
 }

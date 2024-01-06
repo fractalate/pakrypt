@@ -44,23 +44,28 @@ export default function PageImportPak() {
   }
 
   return <div className={styling.page.regular}>
-    <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="name">Name</label>
-      <input type="text" className={styling.input.formInput} {...register('name', {
-          required: true,
-      })} />
-      <label htmlFor="uploadfile">File</label>
-      <Controller
-        name="uploadfile"
-        control={control}
-        render={({field}) => <input
-          type="file"
-          onChange={(e) => field.onChange(e?.target?.files?.[0])}
-        />}
-      />
-      <br />
-      <button className={styling.button.formButton} type="submit">Import</button>
+    <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
+    <div>Please specify a name and file to import.</div>
+    <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="name">Name</label>
+        <input type="text" className={styling.input.formInput} {...register('name', {
+            required: true,
+        })} />
+        <label htmlFor="uploadfile">File</label>
+        <Controller
+          name="uploadfile"
+          control={control}
+          render={({field}) => <input
+            type="file"
+            onChange={(e) => field.onChange(e?.target?.files?.[0])}
+          />}
+        />
+      </div>
+      <div className="flex flex-row gap-2">
+        <button className={styling.button.formButton + ' w-1/2'} type="submit">Import</button>
+        <button className={styling.button.formButton + ' w-1/2'} onClick={() => popPage()}>Cancel</button>
+      </div>
     </form>
     { message }
   </div>

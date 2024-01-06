@@ -10,7 +10,7 @@ export default function PageNotLoaded() {
   }
 
   return <div className={styling.page.regular}>
-    The Pak is not loaded. Press the button to close.
-    <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
+    <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
+    <div>The Pak is not loaded. Press the button to close.</div>
   </div>
 }

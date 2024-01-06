@@ -51,6 +51,7 @@ const styling = {
       min-h-screen w-screen
       text-[#333] bg-[#FFE]
       dark:text-[#EED] dark:bg-[#323]
+      flex flex-col gap-4 p-1
     `,
   }
 }

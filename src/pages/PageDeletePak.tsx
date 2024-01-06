@@ -9,29 +9,50 @@ export default function PageDeletePak() {
   const { popPage } = useContext(PageContext)
   const [ message ] = useState('')
   const { setQuery } = useContext(QueryBarContext)
+  const [ confirmingDeletePak, setConfirmingDeletePak ] = useState(null as null | string)
 
-  // TODO: These need confirms.
-  const items = paks.map((name) => <div key={name}>
-    <button className={styling.button.formButton} onClick={() => {
-      PakmanDelete(name)
-      setQuery('')
-      popPage()
+  const items = useMemo(() => {
+    function Entry({ name }: { name: string }) {
+      if (name === confirmingDeletePak) {
+        return <div key={name} className="flex flex-row gap-1">
+          <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
+            setConfirmingDeletePak(null)
+          }}>Keep</button>
+          <button className={styling.button.dangerButton + ' w-1/2'} onClick={() => {
+            PakmanDelete(name)
+            setQuery('')
+            popPage()
 
-      if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
-        if (pakman.name === name) {
-          setPakman(PakmanClose())
-        }
+            if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
+              if (pakman.name === name) {
+                setPakman(PakmanClose())
+              }
+            }
+          }}>Delete</button>
+        </div>
       }
 
-    }}>{name}</button>
-  </div>)
+      return <div key={name} className="flex flex-row gap-1">
+        <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
+          setConfirmingDeletePak(name)
+        }}>{name}</button>
+        <div className="w-1/2"></div>
+      </div>
+    }
+    return paks.map((name) => <Entry name={name} />)
+  }, [confirmingDeletePak, paks, popPage, setPakman, setQuery, pakman])
 
   return <div className={styling.page.regular}>
-    <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
-    { items }
+    <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
     { items.length == 0 && <div>
-      No paks.
+      No paks to delete.
     </div>}
-    { message }
+    { items.length > 0 && <div>
+      Please select a pak to delete.
+    </div>}
+    <div className="flex flex-col gap-2">
+      { items }
+    </div>
+    <div>{ message }</div>
   </div>
 }

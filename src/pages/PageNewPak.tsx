@@ -51,21 +51,26 @@ export default function PageNewPak() {
   }
 
   return <div className={styling.page.regular}>
-    <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="name">Name</label>
-      <input type="text" className={styling.input.formInput} {...register('name', {
-          required: true,
-      })} />
-      <label htmlFor="passphrase">Passphrase</label>
-      <input type="password" className={styling.input.formInput} {...register('passphrase', {
-          required: true,
-      })} />
-      <label htmlFor="passphrase">Passphrase Confirm</label>
-      <input type="password" className={styling.input.formInput} {...register('passphrase2', {
-          required: true,
-      })} />
-      <button className={styling.button.formButton} type="submit">Create</button>
+    <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
+    <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="name">Name</label>
+        <input type="text" className={styling.input.formInput} {...register('name', {
+            required: true,
+        })} />
+        <label htmlFor="passphrase">Passphrase</label>
+        <input type="password" className={styling.input.formInput} {...register('passphrase', {
+            required: true,
+        })} />
+        <label htmlFor="passphrase">Passphrase Confirm</label>
+        <input type="password" className={styling.input.formInput} {...register('passphrase2', {
+            required: true,
+        })} />
+      </div>
+      <div className="flex flex-row gap-2">
+        <button className={styling.button.formButton + ' w-1/2'} type="submit">Create</button>
+        <button className={styling.button.formButton + ' w-1/2'} onClick={() => popPage()}>Cancel</button>
+      </div>
     </form>
     { message }
   </div>

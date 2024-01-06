@@ -37,6 +37,7 @@ export default function PageEditPassword({
   }
 
   return <div className={styling.page.regular}>
+    <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
     <PasswordEditor
       initialValues={entry}
       showDelete={true}

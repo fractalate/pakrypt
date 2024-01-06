@@ -30,11 +30,10 @@ export default function PageMain() {
   }
 
   return <div className={styling.page.regular}>
-    <div className="p-1">
+    <div>
       <input type="text" className={styling.input.omnibarInput + ' w-full'} autoFocus={true} placeholder={message} value={query} onChange={(e) => setQuery(e.target.value)} />
     </div>
-    {/* pb-1 here is so the mb-1 above in the tileComponents produced a m-1 margin between the omnibar input and the first tile. Consider learning how to use flex instead. */}
-    <div className="pb-1 px-1">
+    <div>
       { tileComponents }
     </div>
   </div>

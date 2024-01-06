@@ -20,8 +20,8 @@ export default function PageExportPak() {
   const { popPage } = useContext(PageContext)
   const [ message, setMessage ] = useState('')
 
-  const items = paks.map((name) => <div key={name}>
-    <button className={styling.button.formButton} onClick={() => {
+  const items = paks.map((name) => <div key={name} className="flex flex-col">
+    <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
       const data = PakmanLoadRaw(name)
       if (data == null) {
         setMessage('Raw data not found. Sorry.')
@@ -29,14 +29,20 @@ export default function PageExportPak() {
         downloadString(name + '.pak', data)
       }
     }}>{name}</button>
+    <div className="w-1/2"></div>
   </div>)
 
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
-    { items }
     { items.length == 0 && <div>
-      No paks.
+      No paks to export.
     </div>}
-    { message }
+    { items.length > 0 && <div>
+      Please select a pak to export.
+    </div>}
+    <div className="flex flex-col gap-2">
+      { items }
+    </div>
+    <div>{ message }</div>
   </div>
 }

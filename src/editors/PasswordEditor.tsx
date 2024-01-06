@@ -44,17 +44,19 @@ export default function PasswordEditor({
   return <div className="
     w-full
   ">
-    <form className="flex flex-col gap-2 p-1" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="title" className="block">Title</label>
-      <input type="text" className={styling.input.formInput} {...register('title', {
-        required: true,
-      })} />
-      <label htmlFor="subtitle" className="block">Subtitle</label>
-      <input type="text" className={styling.input.formInput} {...register('subtitle')} />
-      <label htmlFor="username" className="block">Username</label>
-      <input type="text" className={styling.input.formInput} {...register('username')} />
-      <label htmlFor="password" className="block">Password</label>
-      <input type="text" className={styling.input.formInput} {...register('password')} />
+    <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="title" className="block">Title</label>
+        <input type="text" className={styling.input.formInput} {...register('title', {
+          required: true,
+        })} />
+        <label htmlFor="subtitle" className="block">Subtitle</label>
+        <input type="text" className={styling.input.formInput} {...register('subtitle')} />
+        <label htmlFor="username" className="block">Username</label>
+        <input type="text" className={styling.input.formInput} {...register('username')} />
+        <label htmlFor="password" className="block">Password</label>
+        <input type="text" className={styling.input.formInput} {...register('password')} />
+      </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>
         <button className={styling.button.formButton + ' w-1/4'} onClick={() => {
