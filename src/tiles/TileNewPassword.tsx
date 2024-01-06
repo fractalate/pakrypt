@@ -11,7 +11,7 @@ export default function TileNewPassword() {
     })
   }
   
-  return <div className={styling.tile.tileComponentCommand}>
+  return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => openNewPassword()}>New Password</button>
   </div>
 }

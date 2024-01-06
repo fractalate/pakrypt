@@ -11,16 +11,15 @@ export default function TileThemeSwitcher() {
   const themeText = computeThemeText(useContext(ThemeContext))
 
   return (
-    <div className={styling.tile.tileComponentCommand}>
+    <div className={styling.tile.tileComponentCommand + ' flex flex-col gap-2'}>
       <div>
         Theme is {themeText}
       </div>
-      <div className="m-1"></div>
-      {/* mr-1 is because I should really learn Flex. */}
-      <button className={styling.button.formButton + ' mr-1'} onClick={() => clearPreferredTheme()}>Set No Theme</button>
-      {/* mr-1 is because I should really learn Flex. */}
-      <button className={styling.button.formButton + ' mr-1'} onClick={() => setPreferredTheme('dark')}>Set Dark Theme</button>
-      <button className={styling.button.formButton} onClick={() => setPreferredTheme('light')}>Set Light Theme</button>
+      <div className="flex flex-row gap-2">
+        <button className={styling.button.formButton + ' w-1/3'} onClick={() => clearPreferredTheme()}>Set No Theme</button>
+        <button className={styling.button.formButton + ' w-1/3'} onClick={() => setPreferredTheme('dark')}>Set Dark Theme</button>
+        <button className={styling.button.formButton + ' w-1/3'} onClick={() => setPreferredTheme('light')}>Set Light Theme</button>
+      </div>
     </div>
   )
 }

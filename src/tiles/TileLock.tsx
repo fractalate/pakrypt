@@ -16,7 +16,7 @@ export default function TileLock() {
     setQuery('')
   }
   
-  return <div className={styling.tile.tileComponentCommand}>
+  return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => doLock()}>Lock</button>
   </div>
 }

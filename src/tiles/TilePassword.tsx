@@ -24,12 +24,18 @@ export default function TilePassword({
     setTimeout(() => setCopied(false), 2000)
   }
   
-  return <div className={styling.tile.tileComponentEntry}>
-    <div>{entry.title}</div>
-    <div>{entry.subtitle || entry.username}</div>
-    <div className="m-1"></div>
-    {/* mr-1 is because I should really learn Flex. */}
-    <button className={styling.button.formButton + ' mr-1'} onClick={() => openEditPassword()}>Edit</button>
-    <button className={styling.button.formButton} onClick={() => copyPassword()}>Copy Password {copied && <>&#x2705;</>}</button>
+  return <div className={styling.tile.tileComponentEntry + ' flex flex-col gap-2'}>
+    <div>
+      <div>{entry.title}</div>
+      <div>{entry.subtitle || entry.username}</div>
+    </div>
+    <div className="flex flex-row gap-2">
+      <button className={styling.button.formButton + ' w-1/2'} onClick={() => openEditPassword()}>Edit</button>
+      {/* "relative" is for the "absolute" and "right" classes inside. */}
+      <button className={styling.button.formButton + ' w-1/2 relative'} onClick={() => copyPassword()}>
+        {copied && <div className="absolute right-1">&#x2705;</div>}
+        <span>Copy Password</span>
+      </button>
+    </div>
   </div>
 }

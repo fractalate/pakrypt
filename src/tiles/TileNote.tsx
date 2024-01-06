@@ -17,11 +17,11 @@ export default function TileNote({
     })
   }
 
-  return <div className={styling.tile.tileComponentEntry}>
-    <div>{entry.title}</div>
-    <div>{entry.subtitle}</div>
-    <div className="m-1"></div>
-    {/* mr-1 is because I should really learn Flex. */}
-    <button className={styling.button.formButton + ' mr-1'} onClick={() => openEditNote()}>Edit</button>
+  return <div className={styling.tile.tileComponentEntry + ' flex flex-col gap-2'}>
+    <div>
+      <div>{entry.title}</div>
+      <div>{entry.subtitle}</div>
+    </div>
+    <button className={styling.button.formButton} onClick={() => openEditNote()}>Edit</button>
   </div>
 }

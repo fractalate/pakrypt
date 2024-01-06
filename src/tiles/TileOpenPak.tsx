@@ -5,7 +5,7 @@ import { PageContext } from '../Contexts'
 export default function TileOpenPak() {
   const { pushPage } = useContext(PageContext)
 
-  return <div className={styling.tile.tileComponentCommand}>
+  return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
         ov: 'pakrypt.page:openpak',
