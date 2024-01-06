@@ -4,22 +4,22 @@ import styling from '../lib/styling'
 import { Pakman } from '../pak/Pakman'
 
 function getYourPakIs(pakman: Pakman): JSX.Element {
-  if (pakman.ov == 'pakrypt.pakmanstate:unloaded') {
+  if (pakman.ov == 'pakrypt.pakman_state:unloaded') {
     return <>not loaded</>
-  } else if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
+  } else if (pakman.ov == 'pakrypt.pakman_state:loaded') {
     return <>locked</>
-  } else if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+  } else if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
     return <>ready to be used</>
   }
   return pakman // Relying on type == never here.
 }
 
 function getSoYouCan(pakman: Pakman): JSX.Element {
-  if (pakman.ov == 'pakrypt.pakmanstate:unloaded') {
+  if (pakman.ov == 'pakrypt.pakman_state:unloaded') {
     return <>create a <b>new pak</b> or <b>open a pak</b></>
-  } else if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
+  } else if (pakman.ov == 'pakrypt.pakman_state:loaded') {
     return <><b>unlock your pak</b></>
-  } else if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+  } else if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
     return <>view and manage your data; e.g. make a <b>new password</b>, <b>note</b>, or <b>file</b></>
   }
   return pakman // Relying on type == never here.

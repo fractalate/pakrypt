@@ -8,7 +8,7 @@ export default function TileDeletePak() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
-        ov: 'pakrypt.page:deletepak',
+        ov: 'pakrypt.page:delete_pak',
       })
     }}>Delete Pak</button>
   </div>

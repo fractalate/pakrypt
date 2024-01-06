@@ -17,14 +17,14 @@ export default function TileUnlock() {
     handleSubmit,
   } = useForm<Inputs>()
 
-  if (pakman.ov != 'pakrypt.pakmanstate:loaded') {
+  if (pakman.ov != 'pakrypt.pakman_state:loaded') {
     return <></>
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setMessage('')
     const [newPakman, result] = await PakmanUnlock(pakman, data.passphrase)
-    if (result.ov == 'pakrypt.pakmanunlockresult:success') {
+    if (result.ov == 'pakrypt.pakman_unlock_result:success') {
       setPakman(newPakman)
       setQuery('')
     } else {

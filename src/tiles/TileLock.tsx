@@ -7,7 +7,7 @@ export default function TileLock() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
   const { setQuery } = useContext(QueryBarContext)
 
-  if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
+  if (pakman.ov != 'pakrypt.pakman_state:unlocked') {
     return <></>
   }
 

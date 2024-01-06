@@ -14,7 +14,7 @@ export default function PageEditPassword({
   const { pakman, setPakman } = useContext(PakmanStateContext)
   // Note: no setQuery on save here because it interferes with the flow: search for all of some kind of thing and edit them all, one after another.
 
-  if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
+  if (pakman.ov != 'pakrypt.pakman_state:unlocked') {
     throw new Error('pakman is not unlocked.')
   }
 
@@ -36,12 +36,7 @@ export default function PageEditPassword({
     pageContextState.popPage()
   }
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
-    <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
+  return <div className={styling.page.regular}>
     <PasswordEditor
       initialValues={entry}
       showDelete={true}

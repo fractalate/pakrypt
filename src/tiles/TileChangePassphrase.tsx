@@ -8,7 +8,7 @@ export default function TileChangePassphrase() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
-        ov: 'pakrypt.page:changepassphrase',
+        ov: 'pakrypt.page:change_passphrase',
       })
     }}>Change Passphrase</button>
   </div>

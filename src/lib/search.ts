@@ -1,31 +1,32 @@
 import { PakEntry } from '../pak/Pak'
 import { Pakman } from '../pak/Pakman'
 
-export type SearchResult = SearchResultCommand
-                         | PakEntry
+export type SearchResult = (
+  | SearchResultCommand
+  | PakEntry
+)
 
-// TODO: Order these.
-export type SearchResultCommand = SearchResultThemeSwitcher
-                                | SearchResultNewFile
-                                | SearchResultNewNote
-                                | SearchResultNewPassword
-                                | SearchResultDemo
-                                | SearchResultHelp
-                                | SearchResultLock
-                                | SearchResultUnlock
-                                | SearchResultNewPak
-                                | SearchResultOpenPak
-                                | SearchResultCopyPak
-                                | SearchResultClosePak
-                                | SearchResultDeletePak
-                                | SearchResultExportPak
-                                | SearchResultImportPak
-                                | SearchResultVersion
-                                | SearchResultChangePassphrase
+export type SearchResultCommand = (
+  | SearchResultLock
+  | SearchResultUnlock
 
-export interface SearchResultThemeSwitcher {
-  ov: 'pakrypt.command:theme_switcher',
-}
+  | SearchResultNewFile
+  | SearchResultNewNote
+  | SearchResultNewPassword
+
+  | SearchResultNewPak
+  | SearchResultOpenPak
+  | SearchResultClosePak
+  | SearchResultCopyPak
+  | SearchResultDeletePak
+  | SearchResultExportPak
+  | SearchResultImportPak
+  | SearchResultChangePassphrase
+
+  | SearchResultHelp
+  | SearchResultVersion
+  | SearchResultThemeSwitcher
+)
 
 export interface SearchResultLock {
   ov: 'pakrypt.command:lock',
@@ -33,34 +34,6 @@ export interface SearchResultLock {
 
 export interface SearchResultUnlock {
   ov: 'pakrypt.command:unlock',
-}
-
-export interface SearchResultNewPak {
-  ov: 'pakrypt.command:newpak',
-}
-
-export interface SearchResultOpenPak {
-  ov: 'pakrypt.command:openpak',
-}
-
-export interface SearchResultCopyPak {
-  ov: 'pakrypt.command:copypak',
-}
-
-export interface SearchResultClosePak {
-  ov: 'pakrypt.command:closepak',
-}
-
-export interface SearchResultDeletePak {
-  ov: 'pakrypt.command:deletepak',
-}
-
-export interface SearchResultExportPak {
-  ov: 'pakrypt.command:exportpak',
-}
-
-export interface SearchResultImportPak {
-  ov: 'pakrypt.command:importpak',
 }
 
 export interface SearchResultNewFile {
@@ -75,21 +48,48 @@ export interface SearchResultNewPassword {
   ov: 'pakrypt.command:new_password',
 }
 
+export interface SearchResultNewPak {
+  ov: 'pakrypt.command:new_pak',
+}
+
+export interface SearchResultOpenPak {
+  ov: 'pakrypt.command:open_pak',
+}
+
+export interface SearchResultClosePak {
+  ov: 'pakrypt.command:close_pak',
+}
+
+export interface SearchResultCopyPak {
+  ov: 'pakrypt.command:copy_pak',
+}
+
+export interface SearchResultDeletePak {
+  ov: 'pakrypt.command:delete_pak',
+}
+
+export interface SearchResultExportPak {
+  ov: 'pakrypt.command:export_pak',
+}
+
+export interface SearchResultImportPak {
+  ov: 'pakrypt.command:import_pak',
+}
+
 export interface SearchResultChangePassphrase {
-  ov: 'pakrypt.command:changepassphrase',
+  ov: 'pakrypt.command:change_passphrase',
+}
+
+export interface SearchResultHelp {
+  ov: 'pakrypt.command:help',
 }
 
 export interface SearchResultVersion {
   ov: 'pakrypt.command:version',
 }
 
-// TODO: Remove the demo page.
-export interface SearchResultDemo {
-  ov: 'pakrypt.command:demo',
-}
-
-export interface SearchResultHelp {
-  ov: 'pakrypt.command:help',
+export interface SearchResultThemeSwitcher {
+  ov: 'pakrypt.command:theme_switcher',
 }
 
 function tagsMatchQuery(tags: string[], query: string): boolean {
@@ -140,7 +140,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     })
   }
 
-  if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+  if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
     if (pakman.pak.entries != null) {
       for (const entry of pakman.pak.entries) {
         if (showEverything || entryMatchesQuery(entry, query)) {
@@ -151,7 +151,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_password',
       })
@@ -159,7 +159,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_note',
       })
@@ -167,7 +167,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
+    if (pakman.ov == 'pakrypt.pakman_state:loaded') {
       result.push({
         ov: 'pakrypt.command:unlock',
       })
@@ -175,7 +175,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:lock',
       })
@@ -184,54 +184,54 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
 
   if (showEverything || /^(ope?n? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.command:openpak',
+      ov: 'pakrypt.command:open_pak',
     })
   }
 
   if (showEverything || /^(cop?y? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov !== 'pakrypt.pakmanstate:unloaded') {
+    if (pakman.ov !== 'pakrypt.pakman_state:unloaded') {
       result.push({
-        ov: 'pakrypt.command:copypak',
+        ov: 'pakrypt.command:copy_pak',
       })
     }
   }
 
   if (showEverything || /^(new? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.command:newpak',
+      ov: 'pakrypt.command:new_pak',
     })
   }
 
   if (showEverything || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov != 'pakrypt.pakmanstate:unloaded') {
+    if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
       result.push({
-        ov: 'pakrypt.command:closepak',
+        ov: 'pakrypt.command:close_pak',
       })
     }
   }
 
   if (showEverything || /^(del?e?t?e? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.command:deletepak',
+      ov: 'pakrypt.command:delete_pak',
     })
   }
 
   if (showEverything || /^(exp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.command:exportpak',
+      ov: 'pakrypt.command:export_pak',
     })
   }
 
   if (showEverything || /^(imp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
-      ov: 'pakrypt.command:importpak',
+      ov: 'pakrypt.command:import_pak',
     })
   }
 
   if (showEverything || /^(cha?n?g?e? ?p?a?s?s?p?h?r?a?s?e?|pas?s?p?h?r?a?s?e?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakmanstate:unlocked') {
+    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
       result.push({
-        ov: 'pakrypt.command:changepassphrase',
+        ov: 'pakrypt.command:change_passphrase',
       })
     }
   }

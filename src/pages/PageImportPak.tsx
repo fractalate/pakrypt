@@ -43,11 +43,7 @@ export default function PageImportPak() {
     }
   }
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
+  return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Name</label>

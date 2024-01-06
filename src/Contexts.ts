@@ -23,7 +23,7 @@ const nullPageContextState: PageContextState = {
 }
 
 const nullPakmanStateContextState: PakmanStateContextState = {
-  pakman: { ov: 'pakrypt.pakmanstate:unloaded' },
+  pakman: { ov: 'pakrypt.pakman_state:unloaded' },
   setPakman: () => {},
 }
 

@@ -8,7 +8,7 @@ export default function TileCopyPak() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
-        ov: 'pakrypt.page:copypak',
+        ov: 'pakrypt.page:copy_pak',
       })
     }}>Copy Pak</button>
   </div>

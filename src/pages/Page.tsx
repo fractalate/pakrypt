@@ -1,6 +1,5 @@
 import { ChoosePage } from '.'
 import PageEditPassword from './PageEditPassword'
-import PageDemo from './PageDemo'
 import PageChangePassphrase from './PageChangePassphrase'
 import PageCopyPak from './PageCopyPak'
 import PageDeletePak from './PageDeletePak'
@@ -29,21 +28,19 @@ export default function Page({
     return <PageNewPassword />
   } else if (ov === 'pakrypt.page:edit_password') {
     return <PageEditPassword entry={ page.entry } />
-  } else if (ov === 'pakrypt.page:demo') {
-    return <PageDemo />
-  } else if (ov === 'pakrypt.page:openpak') {
+  } else if (ov === 'pakrypt.page:open_pak') {
     return <PageOpenPak />
-  } else if (ov === 'pakrypt.page:copypak') {
+  } else if (ov === 'pakrypt.page:copy_pak') {
     return <PageCopyPak />
-  } else if (ov === 'pakrypt.page:newpak') {
+  } else if (ov === 'pakrypt.page:new_pak') {
     return <PageNewPak />
-  } else if (ov === 'pakrypt.page:deletepak') {
+  } else if (ov === 'pakrypt.page:delete_pak') {
     return <PageDeletePak />
-  } else if (ov === 'pakrypt.page:changepassphrase') {
+  } else if (ov === 'pakrypt.page:change_passphrase') {
     return <PageChangePassphrase />
-  } else if (ov === 'pakrypt.page:exportpak') {
+  } else if (ov === 'pakrypt.page:export_pak') {
     return <PageExportPak />
-  } else if (ov === 'pakrypt.page:importpak') {
+  } else if (ov === 'pakrypt.page:import_pak') {
     return <PageImportPak />
   }
   return ov // This will cause a type error when the if's above are not exhaustive.

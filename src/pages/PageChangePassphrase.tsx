@@ -34,7 +34,7 @@ export default function PageChangePassphrase() {
     setMessage('')
   }
 
-  if (pakman.ov !== 'pakrypt.pakmanstate:unlocked') {
+  if (pakman.ov !== 'pakrypt.pakman_state:unlocked') {
     return <PageNotUnlocked />
   }
 
@@ -52,11 +52,7 @@ export default function PageChangePassphrase() {
     }
   }
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
+  return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="passphrase">New Passphrase</label>

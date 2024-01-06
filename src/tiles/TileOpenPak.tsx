@@ -8,7 +8,7 @@ export default function TileOpenPak() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
-        ov: 'pakrypt.page:openpak',
+        ov: 'pakrypt.page:open_pak',
       })
     }}>Open Pak</button>
   </div>

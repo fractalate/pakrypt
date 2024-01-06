@@ -8,7 +8,7 @@ export default function TileImportPak() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
-        ov: 'pakrypt.page:importpak',
+        ov: 'pakrypt.page:import_pak',
       })
     }}>Import Pak</button>
   </div>

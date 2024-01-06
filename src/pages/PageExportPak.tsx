@@ -31,12 +31,8 @@ export default function PageExportPak() {
     }}>{name}</button>
   </div>)
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
-    <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
+  return <div className={styling.page.regular}>
+    <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
     { items }
     { items.length == 0 && <div>
       No paks.

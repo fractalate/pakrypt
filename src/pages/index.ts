@@ -2,26 +2,51 @@ import { PakNote, PakPassword } from '../pak/Pak'
 
 export type ChoosePage = (
   | ChoosePageMain
-  | ChoosePageDemo
+
+  | ChoosePageNewPak
+  | ChoosePageOpenPak
+  | ChoosePageCopyPak
+  | ChoosePageDeletePak
+  | ChoosePageExportPak
+  | ChoosePageImportPak
+  | ChoosePageChangePassphrase
+
   | ChoosePageNewNote
   | ChoosePageEditNote
   | ChoosePageNewPassword
   | ChoosePageEditPassword
-  | ChoosePageOpenPak
-  | ChoosePageCopyPak
-  | ChoosePageNewPak
-  | ChoosePageDeletePak
-  | ChoosePageExportPak
-  | ChoosePageChangePassphrase
-  | ChoosePageImportPak
 )
 
 interface ChoosePageMain {
   ov: 'pakrypt.page:main',
 }
 
-interface ChoosePageDemo {
-  ov: 'pakrypt.page:demo',
+interface ChoosePageNewPak {
+  ov: 'pakrypt.page:new_pak',
+}
+
+interface ChoosePageOpenPak {
+  ov: 'pakrypt.page:open_pak',
+}
+
+interface ChoosePageCopyPak {
+  ov: 'pakrypt.page:copy_pak',
+}
+
+interface ChoosePageDeletePak {
+  ov: 'pakrypt.page:delete_pak',
+}
+
+interface ChoosePageExportPak {
+  ov: 'pakrypt.page:export_pak',
+}
+
+interface ChoosePageImportPak {
+  ov: 'pakrypt.page:import_pak',
+}
+
+interface ChoosePageChangePassphrase {
+  ov: 'pakrypt.page:change_passphrase',
 }
 
 interface ChoosePageNewNote {
@@ -48,34 +73,6 @@ interface ChoosePageEditPassword {
   entry: PakPassword,
   onSave?: (entry: PakPassword) => void,
   onCancel?: () => void,
-}
-
-interface ChoosePageOpenPak {
-  ov: 'pakrypt.page:openpak',
-}
-
-interface ChoosePageCopyPak {
-  ov: 'pakrypt.page:copypak',
-}
-
-interface ChoosePageNewPak {
-  ov: 'pakrypt.page:newpak',
-}
-
-interface ChoosePageDeletePak {
-  ov: 'pakrypt.page:deletepak',
-}
-
-interface ChoosePageExportPak {
-  ov: 'pakrypt.page:exportpak',
-}
-
-interface ChoosePageImportPak {
-  ov: 'pakrypt.page:importpak',
-}
-
-interface ChoosePageChangePassphrase {
-  ov: 'pakrypt.page:changepassphrase',
 }
 
 export type ChosenPage = [ChoosePage, string, JSX.Element];

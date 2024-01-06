@@ -17,7 +17,7 @@ export default function PageDeletePak() {
       setQuery('')
       popPage()
 
-      if (pakman.ov != 'pakrypt.pakmanstate:unloaded') {
+      if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
         if (pakman.name === name) {
           setPakman(PakmanClose())
         }
@@ -26,11 +26,7 @@ export default function PageDeletePak() {
     }}>{name}</button>
   </div>)
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
+  return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
     { items }
     { items.length == 0 && <div>

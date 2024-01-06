@@ -28,18 +28,14 @@ export default function PageOpenPak() {
     }}>{name}</button>
   </div>)
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
+  return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>X</button>
     { items }
     { items.length == 0 && <div>
       No paks.
       <button className={styling.button.formButton} onClick={() => {
         replacePage({
-          ov: 'pakrypt.page:newpak',
+          ov: 'pakrypt.page:new_pak',
         })
       }}>New Pak</button>
     </div>}

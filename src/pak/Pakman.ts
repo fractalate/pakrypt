@@ -12,15 +12,15 @@ export type Pakman = (
   | PakmanUnlocked
 )
 export interface PakmanUnloaded {
-  ov: 'pakrypt.pakmanstate:unloaded',
+  ov: 'pakrypt.pakman_state:unloaded',
 }
 export interface PakmanLoaded {
-  ov: 'pakrypt.pakmanstate:loaded',
+  ov: 'pakrypt.pakman_state:loaded',
   name: string,
   enc: Encrypted,
 }
 export interface PakmanUnlocked {
-  ov: 'pakrypt.pakmanstate:unlocked',
+  ov: 'pakrypt.pakman_state:unlocked',
   name: string,
   enc: Encrypted,
   key: CryptoKey,
@@ -50,7 +50,7 @@ export function ListPaks(): Array<string> {
 }
 
 export function PakmanClose(): PakmanUnloaded {
-  return { ov: 'pakrypt.pakmanstate:unloaded' }
+  return { ov: 'pakrypt.pakman_state:unloaded' }
 }
 
 export async function PakmanNew(name: string, passphrase: string): Promise<[PakmanUnlocked, PakmanNewResult]> {
@@ -61,7 +61,7 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
   const enc = await Encrypt(key, salt, new TextEncoder().encode(pakData))
 
   const pakman: PakmanUnlocked = {
-    ov: 'pakrypt.pakmanstate:unlocked',
+    ov: 'pakrypt.pakman_state:unlocked',
     name,
     enc,
     key,
@@ -106,7 +106,7 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
   const data = PakmanLoadRaw(name)
   if (!data) {
     return [
-      { ov: 'pakrypt.pakmanstate:unloaded' },
+      { ov: 'pakrypt.pakman_state:unloaded' },
       { ov: 'pakrypt.pakmanloadresult:notfound' },
     ]
   }
@@ -115,13 +115,13 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
     enc = GetEncrypted(data)
   } catch (err) {
     return [
-      { ov: 'pakrypt.pakmanstate:unloaded' },
+      { ov: 'pakrypt.pakman_state:unloaded' },
       { ov: 'pakrypt.pakmanloadresult:corrupt' },
     ]
   }
   return [
     {
-      ov: 'pakrypt.pakmanstate:loaded',
+      ov: 'pakrypt.pakman_state:loaded',
       name,
       enc,
     },
@@ -133,7 +133,7 @@ export function PakmanLoadLast(): [Pakman, PakmanLoadResult] {
   const lastPakName = localStorage.getItem('pakrypt.lastpak')
   if (!lastPakName) {
     return [{ 
-      ov: 'pakrypt.pakmanstate:unloaded',
+      ov: 'pakrypt.pakman_state:unloaded',
     }, {
       ov: 'pakrypt.pakmanloadresult:success',
     }]
@@ -165,16 +165,16 @@ export type PakmanUnlockResult = (
   | PakmanUnlockResultIntegrityError
 )
 export interface PakmanUnlockResultSuccess {
-  ov: 'pakrypt.pakmanunlockresult:success',
+  ov: 'pakrypt.pakman_unlock_result:success',
 }
 export interface PakmanUnlockResultDecryptError {
-  ov: 'pakrypt.pakmanunlockresult:decrypterror',
+  ov: 'pakrypt.pakman_unlock_result:decrypt_error',
 }
 export interface PakmanUnlockResultDecodeError {
-  ov: 'pakrypt.pakmanunlockresult:decodeerror',
+  ov: 'pakrypt.pakman_unlock_result:decode_error',
 }
 export interface PakmanUnlockResultIntegrityError {
-  ov: 'pakrypt.pakmanunlockresult:integrityerror',
+  ov: 'pakrypt.pakman_unlock_result:integrity_error',
 }
 
 export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
@@ -186,7 +186,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   } catch (err) {
     console.error(err)
     return [pakman, {
-      ov: 'pakrypt.pakmanunlockresult:decrypterror',
+      ov: 'pakrypt.pakman_unlock_result:decrypt_error',
     }]
   }
 
@@ -195,7 +195,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
     data = new TextDecoder().decode(buffer)
   } catch (err) {
     console.error(err)
-    return [pakman, { ov: 'pakrypt.pakmanunlockresult:decodeerror' }]
+    return [pakman, { ov: 'pakrypt.pakman_unlock_result:decode_error' }]
   }
 
   let pak
@@ -204,7 +204,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   } catch (err) {
     if (err instanceof SyntaxError) {
       console.error(err)
-      return [pakman, { ov: 'pakrypt.pakmanunlockresult:integrityerror' }]
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error' }]
     }
     throw err
   }
@@ -215,17 +215,17 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   const enc = await Encrypt(newKey, salt, buffer)
 
   return [{
-    ov: 'pakrypt.pakmanstate:unlocked',
+    ov: 'pakrypt.pakman_state:unlocked',
     name: pakman.name,
     enc: enc,
     key: key,
     pak: pak,
-  }, { ov: 'pakrypt.pakmanunlockresult:success' }]
+  }, { ov: 'pakrypt.pakman_unlock_result:success' }]
 }
 
 export function PakmanLock(pakman: PakmanUnlocked): PakmanLoaded {
   return {
-    ov: 'pakrypt.pakmanstate:loaded',
+    ov: 'pakrypt.pakman_state:loaded',
     name: pakman.name,
     enc: pakman.enc,
   }
@@ -249,7 +249,7 @@ export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase:
 
 export async function PakmanRenameAndSave(pakman: PakmanLoaded | PakmanUnlocked, name: string): Promise<[PakmanLoaded | PakmanUnlocked, PakmanSaveResult]> {
   pakman = { ...pakman, name }
-  if (pakman.ov === 'pakrypt.pakmanstate:loaded') {
+  if (pakman.ov === 'pakrypt.pakman_state:loaded') {
     return PakmanSaveWhileLocked(pakman)
   }
   return PakmanSave(pakman, pakman.pak)

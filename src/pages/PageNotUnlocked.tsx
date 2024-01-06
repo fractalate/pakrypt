@@ -9,11 +9,7 @@ export default function PageNotUnlocked() {
     pageContextState.popPage()
   }
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
+  return <div className={styling.page.regular}>
     The Pak is not unlocked. Press the button to close.
     <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
   </div>

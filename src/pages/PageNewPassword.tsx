@@ -11,7 +11,7 @@ export default function PageNewPassword() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
   const { setQuery } = useContext(QueryBarContext)
 
-  if (pakman.ov != 'pakrypt.pakmanstate:unlocked') {
+  if (pakman.ov != 'pakrypt.pakman_state:unlocked') {
     return <PageNotUnlocked />
   }
 
@@ -27,12 +27,7 @@ export default function PageNewPassword() {
     pageContextState.popPage()
   }
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
-    <button className={styling.button.formButton} onClick={() => closePage()}>X</button>
+  return <div className={styling.page.regular}>
     <PasswordEditor
       showDelete={false}
       onUserSubmit={(data) => savePassword(data)}

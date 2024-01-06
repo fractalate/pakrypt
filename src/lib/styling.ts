@@ -42,10 +42,17 @@ const styling = {
       p-2
       rounded-xl border
       shadow
-      bg-orange-100 border-slate-200
+      bg-orange-100/50 border-slate-200
       dark:bg-[#000]/40 dark:border-[#000]/40
     `,
   },
+  page: {
+    regular: `
+      min-h-screen w-screen
+      text-[#333] bg-[#FFE]
+      dark:text-[#EED] dark:bg-[#323]
+    `,
+  }
 }
 
 export default styling

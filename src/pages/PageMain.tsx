@@ -21,19 +21,15 @@ export default function PageMain() {
   </div>)
 
   let message = 'Type "help" for help.'
-  if (pakman.ov == 'pakrypt.pakmanstate:unloaded') {
+  if (pakman.ov == 'pakrypt.pakman_state:unloaded') {
     message = 'No pak. ' + message
-  } else if (pakman.ov == 'pakrypt.pakmanstate:loaded') {
+  } else if (pakman.ov == 'pakrypt.pakman_state:loaded') {
     message = '"' + pakman.name + '" is locked. ' + message
-  } else if (pakman.ov == 'pakrypt.pakmanstate:unlocked') {
+  } else if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
     message = '"' + pakman.name + '" is ready! ' + message
   }
 
-  return <div className="
-    min-h-screen w-screen
-    text-[#333] bg-[#FFE]
-    dark:text-[#EED] dark:bg-[#323]
-  ">
+  return <div className={styling.page.regular}>
     <div className="p-1">
       <input type="text" className={styling.input.omnibarInput + ' w-full'} autoFocus={true} placeholder={message} value={query} onChange={(e) => setQuery(e.target.value)} />
     </div>

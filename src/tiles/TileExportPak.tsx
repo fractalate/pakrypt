@@ -8,7 +8,7 @@ export default function TileExportPak() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <button className={styling.button.formButton} onClick={() => {
       pushPage({
-        ov: 'pakrypt.page:exportpak',
+        ov: 'pakrypt.page:export_pak',
       })
     }}>Export Pak</button>
   </div>
