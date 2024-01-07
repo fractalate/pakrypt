@@ -4,16 +4,11 @@ import { ChoosePage, PageContextState } from './pages'
 import { PakmanStateContextState } from './pak/Pakman'
 import { Pak } from './pak/Pak'
 
-interface QueryBarContextState { // TODO: Type belongs somewhere else?
-  query: string,
-  setQuery: (query: string) => void,
-}
-
 const nullPage: ChoosePage = {
   ov: 'pakrypt.page:main',
 }
 
-const nullJsxElement: JSX.Element = {} as JSX.Element // TODO: What's a better null JSX element?
+const nullJsxElement: JSX.Element = {} as JSX.Element // XXX: What's a better null JSX element?
 
 const nullPageContextState: PageContextState = {
   pages: [ [nullPage, '', nullJsxElement] ],
@@ -25,6 +20,11 @@ const nullPageContextState: PageContextState = {
 const nullPakmanStateContextState: PakmanStateContextState = {
   pakman: { ov: 'pakrypt.pakman_state:unloaded' },
   setPakman: () => {},
+}
+
+interface QueryBarContextState {
+  query: string,
+  setQuery: (query: string) => void,
 }
 
 const nullQueryBarContextState: QueryBarContextState = {

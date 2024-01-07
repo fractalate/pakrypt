@@ -63,7 +63,7 @@ Four main components of this application:
 * [x] Show version and license information somewhere.
 * [ ] Figure out build process with alternate "base" in vite.config.js.
 * [ ] New file.
-* [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak, delete pak, 
+* [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak.
 
 * [x] Password delete/confirm process should be cleaner.
 
@@ -71,7 +71,7 @@ Four main components of this application:
 * [ ] Escape to go to search.
 * [ ] Audit the ov's.
 * [ ] Audit `==` vs `===`.
-* [ ] Whole app styling.
+* [x] Whole app styling.
 * [ ] Maybe have some persistent visual about the locked state of the pak to keep the status visible when the "Locked" or similar text in the search bar is covered by a search.
 * [ ] Monthly code review until 1.0 go-live. (3 places for version number)
 * [x] Rotating salt on save.

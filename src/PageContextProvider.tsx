@@ -12,7 +12,8 @@ export default function PageContextProvider() {
     return [page, uuid(), <Page page={page} />]
   }, [])
   
-  const [pages, setPages] = useState([initialPage]) // Remember: don't modify this in-place.
+  // Don't modify the pages array. Create a new array and use setPages().
+  const [pages, setPages] = useState([initialPage])
   
   const pageContextState = useMemo(() => {
     return {

@@ -2,8 +2,6 @@
 // id - identification
 import { v4 as uuid } from 'uuid'
 
-// TODO: Make some unit tests.
-
 export interface Pak {
   ov: 'pakrypt.pak:1.0',
   id: string,
