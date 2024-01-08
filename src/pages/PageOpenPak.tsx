@@ -33,13 +33,15 @@ export default function PageOpenPak() {
     { items.length == 0 && <div>
       No paks to open.
     </div>}
-    { items.length > 0 && <div>
-      Please select a pak to open.
-    </div>}
-    <div className="flex flex-col gap-2">
-      { items }
-    </div>
-    <div>{ message }</div>
+    { items.length > 0 && <>
+      <div>
+        Please select a pak to open.
+      </div>
+      <div className="flex flex-col gap-2">
+        { items }
+      </div>
+    </>}
+    {message && <div>{ message }</div>}
     { items.length == 0 && <button className={styling.button.formButton} onClick={() => {
       replacePage({
         ov: 'pakrypt.page:new_pak',

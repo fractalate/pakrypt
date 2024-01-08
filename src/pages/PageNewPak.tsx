@@ -52,6 +52,7 @@ export default function PageNewPak() {
 
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
+    <div>Please provide the new pak details.</div>
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Name</label>

@@ -42,6 +42,7 @@ export default function PageEditNote({
 
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
+    <div>Please provide updated details for the note.</div>
     <NoteEditor
       initialValues={entry}
       showDelete={true}

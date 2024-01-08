@@ -5,6 +5,8 @@ const DEFAULT_IV_SIZE = 16
 const DEFAULT_KEY_SIZE = 256
 const DEFAULT_COST = 750 * 1000
 
+export class KryptException extends Error {}
+
 export interface Encrypted {
   version: string,
   salt: Uint8Array,
@@ -17,22 +19,22 @@ export interface Encrypted {
 export function GetEncrypted(data: string): Encrypted {
   const parts = data.split('$')
 
-  if (typeof parts[0] !== 'string') throw new Error('TODO')
-  if (typeof parts[1] !== 'string') throw new Error('TODO')
-  if (typeof parts[2] !== 'string') throw new Error('TODO')
-  if (typeof parts[3] !== 'string') throw new Error('TODO')
-  if (typeof parts[4] !== 'string') throw new Error('TODO')
-  if (typeof parts[5] !== 'string') throw new Error('TODO')
-  if (parts.length != 6) throw new Error('TODO')
+  if (parts.length != 6) throw new KryptException('invalid format')
+  if (typeof parts[0] !== 'string') throw new KryptException('invalid format')
+  if (typeof parts[1] !== 'string') throw new KryptException('invalid format')
+  if (typeof parts[2] !== 'string') throw new KryptException('invalid format')
+  if (typeof parts[3] !== 'string') throw new KryptException('invalid format')
+  if (typeof parts[4] !== 'string') throw new KryptException('invalid format')
+  if (typeof parts[5] !== 'string') throw new KryptException('invalid format')
 
   const version = parts[0]
   const salt = Base64.toUint8Array(Base64.decode(parts[1]))
   const iv = Base64.toUint8Array(Base64.decode(parts[2]))
   const cost = parseInt(parts[3])
   // the js convention to check parseInt was valid by comparing   x == parseInt(x)   converts x to a number internally so we do it explicitly here (via Number which does the appropriate conversion as opposed to when called as a constructor which does not).
-  if (cost != Number(parts[3])) throw new Error('TODO')
+  if (cost != Number(parts[3])) throw new KryptException('invalid format')
   const key_size = parseInt(parts[4])
-  if (key_size != Number(parts[4])) throw new Error('TODO')
+  if (key_size != Number(parts[4])) throw new KryptException('invalid format')
   const ciphertext = Base64.toUint8Array(Base64.decode(parts[5]))
 
   return {
@@ -127,7 +129,6 @@ export async function Encrypt(key: CryptoKey, salt: Uint8Array, buffer: Uint8Arr
   }
 }
 
-/*
 export async function DoCryptoTest() {
   async function encryptIt() {
     console.log('encoding...')
@@ -175,4 +176,5 @@ export async function DoCryptoTest() {
   const data = await encryptIt()
   await decryptIt(data)
 }
-*/
+
+DoCryptoTest()

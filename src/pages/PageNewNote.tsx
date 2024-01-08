@@ -29,6 +29,7 @@ export default function PageNewNote() {
 
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
+    <div>Please provide the new note details.</div>
     <NoteEditor
       showDelete={false}
       onUserSubmit={(data) => saveNote(data)}
