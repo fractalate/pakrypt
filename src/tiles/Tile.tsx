@@ -1,13 +1,14 @@
 import { SearchResult } from '../lib/search'
-import styling from '../lib/styling'
 import TileChangePassphrase from './TileChangePassphrase'
 import TileClosePak from './TileClosePak'
 import TileCopyPak from './TileCopyPak'
 import TileDeletePak from './TileDeletePak'
 import TileExportPak from './TileExportPak'
+import TileFile from './TileFile'
 import TileHelp from './TileHelp'
 import TileImportPak from './TileImportPak'
 import TileLock from './TileLock'
+import TileNewFile from './TileNewFile'
 import TileNewNote from './TileNewNote'
 import TileNewPak from './TileNewPak'
 import TileNewPassword from './TileNewPassword'
@@ -36,10 +37,7 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
   } else if (searchResult.ov === 'pakrypt.command:lock') {
     return <TileLock />
   } else if (searchResult.ov === 'pakrypt.command:new_file') {
-    // TODO
-    return <div className={styling.tile.tileComponentCommand}>
-      { searchResult.ov }
-    </div>
+    return <TileNewFile />
   } else if (searchResult.ov === 'pakrypt.command:new_note') {
     return <TileNewNote />
   } else if (searchResult.ov === 'pakrypt.command:help') {
@@ -47,10 +45,7 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
   } else if (searchResult.ov === 'pakrypt.password:1.0') {
     return <TilePassword entry={searchResult} />
   } else if (searchResult.ov === 'pakrypt.file:1.0') {
-    // TODO
-    return <div className={styling.tile.tileComponentEntry}>
-      { searchResult.ov }
-    </div>
+    return <TileFile entry={searchResult} />
   } else if (searchResult.ov === 'pakrypt.note:1.0') {
     return <TileNote entry={searchResult} />
   } else if (searchResult.ov === 'pakrypt.command:delete_pak') {

@@ -19,6 +19,7 @@ export interface PakFile {
   ov: 'pakrypt.file:1.0',
   id: string,
   title: string,
+  subtitle: string,
   blocks: PakFile_BlockReference[],
   tags?: string[],
 }
@@ -63,7 +64,7 @@ export function NewPak(): Pak {
   }
 }
 
-function calculateSize(data: string): number {
+function calculateSizeEncodedByBase64(data: string): number {
   const encodedLength = data.replace(/=*$/, '').length
   let remainder = encodedLength % 4 // Measured in bytes in the encoded data after the final full 4-byte block.
   if (remainder == 1) {
@@ -144,6 +145,7 @@ function removeBlock(pak: Pak, id: string): Pak {
 
 export interface FileFields {
   title: string,
+  subtitle: string,
   data: string, // base64 encoded binary data.
   tags?: string[],
 }
@@ -152,7 +154,7 @@ export function CreateFile(pak: Pak, file: FileFields): [Pak, PakFile] {
   const blockref: PakFile_BlockReference = {
     ov: 'pakrypt.blockref:1.0',
     id: uuid(),
-    size: calculateSize(file.data),
+    size: calculateSizeEncodedByBase64(file.data),
   }
 
   const entry: PakFile = {
@@ -160,6 +162,7 @@ export function CreateFile(pak: Pak, file: FileFields): [Pak, PakFile] {
     id: uuid(),
     blocks: [blockref],
     title: file.title,
+    subtitle: file.subtitle,
     tags: structuredClone(file.tags),
   }
 
@@ -173,6 +176,39 @@ export function CreateFile(pak: Pak, file: FileFields): [Pak, PakFile] {
   pak = addEntry(pak, entry)
 
   return [pak, entry]
+}
+
+export function UpdateFile(pak: Pak, id: string, file: FileFields): Pak {
+  if (pak.entries == null) {
+    return pak
+  }
+
+  const blockref: PakFile_BlockReference = {
+    ov: 'pakrypt.blockref:1.0',
+    id: uuid(),
+    size: calculateSizeEncodedByBase64(file.data),
+  }
+
+  const entry: PakFile = {
+    ov: 'pakrypt.file:1.0',
+    id: uuid(),
+    blocks: [blockref],
+    title: file.title,
+    subtitle: file.subtitle,
+    tags: structuredClone(file.tags),
+  }
+
+  const block: PakBlock = {
+    ov: 'parypt.block:1.0',
+    id: blockref.id,
+    data: file.data,
+  }
+
+  pak = DeleteEntry(pak, id)
+  pak = addBlock(pak, block)
+  pak = addEntry(pak, entry)
+
+  return pak
 }
 
 export interface NoteFields {
@@ -190,6 +226,22 @@ export function CreateNote(pak: Pak, note: NoteFields): [Pak, PakNote] {
   }
   pak = addEntry(pak, entry)
   return [pak, entry]
+}
+
+export function UpdateNote(pak: Pak, id: string, note: NoteFields): Pak {
+  if (pak.entries == null) {
+    return pak
+  }
+  const entry: PakNote = {
+    ov: 'pakrypt.note:1.0',
+    id,
+    title: note.title,
+    subtitle: note.subtitle,
+    note: note.note,
+    tags: note.tags == null ? note.tags : [...note.tags],
+  }
+  pak = replaceEntry(pak, entry)
+  return pak
 }
 
 export interface PasswordFields {
@@ -234,22 +286,6 @@ export function UpdatePassword(pak: Pak, id: string, password: PasswordFields): 
   return pak
 }
 
-export function UpdateNote(pak: Pak, id: string, note: NoteFields): Pak {
-  if (pak.entries == null) {
-    return pak
-  }
-  const entry: PakNote = {
-    ov: 'pakrypt.note:1.0',
-    id,
-    title: note.title,
-    subtitle: note.subtitle,
-    note: note.note,
-    tags: note.tags == null ? note.tags : [...note.tags],
-  }
-  pak = replaceEntry(pak, entry)
-  return pak
-}
-
 export function DeleteBlock(pak: Pak, id: string): Pak {
   return removeBlock(pak, id)
 }
@@ -275,6 +311,18 @@ export function FindEntry(pak: Pak, id: string): null | PakEntry {
   for (const entry of pak.entries) {
     if (entry.id === id) {
       return entry
+    }
+  }
+  return null
+}
+
+export function FindBlock(pak: Pak, id: string): null | PakBlock {
+  if (pak.blocks == null) {
+    return null
+  }
+  for (const block of pak.blocks) {
+    if (block.id === id) {
+      return block
     }
   }
   return null

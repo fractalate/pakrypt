@@ -2,18 +2,7 @@ import { useContext, useMemo, useState } from 'react'
 import { ListPaks, PakmanLoadRaw } from '../pak/Pakman'
 import styling from '../lib/styling'
 import { PageContext } from '../Contexts'
-
-function downloadString(filename: string, content: string) {
-  const blob = new Blob([content])
-  const link = document.createElement('a')
-  link.href = window.URL.createObjectURL(blob)
-  link.download = filename
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  // Should revoke, but safari on ios encounters an error if you do.
-  //window.URL.revokeObjectURL(url);
-}
+import { downloadContent } from '../lib/download'
 
 export default function PageExportPak() {
   const paks = useMemo(() => ListPaks(), [])
@@ -26,7 +15,7 @@ export default function PageExportPak() {
       if (data == null) {
         setMessage('Raw data not found. Sorry.')
       } else {
-        downloadString(name + '.pak', data)
+        downloadContent(name + '.pak', data)
       }
     }}>{name}</button>
     <div className="w-1/2"></div>

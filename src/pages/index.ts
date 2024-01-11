@@ -1,4 +1,4 @@
-import { PakNote, PakPassword } from '../pak/Pak'
+import { PakFile, PakNote, PakPassword } from '../pak/Pak'
 
 export type ChoosePage = (
   | ChoosePageMain
@@ -15,6 +15,8 @@ export type ChoosePage = (
   | ChoosePageEditNote
   | ChoosePageNewPassword
   | ChoosePageEditPassword
+  | ChoosePageNewFile
+  | ChoosePageEditFile
 )
 
 interface ChoosePageMain {
@@ -72,6 +74,19 @@ interface ChoosePageEditPassword {
   ov: 'pakrypt.page:edit_password',
   entry: PakPassword,
   onSave?: (entry: PakPassword) => void,
+  onCancel?: () => void,
+}
+
+interface ChoosePageNewFile {
+  ov: 'pakrypt.page:new_file',
+  onSave?: (entry: PakFile) => void,
+  onCancel?: () => void,
+}
+
+interface ChoosePageEditFile {
+  ov: 'pakrypt.page:edit_file',
+  entry: PakFile,
+  onSave?: (entry: PakFile) => void,
   onCancel?: () => void,
 }
 

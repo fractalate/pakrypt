@@ -33,11 +33,13 @@ Big features:
 
 Small features:
 
-* [ ] New file.
+* [x] New file.
 * [ ] X to clear in search bar.
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak.
 * [ ] Escape to go to search.
 * [ ] Title case general fields, no title case password fields.
+* [ ] Better support for wide displays.
+* [ ] Use a revealer for password fields.
 
 Finer details:
 
@@ -46,6 +48,11 @@ Finer details:
 * [ ] Audit navigation within the app. I've gotten stuck with the tab and unable to proceed with KB only.
 * [ ] Monthly code review until 1.0 go-live. (3 places for version number)
 * [ ] TODO hunting codebase.
+* [ ] Error messages on bad decrypt.
+* [ ] White section on the bottom on mobile.
+* [ ] Have a file name when exporting on mobile Firefox.
+* [ ] A taller notes editor (not resizable on firefox mobile).
+* [ ] Editing a note/password should focus on the entry in search too.
 
 Release:
 

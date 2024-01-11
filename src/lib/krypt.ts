@@ -28,14 +28,14 @@ export function GetEncrypted(data: string): Encrypted {
   if (typeof parts[5] !== 'string') throw new KryptException('invalid format')
 
   const version = parts[0]
-  const salt = Base64.toUint8Array(Base64.decode(parts[1]))
-  const iv = Base64.toUint8Array(Base64.decode(parts[2]))
+  const salt = Base64.toUint8Array(parts[1])
+  const iv = Base64.toUint8Array(parts[2])
   const cost = parseInt(parts[3])
   // the js convention to check parseInt was valid by comparing   x == parseInt(x)   converts x to a number internally so we do it explicitly here (via Number which does the appropriate conversion as opposed to when called as a constructor which does not).
   if (cost != Number(parts[3])) throw new KryptException('invalid format')
   const key_size = parseInt(parts[4])
   if (key_size != Number(parts[4])) throw new KryptException('invalid format')
-  const ciphertext = Base64.toUint8Array(Base64.decode(parts[5]))
+  const ciphertext = Base64.toUint8Array(parts[5])
 
   return {
     version,
@@ -50,11 +50,11 @@ export function GetEncrypted(data: string): Encrypted {
 export function PutEncrypted(enc: Encrypted): string {
   return [
     enc.version,
-    Base64.encode(Base64.fromUint8Array(enc.salt)),
-    Base64.encode(Base64.fromUint8Array(enc.iv)),
+    Base64.fromUint8Array(enc.salt),
+    Base64.fromUint8Array(enc.iv),
     '' + enc.cost,
     '' + enc.key_size,
-    Base64.encode(Base64.fromUint8Array(enc.ciphertext)),
+    Base64.fromUint8Array(enc.ciphertext),
   ].join('$')
 }
 
@@ -165,8 +165,9 @@ export async function DoCryptoTest() {
   }
 
   const input = new TextEncoder().encode('test')
-  const encoded = Base64.encode(Base64.fromUint8Array(input))
-  const decoded = Base64.toUint8Array(Base64.decode(encoded))
+  console.log('prefix', Base64.fromUint8Array(input))
+  const encoded = Base64.fromUint8Array(input)
+  const decoded = Base64.toUint8Array(encoded)
   const output = new TextDecoder().decode(decoded)
 
   console.log('input', input)

@@ -166,6 +166,14 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
+  if (showEverything || /^(new? ?f?i?l?e?|fil?e?)$/i.test(query)) {
+    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+      result.push({
+        ov: 'pakrypt.command:new_file',
+      })
+    }
+  }
+
   if (showEverything || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov == 'pakrypt.pakman_state:loaded') {
       result.push({
