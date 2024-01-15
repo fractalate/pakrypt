@@ -34,9 +34,9 @@ Big features:
 Small features:
 
 * [x] New file.
-* [ ] X to clear in search bar.
+* [x] X to clear in search bar.
 * [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak.
-* [ ] Escape to go to search.
+* [x] Escape to go to search.
 * [ ] Title case general fields, no title case password fields.
 * [ ] Better support for wide displays.
 * [ ] Use a revealer for password fields.

@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useRef } from 'react'
 import search, { SearchResult } from '../lib/search'
 import Tile from '../tiles/Tile'
 import styling from '../lib/styling'
@@ -29,9 +29,23 @@ export default function PageMain() {
     message = '"' + pakman.name + '" is ready! ' + message
   }
 
-  return <div className={styling.page.regular}>
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const checkGlobalHotkeys = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.code == 'Escape') {
+      if (inputRef.current != null) {
+        setQuery('')
+        inputRef.current.focus()
+        e.preventDefault()
+      }
+    }
+    console.log(e)
+  }
+
+  return <div className={styling.page.regular} onKeyUp={(e) => checkGlobalHotkeys(e)}>
     <div>
-      <input type="text" className={styling.input.omnibarInput + ' w-full'} autoFocus={true} placeholder={message} value={query} onChange={(e) => setQuery(e.target.value)} />
+      <input type="text" ref={inputRef} className={styling.input.omnibarInput + ' w-full'} autoFocus={true} placeholder={message} value={query} onChange={(e) => setQuery(e.target.value)} />
+      <button className="absolute top-2 right-3" tabIndex={-1} onClick={() => setQuery('')}>&#x2716;</button>
     </div>
     <div>
       { tileComponents }
