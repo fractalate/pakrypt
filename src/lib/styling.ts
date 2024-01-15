@@ -53,7 +53,7 @@ const styling = {
       dark:text-[#EED] dark:bg-[#323]
       flex flex-col gap-4 p-1
     `,
-  }
+  },
 }
 
 export default styling

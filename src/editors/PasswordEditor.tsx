@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
-import styling from '../lib/styling'
 import { useState } from 'react'
+import styling from '../lib/styling'
+import behavior from '../lib/behavior'
 
 interface Inputs {
   title: string,
@@ -45,15 +46,15 @@ export default function PasswordEditor({
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="title" className="block">Title</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('title', {
+        <input type="text" className={styling.input.formInput} {...behavior.input.title} {...register('title', {
           required: true,
         })} />
         <label htmlFor="subtitle" className="block">Subtitle</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('subtitle')} />
+        <input type="text" className={styling.input.formInput} {...behavior.input.title} {...register('subtitle')} />
         <label htmlFor="username" className="block">Username</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="none" autoComplete="off" spellCheck="false" autoCorrect="off" {...register('username')} />
+        <input type="text" className={styling.input.formInput} {...behavior.input.sensitiveData} {...register('username')} />
         <label htmlFor="password" className="block">Password</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="none" autoComplete="off" spellCheck="false"  autoCorrect="off" {...register('password')} />
+        <input type="text" className={styling.input.formInput} {...behavior.input.sensitiveData} {...register('password')} />
       </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>
