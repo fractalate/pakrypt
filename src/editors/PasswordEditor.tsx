@@ -51,9 +51,9 @@ export default function PasswordEditor({
         <label htmlFor="subtitle" className="block">Subtitle</label>
         <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('subtitle')} />
         <label htmlFor="username" className="block">Username</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="none" {...register('username')} />
+        <input type="text" className={styling.input.formInput} autoCapitalize="none" autoComplete="off" {...register('username')} />
         <label htmlFor="password" className="block">Password</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="none" {...register('password')} />
+        <input type="text" className={styling.input.formInput} autoCapitalize="none" autoComplete="off" {...register('password')} />
       </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>
