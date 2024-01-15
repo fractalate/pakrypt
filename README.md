@@ -35,7 +35,7 @@ Small features:
 
 * [x] New file.
 * [x] X to clear in search bar.
-* [ ] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak.
+* [x] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak. For new, it just prevents saving. User will have to exit, copy, delete, etc. to resolve the issue.
 * [x] Escape to go to search.
 * [x] Title case general fields, no title case password fields.
 * [ ] Better support for wide displays.

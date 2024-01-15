@@ -1,7 +1,7 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { PakmanRenameAndSave } from '../pak/Pakman'
+import { ListPaks, PakmanRenameAndSave } from '../pak/Pakman'
 import PageNotLoaded from './PageNotLoaded'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
@@ -13,6 +13,7 @@ interface Inputs {
 export default function PageCopyPak() {
   const { popPage } = useContext(PageContext)
   const { pakman, setPakman } = useContext(PakmanStateContext)
+  const [message, setMessage] = useState('')
   const { setQuery } = useContext(QueryBarContext)
   const {
     handleSubmit,
@@ -24,12 +25,15 @@ export default function PageCopyPak() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // TODO: Handling bad cases?
-    // TODO: Warning about overwrites?
-    const [newPakman] = await PakmanRenameAndSave(pakman, data.name)
-    setPakman(newPakman)
-    setQuery('')
-    popPage()
+    if (ListPaks().indexOf(data.name) >= 0) {
+      setMessage('A pak with the name "' + data.name + '" already exists.')
+    } else {
+      // TODO: Handling bad cases?
+      const [newPakman] = await PakmanRenameAndSave(pakman, data.name)
+      setPakman(newPakman)
+      setQuery('')
+      popPage()
+    }
   }
 
   return <div className={styling.page.regular}>
@@ -45,5 +49,6 @@ export default function PageCopyPak() {
       <button className={styling.button.formButton + ' w-1/2'} type="submit">Copy</button>
       <button className={styling.button.formButton + ' w-1/2'} onClick={() => popPage()}>Cancel</button>
     </div>
+    {message}
   </div>
 }

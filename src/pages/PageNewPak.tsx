@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { PakmanNew, PakmanSave } from '../pak/Pakman'
+import { ListPaks, PakmanNew, PakmanSave } from '../pak/Pakman'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 
@@ -23,7 +23,15 @@ export default function PageNewPak() {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (data.passphrase === data.passphrase2) {
+    if (data.passphrase !== data.passphrase2) {
+      setMessage('Passphrases do not match! Try again.')
+      setOpassphrase(data.passphrase)
+      setOpassphrase2(data.passphrase2)
+    } else if (ListPaks().indexOf(data.name) >= 0) {
+      setMessage('A pak with the name "' + data.name + '" already exists.')
+      setOpassphrase(data.passphrase) // These need to be set so the message shows.
+      setOpassphrase2(data.passphrase2) // These need to be set so the message shows.
+    } else {
       // TODO: Handling bad cases?
       let [newPakman] = await PakmanNew(data.name, data.passphrase)
       const [newPakman2] = await PakmanSave(newPakman, newPakman.pak)
@@ -31,12 +39,8 @@ export default function PageNewPak() {
       setPakman(newPakman)
       setQuery('')
       popPage()
-    } else {
-      setMessage('Passphrases do not match! Try again.')
-      setOpassphrase(data.passphrase)
-      setOpassphrase2(data.passphrase2)
     }
-  }
+}
 
   // TODO: Find some other way to detect when the field changes. onChange maybe?
   const [opassphrase, setOpassphrase] = useState('')

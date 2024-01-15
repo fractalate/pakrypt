@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { PageContext } from '../Contexts'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { PakmanSaveRaw } from '../pak/Pakman'
+import { ListPaks, PakmanSaveRaw } from '../pak/Pakman'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 
@@ -31,6 +31,8 @@ export default function PageImportPak() {
         let pakdata = e?.target?.result
         if (pakdata == null || pakdata == '') {
           setMessage('No data loaded.')
+        } else if (ListPaks().indexOf(data.name) >= 0) {
+          setMessage('A pak with the name "' + data.name + '" already exists.')
         } else {
           if (pakdata instanceof ArrayBuffer) {
             pakdata = new TextDecoder().decode(pakdata)
