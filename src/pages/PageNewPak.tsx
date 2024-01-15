@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
-import styling from '../lib/styling'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { PakmanNew, PakmanSave } from '../pak/Pakman'
+import styling from '../lib/styling'
+import behavior from '../lib/behavior'
 
 interface Inputs {
   name: string,
@@ -56,7 +57,7 @@ export default function PageNewPak() {
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Name</label>
-        <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('name', {
+        <input type="text" className={styling.input.formInput} {...behavior.input.title} {...register('name', {
             required: true,
         })} />
         <label htmlFor="passphrase">Passphrase</label>
