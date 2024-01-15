@@ -56,7 +56,7 @@ export default function PageNewPak() {
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Name</label>
-        <input type="text" className={styling.input.formInput} {...register('name', {
+        <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('name', {
             required: true,
         })} />
         <label htmlFor="passphrase">Passphrase</label>

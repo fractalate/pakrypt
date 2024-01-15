@@ -36,7 +36,7 @@ export default function PageCopyPak() {
     <div>Please give a new name for the copy.</div>
     <form className="flex flex-col gap-2" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Name</label>
-      <input type="text" className={styling.input.formInput} {...register('name', {
+      <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('name', {
           required: true,
       })} />
     </form>

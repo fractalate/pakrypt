@@ -26,12 +26,8 @@ export default function PageEditNote({
   }
 
   const deleteNote = async () => {
-    console.log(entry)
-    console.log(pakman)
     const pak = DeleteEntry(pakman.pak, entry.id)
-    console.log(pak)
     const [nextPakman] = await PakmanSave(pakman, pak)
-    console.log(nextPakman)
     setPakman(nextPakman)
     closePage()
   }

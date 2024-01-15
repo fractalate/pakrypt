@@ -45,15 +45,15 @@ export default function PasswordEditor({
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="title" className="block">Title</label>
-        <input type="text" className={styling.input.formInput} {...register('title', {
+        <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('title', {
           required: true,
         })} />
         <label htmlFor="subtitle" className="block">Subtitle</label>
-        <input type="text" className={styling.input.formInput} {...register('subtitle')} />
+        <input type="text" className={styling.input.formInput} autoCapitalize="words" {...register('subtitle')} />
         <label htmlFor="username" className="block">Username</label>
-        <input type="text" className={styling.input.formInput} {...register('username')} />
+        <input type="text" className={styling.input.formInput} autoCapitalize="none" {...register('username')} />
         <label htmlFor="password" className="block">Password</label>
-        <input type="text" className={styling.input.formInput} {...register('password')} />
+        <input type="text" className={styling.input.formInput} autoCapitalize="none" {...register('password')} />
       </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>

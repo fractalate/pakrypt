@@ -42,11 +42,11 @@ export default function NoteEditor({
   return <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
     <div className="flex flex-col gap-2">
       <label htmlFor="title" className="block">Title {errors.title && ('(' + (errors.title.message || 'Required') + ')')}</label>
-      <input type="text" className={styling.input.formInput + ' w-full'} {...register('title', {
+      <input type="text" className={styling.input.formInput + ' w-full'}  autoCapitalize="words" {...register('title', {
         required: true,
       })} />
       <label htmlFor="subtitle" className="block">Subtitle</label>
-      <input type="text" className={styling.input.formInput + ' w-full'} {...register('subtitle')} />
+      <input type="text" className={styling.input.formInput + ' w-full'} autoCapitalize="words" {...register('subtitle')} />
       <label htmlFor="note" className="block">Note</label>
       <textarea className={styling.textarea.formTextArea + ' w-full'} {...register('note')} />
     </div>
