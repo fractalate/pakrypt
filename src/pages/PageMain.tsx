@@ -43,7 +43,6 @@ export default function PageMain() {
       clearAndFocus()
       e.preventDefault()
     }
-    console.log(e)
   }
 
   return <div className={styling.page.regular} onKeyUp={(e) => checkGlobalHotkeys(e)}>
