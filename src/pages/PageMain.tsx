@@ -31,13 +31,17 @@ export default function PageMain() {
 
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const clearAndFocus = () => {
+    setQuery('')
+      if (inputRef.current != null) {
+        inputRef.current.focus()
+      }
+  }
+
   const checkGlobalHotkeys = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.code == 'Escape') {
-      if (inputRef.current != null) {
-        setQuery('')
-        inputRef.current.focus()
-        e.preventDefault()
-      }
+      clearAndFocus()
+      e.preventDefault()
     }
     console.log(e)
   }
@@ -45,7 +49,7 @@ export default function PageMain() {
   return <div className={styling.page.regular} onKeyUp={(e) => checkGlobalHotkeys(e)}>
     <div>
       <input type="text" ref={inputRef} className={styling.input.omnibarInput + ' w-full'} autoFocus={true} placeholder={message} value={query} onChange={(e) => setQuery(e.target.value)} />
-      <button className="absolute top-2 right-3" tabIndex={-1} onClick={() => setQuery('')}>&#x2716;</button>
+      <button className="absolute top-2 right-3" tabIndex={-1} onClick={() => clearAndFocus}>&#x2716;</button>
     </div>
     <div>
       { tileComponents }
