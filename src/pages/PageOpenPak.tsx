@@ -13,15 +13,15 @@ export default function PageOpenPak() {
   const items = paks.map((name) => <div key={name} className="flex flex-col">
     <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
       const [pakman, result] = PakmanLoad(name)
-      if (result.ov == 'pakrypt.pakmanloadresult:success') {
+      if (result.ov == 'pakrypt.pakman_load_result:success') {
         setPakman(pakman)
         setQuery('')
         popPage()
       } else {
         setMessage(result.ov)
-        if (result.ov == 'pakrypt.pakmanloadresult:notfound') {
+        if (result.ov == 'pakrypt.pakman_load_result:notfound') {
           setMessage('Pak not found. Sorry.')
-        } else if (result.ov == 'pakrypt.pakmanloadresult:corrupt') {
+        } else if (result.ov == 'pakrypt.pakman_load_result:corrupt') {
           setMessage('Pak is corrupt. Sorry.')
         }
       }

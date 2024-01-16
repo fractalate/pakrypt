@@ -68,7 +68,7 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
     pak,
   }
   const [finalPakman, result] = await PakmanSave(pakman, pak)
-  if (result.ov != 'pakrypt.pakmansaveresult:success') {
+  if (result.ov != 'pakrypt.pakman_save_result:success') {
     throw new Error('Save on new failed: ' + JSON.stringify(result))
   }
   return [finalPakman, { ov: 'pakrypt.pakmannewresult:success' }]
@@ -80,13 +80,13 @@ export type PakmanLoadResult = (
   | PakmanLoadResultCorrupt
 )
 export interface PakmanLoadResultSuccess {
-  ov: 'pakrypt.pakmanloadresult:success',
+  ov: 'pakrypt.pakman_load_result:success',
 }
 export interface PakmanLoadResultNotFound {
-  ov: 'pakrypt.pakmanloadresult:notfound',
+  ov: 'pakrypt.pakman_load_result:notfound',
 }
 export interface PakmanLoadResultCorrupt {
-  ov: 'pakrypt.pakmanloadresult:corrupt',
+  ov: 'pakrypt.pakman_load_result:corrupt',
 }
 
 export function PakmanLoadRaw(name: string): null | string {
@@ -107,7 +107,7 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
   if (!data) {
     return [
       { ov: 'pakrypt.pakman_state:unloaded' },
-      { ov: 'pakrypt.pakmanloadresult:notfound' },
+      { ov: 'pakrypt.pakman_load_result:notfound' },
     ]
   }
   let enc
@@ -116,7 +116,7 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
   } catch (err) {
     return [
       { ov: 'pakrypt.pakman_state:unloaded' },
-      { ov: 'pakrypt.pakmanloadresult:corrupt' },
+      { ov: 'pakrypt.pakman_load_result:corrupt' },
     ]
   }
   return [
@@ -125,17 +125,17 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
       name,
       enc,
     },
-    { ov: 'pakrypt.pakmanloadresult:success' },
+    { ov: 'pakrypt.pakman_load_result:success' },
   ]
 }
 
 export function PakmanLoadLast(): [Pakman, PakmanLoadResult] {
-  const lastPakName = localStorage.getItem('pakrypt.lastpak')
+  const lastPakName = localStorage.getItem('pakrypt.last_pak')
   if (!lastPakName) {
     return [{ 
       ov: 'pakrypt.pakman_state:unloaded',
     }, {
-      ov: 'pakrypt.pakmanloadresult:success',
+      ov: 'pakrypt.pakman_load_result:success',
     }]
   }
   return PakmanLoad(lastPakName)
@@ -143,14 +143,14 @@ export function PakmanLoadLast(): [Pakman, PakmanLoadResult] {
 
 export function PakmanSetLast(name: null | string) {
   if (name == null || name == '') {
-    localStorage.removeItem('pakrypt.lastpak')
+    localStorage.removeItem('pakrypt.last_pak')
   } else {
-    localStorage.setItem('pakrypt.lastpak', name)
+    localStorage.setItem('pakrypt.last_pak', name)
   }
 }
 
 export function PakmanDelete(name: string) {
-  const lastPakName = localStorage.getItem('pakrypt.lastpak')
+  const lastPakName = localStorage.getItem('pakrypt.last_pak')
   if (lastPakName === name) {
     PakmanSetLast(null)
   }
@@ -235,7 +235,7 @@ export type PakmanSaveResult = (
   | PakmanSaveResultSuccess
 )
 export interface PakmanSaveResultSuccess {
-  ov: 'pakrypt.pakmansaveresult:success',
+  ov: 'pakrypt.pakman_save_result:success',
 }
 
 export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase: string): Promise<[PakmanUnlocked, PakmanSaveResult]> {
@@ -264,7 +264,7 @@ export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[Pak
   const data = PutEncrypted(enc)
   localStorage.setItem(storage, data)
 
-  return [{ ...pakman, enc, pak }, { ov: 'pakrypt.pakmansaveresult:success' }]
+  return [{ ...pakman, enc, pak }, { ov: 'pakrypt.pakman_save_result:success' }]
 }
 
 export async function PakmanSaveWhileLocked(pakman: PakmanLoaded): Promise<[PakmanLoaded, PakmanSaveResult]> {
@@ -273,5 +273,5 @@ export async function PakmanSaveWhileLocked(pakman: PakmanLoaded): Promise<[Pakm
   const data = PutEncrypted(enc)
   localStorage.setItem(storage, data)
 
-  return [{ ...pakman, enc }, { ov: 'pakrypt.pakmansaveresult:success' }]
+  return [{ ...pakman, enc }, { ov: 'pakrypt.pakman_save_result:success' }]
 }
