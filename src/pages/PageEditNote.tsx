@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { PageContext, PakmanStateContext } from '../Contexts'
 import { DeleteEntry, PakNote, NoteFields, UpdateNote } from '../pak/Pak'
-import { PakmanSave } from '../pak/Pakman'
+import { PakmanUpdate } from '../pak/Pakman'
 import styling from '../lib/styling'
 import NoteEditor from '../editors/NoteEditor'
 
@@ -20,14 +20,14 @@ export default function PageEditNote({
 
   const saveNote = async (data: NoteFields) => {
     const pak = UpdateNote(pakman.pak, entry.id, data)
-    const [nextPakman] = await PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanUpdate(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }
 
   const deleteNote = async () => {
     const pak = DeleteEntry(pakman.pak, entry.id)
-    const [nextPakman] = await PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanUpdate(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }

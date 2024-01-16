@@ -3,7 +3,7 @@ import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import FileEditor from '../editors/FileEditor'
 import { CreateFile } from '../pak/Pak'
 import styling from '../lib/styling'
-import { PakmanSave } from '../pak/Pakman'
+import { PakmanUpdate } from '../pak/Pakman'
 import PageNotUnlocked from './PageNotUnlocked'
 import { Base64 } from 'js-base64'
 
@@ -36,7 +36,7 @@ export default function PageNewFile() {
       data,
     }
     const [pak] = CreateFile(pakman.pak, obj)
-    const [newPakman] = await PakmanSave(pakman, pak)
+    const [newPakman] = await PakmanUpdate(pakman, pak)
     setPakman(newPakman)
     setQuery(obj.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
     closePage()

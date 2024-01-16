@@ -55,20 +55,22 @@ export default function PageChangePassphrase() {
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
     <div>Please give a new passphrase for this pak.</div>
-    <form className="flex flex-col gap-2" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="passphrase">New Passphrase</label>
-      <input type="password" className={styling.input.formInput} {...register('passphrase', {
-          required: true,
-      })} />
-      <label htmlFor="passphrase">Passphrase Confirm</label>
-      <input type="password" className={styling.input.formInput} {...register('passphrase2', {
-          required: true,
-      })} />
+    <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="passphrase">New Passphrase</label>
+        <input type="password" className={styling.input.formInput} {...register('passphrase', {
+            required: true,
+        })} />
+        <label htmlFor="passphrase">Passphrase Confirm</label>
+        <input type="password" className={styling.input.formInput} {...register('passphrase2', {
+            required: true,
+        })} />
+      </div>
+      <div className="flex flex-row gap-2">
+        <button className={styling.button.formButton + ' w-1/2'} type="submit">Change Passphrase</button>
+        <button className={styling.button.formButton + ' w-1/2'} onClick={() => popPage()}>Cancel</button>
+      </div>
     </form>
-    <div className="flex flex-row gap-2">
-      <button className={styling.button.formButton + 'w-1/2'} type="submit">Change Passphrase</button>
-      <button className={styling.button.formButton + 'w-1/2'} onClick={() => popPage()}>Cancel</button>
-    </div>
     <div>
       { message }
     </div>

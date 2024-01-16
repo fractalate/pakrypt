@@ -29,9 +29,14 @@ export interface PakmanUnlocked {
 
 export type PakmanNewResult = (
   | PakmanNewResultSuccess
+  | PakmanNewResultStoreFailed
 )
 export interface PakmanNewResultSuccess {
   ov: 'pakrypt.pakman_new_result:success',
+}
+export interface PakmanNewResultStoreFailed {
+  ov: 'pakrypt.pakman_new_result:store_failed',
+  cause: PakmanStoreResult,
 }
 
 export function ListPaks(): Array<string> {
@@ -55,10 +60,11 @@ export function PakmanClose(): PakmanUnloaded {
 
 export async function PakmanNew(name: string, passphrase: string): Promise<[PakmanUnlocked, PakmanNewResult]> {
   const pak = NewPak()
-  const pakData = JSON.stringify(pak)
 
   const [key, salt] = await DeriveKey(passphrase)
-  const enc = await Encrypt(key, salt, new TextEncoder().encode(pakData))
+
+  const buffer = new TextEncoder().encode(JSON.stringify(pak))
+  const enc = await Encrypt(key, salt, buffer)
 
   const pakman: PakmanUnlocked = {
     ov: 'pakrypt.pakman_state:unlocked',
@@ -67,11 +73,16 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
     key,
     pak,
   }
-  const [finalPakman, result] = await PakmanSave(pakman, pak)
-  if (result.ov != 'pakrypt.pakman_save_result:success') {
-    throw new Error('Save on new failed: ' + JSON.stringify(result))
+
+  const [finalPakman, result] = await PakmanStore(pakman)
+
+  if (result.ov === 'pakrypt.pakman_store_result:success') {
+    return [finalPakman, { ov: 'pakrypt.pakman_new_result:success' }]
+  } else if (result.ov === 'pakrypt.pakman_store_result:fail') {
+    return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', cause: result }]
   }
-  return [finalPakman, { ov: 'pakrypt.pakman_new_result:success' }]
+
+  return result // never
 }
 
 export type PakmanLoadResult = (
@@ -233,45 +244,63 @@ export function PakmanLock(pakman: PakmanUnlocked): PakmanLoaded {
 
 export type PakmanSaveResult = (
   | PakmanSaveResultSuccess
+  | PakmanSaveResultStoreFailed
 )
 export interface PakmanSaveResultSuccess {
   ov: 'pakrypt.pakman_save_result:success',
+}
+export interface PakmanSaveResultStoreFailed {
+  ov: 'pakrypt.pakman_save_result:store_failed',
+  cause: PakmanStoreResultFail,
+}
+
+export async function PakmanUpdate(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
+  const buffer = new TextEncoder().encode(JSON.stringify(pak))
+  const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
+  return PakmanSave({ ...pakman, pak, enc })
 }
 
 export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase: string): Promise<[PakmanUnlocked, PakmanSaveResult]> {
   const [key, salt] = await DeriveKey(passphrase)
   const buffer = new TextEncoder().encode(JSON.stringify(pakman.pak))
-  // TODO: Doing this encrypt here, then in PakmanSave is not ideal.
   const enc = await Encrypt(key, salt, buffer)
-  pakman = { ...pakman, key, enc }
-  return PakmanSave(pakman, pakman.pak)
+  return PakmanSave({ ...pakman, key, enc })
 }
 
-export async function PakmanRenameAndSave(pakman: PakmanLoaded | PakmanUnlocked, name: string): Promise<[PakmanLoaded | PakmanUnlocked, PakmanSaveResult]> {
-  pakman = { ...pakman, name }
-  if (pakman.ov === 'pakrypt.pakman_state:loaded') {
-    return PakmanSaveWhileLocked(pakman)
+export async function PakmanRename<T extends PakmanLoaded | PakmanUnlocked>(pakman: T, name: string): Promise<[T, PakmanSaveResult]> {
+  return await PakmanSave({ ...pakman, name })
+}
+
+// Use the PakmanChangePassphrase, PakmanUpdate, and PakmanRename functions.
+async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T,  PakmanSaveResult]> {
+  const [newPakman, storeResult] = await PakmanStore(pakman)
+
+  if (storeResult.ov == 'pakrypt.pakman_store_result:success') {
+    return [newPakman, { ov: 'pakrypt.pakman_save_result:success' }]
+  } else if (storeResult.ov == 'pakrypt.pakman_store_result:fail') {
+    return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
   }
-  return PakmanSave(pakman, pakman.pak)
+
+  return storeResult // never
 }
 
-export async function PakmanSave(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
-  const storage = `pakrypt.pak[${pakman.name}]`
-  
-  const buffer = new TextEncoder().encode(JSON.stringify(pak))
-  const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
-
-  const data = PutEncrypted(enc)
-  localStorage.setItem(storage, data)
-
-  return [{ ...pakman, enc, pak }, { ov: 'pakrypt.pakman_save_result:success' }]
+type PakmanStoreResult = (
+  | PakmanStoreResultSuccess
+  | PakmanStoreResultFail
+)
+interface PakmanStoreResultSuccess {
+  ov: 'pakrypt.pakman_store_result:success',
+}
+interface PakmanStoreResultFail {
+  ov: 'pakrypt.pakman_store_result:fail',
 }
 
-export async function PakmanSaveWhileLocked(pakman: PakmanLoaded): Promise<[PakmanLoaded, PakmanSaveResult]> {
-  const storage = `pakrypt.pak[${pakman.name}]`
+async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T, PakmanStoreResult]> {
   const enc = pakman.enc
+
+  const storage = `pakrypt.pak[${pakman.name}]`
   const data = PutEncrypted(enc)
   localStorage.setItem(storage, data)
 
-  return [{ ...pakman, enc }, { ov: 'pakrypt.pakman_save_result:success' }]
+  return [pakman, { ov: 'pakrypt.pakman_store_result:success' }]
 }

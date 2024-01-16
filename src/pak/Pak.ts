@@ -52,7 +52,7 @@ export interface PakPassword {
 }
 
 export interface PakBlock {
-  ov: 'parypt.block:1.0',
+  ov: 'pakrypt.block:1.0',
   id: string,
   data: string, // base64 encoded binary data.
 }
@@ -167,7 +167,7 @@ export function CreateFile(pak: Pak, file: FileFields): [Pak, PakFile] {
   }
 
   const block: PakBlock = {
-    ov: 'parypt.block:1.0',
+    ov: 'pakrypt.block:1.0',
     id: blockref.id,
     data: file.data,
   }
@@ -199,7 +199,7 @@ export function UpdateFile(pak: Pak, id: string, file: FileFields): Pak {
   }
 
   const block: PakBlock = {
-    ov: 'parypt.block:1.0',
+    ov: 'pakrypt.block:1.0',
     id: blockref.id,
     data: file.data,
   }

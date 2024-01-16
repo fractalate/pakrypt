@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo } from 'react'
 import { PageContext, PakmanStateContext } from '../Contexts'
 import { DeleteEntry, UpdateFile, PakFile, FindBlock } from '../pak/Pak'
-import { PakmanSave } from '../pak/Pakman'
+import { PakmanUpdate } from '../pak/Pakman'
 import styling from '../lib/styling'
 import FileEditor from '../editors/FileEditor'
 import { Base64 } from 'js-base64'
@@ -56,14 +56,14 @@ export default function PageEditFile({
     }
 
     const pak = UpdateFile(pakman.pak, entry.id, obj)
-    const [nextPakman] = await PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanUpdate(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }, [initialDataBase64, closePage, entry, pakman, setPakman])
 
   const deleteFile = async () => {
     const pak = DeleteEntry(pakman.pak, entry.id)
-    const [nextPakman] = await PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanUpdate(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }

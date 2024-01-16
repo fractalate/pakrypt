@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ListPaks, PakmanNew, PakmanSave } from '../pak/Pakman'
+import { ListPaks, PakmanNew } from '../pak/Pakman'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 
@@ -33,9 +33,7 @@ export default function PageNewPak() {
       setOpassphrase2(data.passphrase2) // These need to be set so the message shows.
     } else {
       // TODO: Handling bad cases?
-      let [newPakman] = await PakmanNew(data.name, data.passphrase)
-      const [newPakman2] = await PakmanSave(newPakman, newPakman.pak)
-      newPakman = newPakman2
+      const [newPakman] = await PakmanNew(data.name, data.passphrase)
       setPakman(newPakman)
       setQuery('')
       popPage()

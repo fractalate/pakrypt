@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ListPaks, PakmanRenameAndSave } from '../pak/Pakman'
+import { ListPaks, PakmanRename } from '../pak/Pakman'
 import PageNotLoaded from './PageNotLoaded'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
@@ -29,7 +29,7 @@ export default function PageCopyPak() {
       setMessage('A pak with the name "' + data.name + '" already exists.')
     } else {
       // TODO: Handling bad cases?
-      const [newPakman] = await PakmanRenameAndSave(pakman, data.name)
+      const [newPakman] = await PakmanRename(pakman, data.name)
       setPakman(newPakman)
       setQuery('')
       popPage()

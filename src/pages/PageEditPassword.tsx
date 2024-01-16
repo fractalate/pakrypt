@@ -3,7 +3,7 @@ import { PageContext, PakmanStateContext } from '../Contexts'
 import PasswordEditor from '../editors/PasswordEditor'
 import { DeleteEntry, PakPassword, PasswordFields, UpdatePassword } from '../pak/Pak'
 import styling from '../lib/styling'
-import { PakmanSave } from '../pak/Pakman'
+import { PakmanUpdate } from '../pak/Pakman'
 
 export default function PageEditPassword({
   entry,
@@ -20,14 +20,14 @@ export default function PageEditPassword({
 
   const savePassword = async (data: PasswordFields) => {
     const pak = UpdatePassword(pakman.pak, entry.id, data)
-    const [nextPakman] = await PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanUpdate(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }
 
   const deletePassword = async () => {
     const pak = DeleteEntry(pakman.pak, entry.id)
-    const [nextPakman] = await PakmanSave(pakman, pak)
+    const [nextPakman] = await PakmanUpdate(pakman, pak)
     setPakman(nextPakman)
     closePage()
   }

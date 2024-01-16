@@ -3,7 +3,7 @@ import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import PasswordEditor from '../editors/PasswordEditor'
 import { CreatePassword, PasswordFields } from '../pak/Pak'
 import styling from '../lib/styling'
-import { PakmanSave } from '../pak/Pakman'
+import { PakmanUpdate } from '../pak/Pakman'
 import PageNotUnlocked from './PageNotUnlocked'
 
 export default function PageNewPassword() {
@@ -17,7 +17,7 @@ export default function PageNewPassword() {
 
   const savePassword = async (data: PasswordFields) => {
     const [pak] = CreatePassword(pakman.pak, data)
-    const [newPakman] = await PakmanSave(pakman, pak)
+    const [newPakman] = await PakmanUpdate(pakman, pak)
     setPakman(newPakman)
     setQuery(data.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
     closePage()
