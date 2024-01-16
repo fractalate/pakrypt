@@ -31,7 +31,7 @@ export type PakmanNewResult = (
   | PakmanNewResultSuccess
 )
 export interface PakmanNewResultSuccess {
-  ov: 'pakrypt.pakmannewresult:success',
+  ov: 'pakrypt.pakman_new_result:success',
 }
 
 export function ListPaks(): Array<string> {
@@ -71,7 +71,7 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
   if (result.ov != 'pakrypt.pakman_save_result:success') {
     throw new Error('Save on new failed: ' + JSON.stringify(result))
   }
-  return [finalPakman, { ov: 'pakrypt.pakmannewresult:success' }]
+  return [finalPakman, { ov: 'pakrypt.pakman_new_result:success' }]
 }
 
 export type PakmanLoadResult = (
