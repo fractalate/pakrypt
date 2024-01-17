@@ -39,16 +39,18 @@ export default function PageCopyPak() {
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => popPage()}>Cancel</button>
     <div>Please give a new name for the copy.</div>
-    <form className="flex flex-col gap-2" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="name">Name</label>
-      <input type="text" className={styling.input.formInput} {...behavior.input.title} {...register('name', {
-          required: true,
-      })} />
+    <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="name">Name</label>
+        <input type="text" className={styling.input.formInput} {...behavior.input.title} {...register('name', {
+            required: true,
+        })} />
+      </div>
+      <div className="flex flex-row gap-2">
+        <button className={styling.button.formButton + ' w-1/2'} type="submit">Copy</button>
+        <button className={styling.button.formButton + ' w-1/2'} onClick={() => popPage()}>Cancel</button>
+      </div>
     </form>
-    <div className="flex flex-row gap-2">
-      <button className={styling.button.formButton + ' w-1/2'} type="submit">Copy</button>
-      <button className={styling.button.formButton + ' w-1/2'} onClick={() => popPage()}>Cancel</button>
-    </div>
     {message}
   </div>
 }
