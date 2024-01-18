@@ -30,7 +30,7 @@ export interface PakmanUnlocked {
 }
 
 interface PakmanLocalStorageItem {
-  ov: 'pakman.pakman_local_storage_item:1.0',
+  ov: 'pakrypt.pakman_local_storage_item:1.0',
   pak?: string,
   local?: string,
 }
@@ -130,7 +130,7 @@ function PakmanLoadLocalStorageItem(name: string): [PakmanLocalStorageItem, Pakm
   const storage = `pakrypt.pak[${name}]`
   const raw = localStorage.getItem(storage)
   if (raw == null || raw == '') {
-    return [{ ov: 'pakman.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:not_found' }]
+    return [{ ov: 'pakrypt.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:not_found' }]
   }
 
   let result: PakmanLocalStorageItem
@@ -139,13 +139,13 @@ function PakmanLoadLocalStorageItem(name: string): [PakmanLocalStorageItem, Pakm
   } catch (err) {
     if (err instanceof SyntaxError) {
       console.error(err)
-      return [{ ov: 'pakman.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error' }]
+      return [{ ov: 'pakrypt.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error' }]
     }
     throw err
   }
 
-  if (result.ov !== 'pakman.pakman_local_storage_item:1.0') {
-    return [{ ov: 'pakman.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error' }]
+  if (result.ov !== 'pakrypt.pakman_local_storage_item:1.0') {
+    return [{ ov: 'pakrypt.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error' }]
   }
 
   return [result, { ov: 'pakrypt.pakman_load_local_storage_item_result:success' }]
@@ -194,7 +194,7 @@ interface PakmanImportResultNoSpace {
 }
 export function PakmanImport(name: string, pak: string): PakmanImportResult {
   const item: PakmanLocalStorageItem = {
-    ov: 'pakman.pakman_local_storage_item:1.0',
+    ov: 'pakrypt.pakman_local_storage_item:1.0',
     pak,
   }
 
@@ -391,9 +391,11 @@ export type PakmanUnlockResult = (
   | PakmanUnlockResultDecryptError
   | PakmanUnlockResultDecodeError
   | PakmanUnlockResultIntegrityError
+  | PakmanUnlockResultRekeyError
   | PakmanUnlockResultLocalDecryptError
   | PakmanUnlockResultLocalDecodeError
   | PakmanUnlockResultLocalIntegrityError
+  | PakmanUnlockResultLocalRekeyError
 )
 export interface PakmanUnlockResultSuccess {
   ov: 'pakrypt.pakman_unlock_result:success',
@@ -406,6 +408,11 @@ export interface PakmanUnlockResultDecodeError {
 }
 export interface PakmanUnlockResultIntegrityError {
   ov: 'pakrypt.pakman_unlock_result:integrity_error',
+  detail: 'parse' | 'validate',
+}
+export interface PakmanUnlockResultRekeyError {
+  ov: 'pakrypt.pakman_unlock_result:rekey_error',
+  detail: 'derive_key' | 'encrypt',
 }
 export interface PakmanUnlockResultLocalDecryptError {
   ov: 'pakrypt.pakman_unlock_result:local_decrypt_error',
@@ -415,6 +422,11 @@ export interface PakmanUnlockResultLocalDecodeError {
 }
 export interface PakmanUnlockResultLocalIntegrityError {
   ov: 'pakrypt.pakman_unlock_result:local_integrity_error',
+  detail: 'parse' | 'validate',
+}
+export interface PakmanUnlockResultLocalRekeyError {
+  ov: 'pakrypt.pakman_unlock_result:local_rekey_error',
+  detail: 'encrypt',
 }
 
 export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
@@ -429,11 +441,58 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
     return decryptResult // never
   }
 
-  const [key, salt] = await DeriveKey(passphrase)
+  let pak: Pak
+  try {
+    pak = JSON.parse(data)
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      console.error(err)
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'parse' }]
+    }
+    throw err
+  }
+
+  // TODO: Validate the JSON structure fully.
+  if (pak.ov !== 'pakrypt.pak:1.0') {
+    return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'validate' }]
+  }
+
+  let key: CryptoKey
+  let salt: Uint8Array
+  try {
+    [key, salt] = await DeriveKey(passphrase)
+  } catch (err) {
+    console.error(err)
+    return [pakman, { ov: 'pakrypt.pakman_unlock_result:rekey_error', detail: 'derive_key' }]
+  }
+  const buffer = new TextEncoder().encode(data)
+  let enc: Encrypted
+  try {
+    enc = await Encrypt(key, salt, buffer)
+  } catch (err) {
+    console.error(err)
+    return [pakman, { ov: 'pakrypt.pakman_unlock_result:rekey_error', detail: 'encrypt' }]
+  }
 
   let local: null | PakmanLocal = null
   if (pakman.local != null) {
     const [localOptionsData, localOptionsDecryptResult] = await DecryptTextEnc(passphrase, pakman.local.enc)
+
+    let options: PakmanLocalOptions
+    try {
+      options = JSON.parse(localOptionsData)
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        console.error(err)
+        return [pakman, { ov: 'pakrypt.pakman_unlock_result:local_integrity_error', detail: 'parse' }]
+      }
+      throw err
+    }
+
+    // TODO: Validate the JSON structure fully.
+    if (options.ov !== 'pakrypt.pakman_local_options:1.0') {
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:local_integrity_error', detail: 'validate' }]
+    }
 
     if (localOptionsDecryptResult.ov !== 'pakrypt.decrypt_text_enc_result:success') {
       if (localOptionsDecryptResult.ov === 'pakrypt.decrypt_text_enc_result:decrypt_error') {
@@ -444,35 +503,20 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
       return localOptionsDecryptResult // never
     }
 
+    const buffer = new TextEncoder().encode(localOptionsData)
+    let enc: Encrypted
     try {
-      const buffer = new TextEncoder().encode(JSON.stringify(localOptionsData))
-      const enc = await Encrypt(key, salt, buffer) // TODO: I should catch the exceptions that this could produce.
-      local = {
-        enc,
-        options: JSON.parse(localOptionsData), // TODO: Validate the JSON structure maybe.
-      }
+      enc = await Encrypt(key, salt, buffer)
     } catch (err) {
-      if (err instanceof SyntaxError) {
-        console.error(err)
-        return [pakman, { ov: 'pakrypt.pakman_unlock_result:local_integrity_error' }]
-      }
-      throw err
-    }
-  }
-
-  let pak: Pak
-  try {
-    pak = JSON.parse(data) // TODO: Validate the JSON structure maybe.
-  } catch (err) {
-    if (err instanceof SyntaxError) {
       console.error(err)
-      return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error' }]
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:local_rekey_error', detail: 'encrypt' }]
     }
-    throw err
-  }
 
-  const buffer = new TextEncoder().encode(JSON.stringify(pak))
-  const enc = await Encrypt(key, salt, buffer) // TODO: I should catch the exceptions that this could produce.
+    local = {
+      enc,
+      options,
+    }
+  }
 
   return [{
     ov: 'pakrypt.pakman_state:unlocked',
@@ -602,7 +646,7 @@ interface PakmanStoreResultNoSpace {
 }
 
 async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T, PakmanStoreResult]> {
-  const item: PakmanLocalStorageItem = { ov: 'pakman.pakman_local_storage_item:1.0' }
+  const item: PakmanLocalStorageItem = { ov: 'pakrypt.pakman_local_storage_item:1.0' }
 
   item.pak = PutEncrypted(pakman.enc)
   if (pakman.local != null) {
