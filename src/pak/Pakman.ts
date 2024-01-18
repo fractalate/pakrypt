@@ -615,16 +615,16 @@ export async function PakmanUpdateLocalOptions(pakman: PakmanUnlocked, options: 
 }
 
 export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase: string): Promise<[PakmanUnlocked, PakmanSaveResult]> {
+  const [key, salt] = await DeriveKey(passphrase)
   let local: null | PakmanLocal = null
   if (pakman.local != null) {
     const buffer = new TextEncoder().encode(JSON.stringify(pakman.local.options))
-    const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
+    const enc = await Encrypt(key, salt, buffer)
     local = {
       enc,
       options: pakman.local.options,
     }
   }
-  const [key, salt] = await DeriveKey(passphrase)
   const buffer = new TextEncoder().encode(JSON.stringify(pakman.pak))
   const enc = await Encrypt(key, salt, buffer)
   const [newPakman, result] = await PakmanSave({ ...pakman, key, enc, local })
