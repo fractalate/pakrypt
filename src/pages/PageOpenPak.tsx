@@ -17,13 +17,12 @@ export default function PageOpenPak() {
         setPakman(pakman)
         setQuery('')
         popPage()
+      } else if (result.ov == 'pakrypt.pakman_load_result:not_found') {
+        setMessage('Pak not found. Sorry.')
+      } else if (result.ov == 'pakrypt.pakman_load_result:integrity_error') {
+        setMessage('Pak is corrupt. Sorry.')
       } else {
-        setMessage(result.ov)
-        if (result.ov == 'pakrypt.pakman_load_result:notfound') {
-          setMessage('Pak not found. Sorry.')
-        } else if (result.ov == 'pakrypt.pakman_load_result:corrupt') {
-          setMessage('Pak is corrupt. Sorry.')
-        }
+        setMessage(result) // never
       }
     }}>{name}</button>
   </div>)

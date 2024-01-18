@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { PageContext } from '../Contexts'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { ListPaks, PakmanSaveRaw } from '../pak/Pakman'
+import { ListPaks, PakmanImport } from '../pak/Pakman'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 
@@ -37,8 +37,12 @@ export default function PageImportPak() {
           if (pakdata instanceof ArrayBuffer) {
             pakdata = new TextDecoder().decode(pakdata)
           }
-          PakmanSaveRaw(data.name, pakdata)
-          popPage()
+          const result = PakmanImport(data.name, pakdata)
+          if (result.ov === 'pakrypt.pakman_import_result:success') {
+            popPage()
+          } else {
+            setMessage(result.ov)
+          }
         }
       }
 

@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from 'react'
-import { ListPaks, PakmanLoadRaw } from '../pak/Pakman'
+import { ListPaks, PakmanExport } from '../pak/Pakman'
 import styling from '../lib/styling'
 import { PageContext } from '../Contexts'
 import { downloadContent } from '../lib/download'
@@ -11,11 +11,11 @@ export default function PageExportPak() {
 
   const items = paks.map((name) => <div key={name} className="flex flex-col">
     <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
-      const data = PakmanLoadRaw(name)
-      if (data == null) {
-        setMessage('Raw data not found. Sorry.')
-      } else {
+      const [data, result] = PakmanExport(name)
+      if (result.ov == 'pakrypt.pakman_export_result:success') {
         downloadContent(name + '.pak', data)
+      } else {
+        setMessage(result.ov)
       }
     }}>{name}</button>
     <div className="w-1/2"></div>

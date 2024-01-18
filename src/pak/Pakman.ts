@@ -104,86 +104,211 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
 
   if (result.ov === 'pakrypt.pakman_store_result:success') {
     return [finalPakman, { ov: 'pakrypt.pakman_new_result:success' }]
-  } else if (result.ov === 'pakrypt.pakman_store_result:fail') {
+  } else if (result.ov === 'pakrypt.pakman_store_result:no_space') {
     return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', cause: result }]
   }
 
   return result // never
 }
 
+type PakmanLoadLocalStorageItemResult = (
+  | PakmanLoadLocalStorageItemResultSuccess
+  | PakmanLoadLocalStorageItemResultNotFound
+  | PakmanLoadLocalStorageItemResultIntegrityError
+)
+interface PakmanLoadLocalStorageItemResultSuccess {
+  ov: 'pakrypt.pakman_load_local_storage_item_result:success',
+}
+interface PakmanLoadLocalStorageItemResultNotFound {
+  ov: 'pakrypt.pakman_load_local_storage_item_result:not_found',
+}
+interface PakmanLoadLocalStorageItemResultIntegrityError {
+  ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error',
+}
+
+function PakmanLoadLocalStorageItem(name: string): [PakmanLocalStorageItem, PakmanLoadLocalStorageItemResult] {
+  const storage = `pakrypt.pak[${name}]`
+  const raw = localStorage.getItem(storage)
+  if (raw == null || raw == '') {
+    return [{ ov: 'pakman.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:not_found' }]
+  }
+
+  let result: PakmanLocalStorageItem
+  try {
+    result = JSON.parse(raw)
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      console.error(err)
+      return [{ ov: 'pakman.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error' }]
+    }
+    throw err
+  }
+
+  if (result.ov !== 'pakman.pakman_local_storage_item:1.0') {
+    return [{ ov: 'pakman.pakman_local_storage_item:1.0' }, { ov: 'pakrypt.pakman_load_local_storage_item_result:integrity_error' }]
+  }
+
+  return [result, { ov: 'pakrypt.pakman_load_local_storage_item_result:success' }]
+}
+
+type PakmanSaveLocalStorageItemResult = (
+  | PakmanSaveLocalStorageItemResultSuccess
+  | PakmanSaveLocalStorageItemResultNoSpace
+)
+interface PakmanSaveLocalStorageItemResultSuccess {
+  ov: 'pakrypt.pakman_save_local_storage_item_result:success',
+}
+interface PakmanSaveLocalStorageItemResultNoSpace {
+  ov: 'pakrypt.pakman_save_local_storage_item_result:no_space',
+}
+
+function PakmanSaveLocalStorageItem(name: string, item: PakmanLocalStorageItem): PakmanSaveLocalStorageItemResult {
+  const storage = `pakrypt.pak[${name}]`
+  const raw = JSON.stringify(item)
+  try {
+    localStorage.setItem(storage, raw)
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'QuotaExceededError') {
+      console.error(err)
+      return { ov: 'pakrypt.pakman_save_local_storage_item_result:no_space' }
+    }
+    throw err
+  }
+  return { ov: 'pakrypt.pakman_save_local_storage_item_result:success' }
+}
+
+function PakmanRemoveLocalStorageItem(name: string) {
+  const storage = `pakrypt.pak[${name}]`
+  localStorage.removeItem(storage)
+}
+
+type PakmanImportResult = (
+  | PakmanImportResultSuccess
+  | PakmanImportResultNoSpace
+)
+interface PakmanImportResultSuccess {
+  ov: 'pakrypt.pakman_import_result:success',
+}
+interface PakmanImportResultNoSpace {
+  ov: 'pakrypt.pakman_import_result:no_space',
+}
+export function PakmanImport(name: string, pak: string): PakmanImportResult {
+  const item: PakmanLocalStorageItem = {
+    ov: 'pakman.pakman_local_storage_item:1.0',
+    pak,
+  }
+
+  const result = PakmanSaveLocalStorageItem(name, item)
+  if (result.ov !== 'pakrypt.pakman_save_local_storage_item_result:success') {
+    if (result.ov === 'pakrypt.pakman_save_local_storage_item_result:no_space') {
+      return { ov: 'pakrypt.pakman_import_result:no_space' }
+    }
+
+    return result // never
+  }
+
+  return { ov: 'pakrypt.pakman_import_result:success' }
+}
+
+type PakmanExportResult = (
+  | PakmanExportResultSuccess
+  | PakmanExportResultNotFound
+  | PakmanExportResultIntegrityError
+)
+interface PakmanExportResultSuccess {
+  ov: 'pakrypt.pakman_export_result:success',
+}
+interface PakmanExportResultNotFound {
+  ov: 'pakrypt.pakman_export_result:not_found',
+}
+interface PakmanExportResultIntegrityError {
+  ov: 'pakrypt.pakman_export_result:integrity_error',
+  detail: (
+    | 'pakrypt.pakman_load_local_storage_item_result:integrity_error'
+    | 'pak_local_storage_item_integrity_error'
+  ),
+}
+
+export function PakmanExport(name: string): [string, PakmanExportResult] {
+  const [item, itemResult] = PakmanLoadLocalStorageItem(name)
+
+  if (itemResult.ov !== 'pakrypt.pakman_load_local_storage_item_result:success') {
+    if (itemResult.ov === 'pakrypt.pakman_load_local_storage_item_result:not_found') {
+      return ['', { ov: 'pakrypt.pakman_export_result:not_found' }]
+    } else if (itemResult.ov === 'pakrypt.pakman_load_local_storage_item_result:integrity_error') {
+      return ['', { ov: 'pakrypt.pakman_export_result:integrity_error', detail: itemResult.ov }]
+    }
+
+    return itemResult // never
+  }
+
+  if (item.pak == null || item.pak == '') {
+    return ['', { ov: 'pakrypt.pakman_export_result:integrity_error', detail: 'pak_local_storage_item_integrity_error' }]
+  }
+
+  return [item.pak, { ov: 'pakrypt.pakman_export_result:success' }]
+}
+
 export type PakmanLoadResult = (
   | PakmanLoadResultSuccess
   | PakmanLoadResultNotFound
-  | PakmanLoadResultCorrupt
+  | PakmanLoadResultIntegrityError
 )
 export interface PakmanLoadResultSuccess {
   ov: 'pakrypt.pakman_load_result:success',
 }
 export interface PakmanLoadResultNotFound {
-  ov: 'pakrypt.pakman_load_result:notfound',
+  ov: 'pakrypt.pakman_load_result:not_found',
 }
-export interface PakmanLoadResultCorrupt {
-  ov: 'pakrypt.pakman_load_result:corrupt',
-}
-
-function PakmanLoadRaw(name: string): null | string {
-  const storage = `pakrypt.pak[${name}]`
-  const data = localStorage.getItem(storage)
-  return data
-}
-
-function PakmanLoadRawLocal(name: string): null | string {
-  const storage = `pakrypt.pak[${name}].local`
-  const data = localStorage.getItem(storage)
-  return data
-}
-
-function PakmanSaveRaw(name: string, data: null | string) {
-  const storage = `pakrypt.pak[${name}]`
-  if (data == null || data == '') {
-    localStorage.removeItem(storage)
-  } else {
-    localStorage.setItem(storage, data)
-  }
-}
-
-function PakmanSaveRawLocal(name: string, data: null | string) {
-  const storage = `pakrypt.pak[${name}].local`
-  if (data == null || data == '') {
-    localStorage.removeItem(storage)
-  } else {
-    localStorage.setItem(storage, data)
-  }
-}
-
-function PakmanImport(name: string, pakData: string) {
-
+export interface PakmanLoadResultIntegrityError {
+  ov: 'pakrypt.pakman_load_result:integrity_error',
+  detail: (
+    | 'pakrypt.pakman_load_local_storage_item_result:integrity_error'
+    | 'pak_local_storage_item_integrity_error'
+    | 'pak_integrity_error'
+    | 'local_integrity_error'
+  ),
 }
 
 export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
-  const data = PakmanLoadRaw(name)
-  if (!data) {
-    return [
-      { ov: 'pakrypt.pakman_state:unloaded' },
-      { ov: 'pakrypt.pakman_load_result:notfound' },
-    ]
+  const [item, itemResult] = PakmanLoadLocalStorageItem(name)
+
+  if (itemResult.ov !== 'pakrypt.pakman_load_local_storage_item_result:success') {
+    if (itemResult.ov === 'pakrypt.pakman_load_local_storage_item_result:not_found') {
+      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:not_found' }]
+    } else if (itemResult.ov === 'pakrypt.pakman_load_local_storage_item_result:integrity_error') {
+      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: itemResult.ov }]
+    }
+
+    return itemResult // never
   }
-  let enc
+
+  const data = item.pak
+  if (data == null || data == '') {
+    return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'pak_local_storage_item_integrity_error' }]
+  }
+
+  let enc: Encrypted
   try {
     enc = GetEncrypted(data)
   } catch (err) {
-    return [
-      { ov: 'pakrypt.pakman_state:unloaded' },
-      { ov: 'pakrypt.pakman_load_result:corrupt' },
-    ]
+    console.error(err)
+    return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'pak_integrity_error' }]
   }
-  const localData = PakmanLoadRawLocal(name)
+
+  const localData = item.local
   let local: null | PakmanLocalLoaded = null
   if (localData) {
-    local = {
-      enc: GetEncrypted(localData),
+    try {
+      local = {
+        enc: GetEncrypted(localData),
+      }
+    } catch (err) {
+      console.error(err)
+      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'local_integrity_error' }]
     }
   }
+
   return [
     {
       ov: 'pakrypt.pakman_state:loaded',
@@ -220,8 +345,7 @@ export function PakmanDelete(name: string) {
   if (lastPakName === name) {
     PakmanSetLast(null)
   }
-  PakmanSaveRaw(name, null)
-  PakmanSaveRawLocal(name, null)
+  PakmanRemoveLocalStorageItem(name)
 }
 
 type DecryptTextEncResult = (
@@ -322,10 +446,10 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
 
     try {
       const buffer = new TextEncoder().encode(JSON.stringify(localOptionsData))
-      const enc = await Encrypt(key, salt, buffer)
+      const enc = await Encrypt(key, salt, buffer) // TODO: I should catch the exceptions that this could produce.
       local = {
         enc,
-        options: JSON.parse(localOptionsData),  // TODO: Validate the JSON structure maybe.
+        options: JSON.parse(localOptionsData), // TODO: Validate the JSON structure maybe.
       }
     } catch (err) {
       if (err instanceof SyntaxError) {
@@ -348,7 +472,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   }
 
   const buffer = new TextEncoder().encode(JSON.stringify(pak))
-  const enc = await Encrypt(key, salt, buffer)
+  const enc = await Encrypt(key, salt, buffer) // TODO: I should catch the exceptions that this could produce.
 
   return [{
     ov: 'pakrypt.pakman_state:unlocked',
@@ -384,7 +508,7 @@ export interface PakmanSaveResultSuccess {
 }
 export interface PakmanSaveResultStoreFailed {
   ov: 'pakrypt.pakman_save_result:store_failed',
-  cause: PakmanStoreResultFail,
+  cause: PakmanStoreResult,
 }
 
 export async function PakmanUpdate(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
@@ -455,37 +579,43 @@ export async function PakmanCopy<T extends PakmanLoaded | PakmanUnlocked>(pakman
 async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T,  PakmanSaveResult]> {
   const [newPakman, storeResult] = await PakmanStore(pakman)
 
-  if (storeResult.ov === 'pakrypt.pakman_store_result:success') {
-    return [newPakman, { ov: 'pakrypt.pakman_save_result:success' }]
-  } else if (storeResult.ov === 'pakrypt.pakman_store_result:fail') {
-    return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
+  if (storeResult.ov !== 'pakrypt.pakman_store_result:success') {
+    if (storeResult.ov === 'pakrypt.pakman_store_result:no_space') {
+      return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
+    }
+
+    return storeResult // never
   }
 
-  return storeResult // never
+  return [newPakman, { ov: 'pakrypt.pakman_save_result:success' }]
 }
 
 type PakmanStoreResult = (
   | PakmanStoreResultSuccess
-  | PakmanStoreResultFail
+  | PakmanStoreResultNoSpace
 )
 interface PakmanStoreResultSuccess {
   ov: 'pakrypt.pakman_store_result:success',
 }
-interface PakmanStoreResultFail {
-  ov: 'pakrypt.pakman_store_result:fail',
+interface PakmanStoreResultNoSpace {
+  ov: 'pakrypt.pakman_store_result:no_space',
 }
 
 async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T, PakmanStoreResult]> {
-  const enc = pakman.enc
+  const item: PakmanLocalStorageItem = { ov: 'pakman.pakman_local_storage_item:1.0' }
 
-  const data = PutEncrypted(enc)
-  PakmanSaveRaw(pakman.name, data)
+  item.pak = PutEncrypted(pakman.enc)
+  if (pakman.local != null) {
+    item.local = PutEncrypted(pakman.local.enc)
+  }
 
-  if (pakman.local == null) {
-    PakmanSaveRawLocal(pakman.name, null)
-  } else {
-    const localData = PutEncrypted(pakman.local.enc)
-    PakmanSaveRawLocal(pakman.name, localData)
+  const result = PakmanSaveLocalStorageItem(pakman.name, item)
+  if (result.ov !== 'pakrypt.pakman_save_local_storage_item_result:success') {
+    if (result.ov === 'pakrypt.pakman_save_local_storage_item_result:no_space') {
+      return [pakman, { ov: 'pakrypt.pakman_store_result:no_space' }]
+    }
+
+    return result // never
   }
 
   return [pakman, { ov: 'pakrypt.pakman_store_result:success' }]
