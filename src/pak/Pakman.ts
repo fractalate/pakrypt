@@ -653,6 +653,23 @@ async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): 
     item.local = PutEncrypted(pakman.local.enc)
   }
 
+  if (pakman.ov === 'pakrypt.pakman_state:unlocked' && pakman.local != null) {
+    if (pakman.local.options.pakmanStore != null) {
+      const { url, key } = pakman.local.options.pakmanStore
+      const headers = new Headers()
+      headers.append('Content-Type', 'text-plain')
+      // TODO
+      await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+          'X-Api-Key': key,
+        },
+        body: item.pak,
+      })
+    }
+  }
+
   const result = PakmanSaveLocalStorageItem(pakman.name, item)
   if (result.ov !== 'pakrypt.pakman_save_local_storage_item_result:success') {
     if (result.ov === 'pakrypt.pakman_save_local_storage_item_result:no_space') {
