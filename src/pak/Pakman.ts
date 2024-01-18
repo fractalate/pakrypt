@@ -618,7 +618,7 @@ export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase:
   let local: null | PakmanLocal = null
   if (pakman.local != null) {
     const buffer = new TextEncoder().encode(JSON.stringify(pakman.local.options))
-    const enc = await Encrypt(pakman.key, pakman.local.enc.salt, buffer)
+    const enc = await Encrypt(pakman.key, pakman.enc.salt, buffer)
     local = {
       enc,
       options: pakman.local.options,
