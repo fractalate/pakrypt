@@ -2,6 +2,7 @@ import { SearchResult } from '../lib/search'
 import TileChangePassphrase from './TileChangePassphrase'
 import TileClosePak from './TileClosePak'
 import TileCopyPak from './TileCopyPak'
+import TileDebug from './TileDebug'
 import TileDeletePak from './TileDeletePak'
 import TileExportPak from './TileExportPak'
 import TileFile from './TileFile'
@@ -58,6 +59,8 @@ export default function Tile({ searchResult }: { searchResult: SearchResult }): 
     return <TileImportPak />
   } else if (searchResult.ov === 'pakrypt.command:version') {
     return <TileVersion />
+  } else if (searchResult.ov === 'pakrypt.command:debug_menu') {
+    return <TileDebug />
   }
   return searchResult
 }

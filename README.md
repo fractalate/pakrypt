@@ -40,6 +40,11 @@ Small features:
 * [x] Title case general fields, no title case password fields.
 * [ ] Better support for wide displays.
 * [ ] Use a revealer for password fields.
+* [ ] A taller notes editor (not resizable on firefox mobile).
+* [ ] Have a file name when exporting on mobile Firefox.
+* [ ] Automatic extensions when uploading files.
+* [ ] CTA for import pak in the help.
+* [ ] Auto open on import pak?
 
 Finer details:
 
@@ -50,8 +55,6 @@ Finer details:
 * [ ] TODO hunting codebase.
 * [ ] Error messages on bad decrypt.
 * [ ] White section on the bottom on mobile.
-* [ ] Have a file name when exporting on mobile Firefox.
-* [ ] A taller notes editor (not resizable on firefox mobile).
 * [ ] Editing a note/password should focus on the entry in search too.
 
 Release:

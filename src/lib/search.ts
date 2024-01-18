@@ -26,6 +26,8 @@ export type SearchResultCommand = (
   | SearchResultHelp
   | SearchResultVersion
   | SearchResultThemeSwitcher
+
+  | SearchResultDebugMenu
 )
 
 export interface SearchResultLock {
@@ -90,6 +92,10 @@ export interface SearchResultVersion {
 
 export interface SearchResultThemeSwitcher {
   ov: 'pakrypt.command:theme_switcher',
+}
+
+export interface SearchResultDebugMenu {
+  ov: 'pakrypt.command:debug_menu',
 }
 
 function tagsMatchQuery(tags: string[], query: string): boolean {
@@ -259,6 +265,12 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   if (!explicitVersion && (showEverything || /^(ver?s?i?o?n?)$/i.test(query))) {
     result.push({
       ov: 'pakrypt.command:version',
+    })
+  }
+
+  if (query === 'enable debug menu') {
+    result.push({
+      ov: 'pakrypt.command:debug_menu',
     })
   }
 
