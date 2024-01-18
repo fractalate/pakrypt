@@ -391,6 +391,7 @@ export type PakmanUnlockResult = (
   | PakmanUnlockResultDecryptError
   | PakmanUnlockResultDecodeError
   | PakmanUnlockResultIntegrityError
+  | PakmanUnlockResultFetchError
   | PakmanUnlockResultRekeyError
   | PakmanUnlockResultLocalDecryptError
   | PakmanUnlockResultLocalDecodeError
@@ -409,6 +410,9 @@ export interface PakmanUnlockResultDecodeError {
 export interface PakmanUnlockResultIntegrityError {
   ov: 'pakrypt.pakman_unlock_result:integrity_error',
   detail: 'parse' | 'validate',
+}
+export interface PakmanUnlockResultFetchError {
+  ov: 'pakrypt.pakman_unlock_result:fetch_error',
 }
 export interface PakmanUnlockResultRekeyError {
   ov: 'pakrypt.pakman_unlock_result:rekey_error',
@@ -430,33 +434,6 @@ export interface PakmanUnlockResultLocalRekeyError {
 }
 
 export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
-  const [data, decryptResult] = await DecryptTextEnc(passphrase, pakman.enc)
-
-  if (decryptResult.ov !== 'pakrypt.decrypt_text_enc_result:success') {
-    if (decryptResult.ov === 'pakrypt.decrypt_text_enc_result:decrypt_error') {
-      return [pakman, { ov: 'pakrypt.pakman_unlock_result:decrypt_error' }]
-    } else if (decryptResult.ov === 'pakrypt.decrypt_text_enc_result:decode_error') {
-      return [pakman, { ov: 'pakrypt.pakman_unlock_result:decode_error' }]
-    }
-    return decryptResult // never
-  }
-
-  let pak: Pak
-  try {
-    pak = JSON.parse(data)
-  } catch (err) {
-    if (err instanceof SyntaxError) {
-      console.error(err)
-      return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'parse' }]
-    }
-    throw err
-  }
-
-  // TODO: Validate the JSON structure fully.
-  if (pak.ov !== 'pakrypt.pak:1.0') {
-    return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'validate' }]
-  }
-
   let key: CryptoKey
   let salt: Uint8Array
   try {
@@ -464,14 +441,6 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   } catch (err) {
     console.error(err)
     return [pakman, { ov: 'pakrypt.pakman_unlock_result:rekey_error', detail: 'derive_key' }]
-  }
-  const buffer = new TextEncoder().encode(data)
-  let enc: Encrypted
-  try {
-    enc = await Encrypt(key, salt, buffer)
-  } catch (err) {
-    console.error(err)
-    return [pakman, { ov: 'pakrypt.pakman_unlock_result:rekey_error', detail: 'encrypt' }]
   }
 
   let local: null | PakmanLocal = null
@@ -516,6 +485,60 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
       enc,
       options,
     }
+  }
+
+  let enc0: Encrypted
+  if (local != null && local.options.pakmanStore != null) {
+    const result = await fetch(local.options.pakmanStore.url, {
+      method: 'GET',
+      headers: {
+        'X-Api-Key': local.options.pakmanStore.key,
+      },
+    })
+    const o = await result.json()
+    if (o.success) {
+      enc0 = GetEncrypted(o.data)
+    } else {
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:fetch_error' }]
+    }
+  } else {
+    enc0 = pakman.enc
+  }
+
+  const [data, decryptResult] = await DecryptTextEnc(passphrase, enc0)
+
+  if (decryptResult.ov !== 'pakrypt.decrypt_text_enc_result:success') {
+    if (decryptResult.ov === 'pakrypt.decrypt_text_enc_result:decrypt_error') {
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:decrypt_error' }]
+    } else if (decryptResult.ov === 'pakrypt.decrypt_text_enc_result:decode_error') {
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:decode_error' }]
+    }
+    return decryptResult // never
+  }
+
+  let pak: Pak
+  try {
+    pak = JSON.parse(data)
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      console.error(err)
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'parse' }]
+    }
+    throw err
+  }
+
+  // TODO: Validate the JSON structure fully.
+  if (pak.ov !== 'pakrypt.pak:1.0') {
+    return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'validate' }]
+  }
+
+  const buffer = new TextEncoder().encode(data)
+  let enc: Encrypted
+  try {
+    enc = await Encrypt(key, salt, buffer)
+  } catch (err) {
+    console.error(err)
+    return [pakman, { ov: 'pakrypt.pakman_unlock_result:rekey_error', detail: 'encrypt' }]
   }
 
   return [{
