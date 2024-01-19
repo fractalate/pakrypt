@@ -52,18 +52,6 @@ export interface PakmanLocalOptionsPakmanStore {
   key: string,
 }
 
-export type PakmanNewResult = (
-  | PakmanNewResultSuccess
-  | PakmanNewResultStoreFailed
-)
-export interface PakmanNewResultSuccess {
-  ov: 'pakrypt.pakman_new_result:success',
-}
-export interface PakmanNewResultStoreFailed {
-  ov: 'pakrypt.pakman_new_result:store_failed',
-  cause: PakmanStoreResult,
-}
-
 export function ListPaks(): Array<string> {
   const result: Array<string> = []
   for (let i = 0; i < localStorage.length; ++i) {
@@ -81,6 +69,18 @@ export function ListPaks(): Array<string> {
 
 export function PakmanClose(): PakmanUnloaded {
   return { ov: 'pakrypt.pakman_state:unloaded' }
+}
+
+export type PakmanNewResult = (
+  | PakmanNewResultSuccess
+  | PakmanNewResultStoreFailed
+)
+export interface PakmanNewResultSuccess {
+  ov: 'pakrypt.pakman_new_result:success',
+}
+export interface PakmanNewResultStoreFailed {
+  ov: 'pakrypt.pakman_new_result:store_failed',
+  cause: PakmanStoreResult,
 }
 
 export async function PakmanNew(name: string, passphrase: string): Promise<[PakmanUnlocked, PakmanNewResult]> {
@@ -105,6 +105,8 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
   if (result.ov === 'pakrypt.pakman_store_result:success') {
     return [finalPakman, { ov: 'pakrypt.pakman_new_result:success' }]
   } else if (result.ov === 'pakrypt.pakman_store_result:no_space') {
+    return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', cause: result }]
+  } else if (result.ov === 'pakrypt.pakman_store_result:pakrypt_store_failed') {
     return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', cause: result }]
   }
 
@@ -412,7 +414,7 @@ export interface PakmanUnlockResultIntegrityError {
   detail: 'parse' | 'validate',
 }
 export interface PakmanUnlockResultFetchError {
-  ov: 'pakrypt.pakman_unlock_result:fetch_error',
+  ov: 'pakrypt.pakman_unlock_result:pakrypt_store_load_error',
 }
 export interface PakmanUnlockResultRekeyError {
   ov: 'pakrypt.pakman_unlock_result:rekey_error',
@@ -489,17 +491,21 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
 
   let enc0: Encrypted
   if (local != null && local.options.pakmanStore != null) {
-    const result = await fetch(local.options.pakmanStore.url, {
-      method: 'GET',
-      headers: {
-        'X-Api-Key': local.options.pakmanStore.key,
-      },
-    })
-    const o = await result.json()
-    if (o.success) {
+    try {
+      const result = await fetch(local.options.pakmanStore.url, {
+        method: 'GET',
+        headers: {
+          'X-Api-Key': local.options.pakmanStore.key,
+        },
+      })
+      const o = await result.json()
+      if (o.success !== true) {
+        return [pakman, { ov: 'pakrypt.pakman_unlock_result:pakrypt_store_load_error' }]
+      }
       enc0 = GetEncrypted(o.data)
-    } else {
-      return [pakman, { ov: 'pakrypt.pakman_unlock_result:fetch_error' }]
+    } catch (err) {
+      console.error(err)
+      return [pakman, { ov: 'pakrypt.pakman_unlock_result:pakrypt_store_load_error' }]
     }
   } else {
     enc0 = pakman.enc
@@ -649,6 +655,8 @@ async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): P
   if (storeResult.ov !== 'pakrypt.pakman_store_result:success') {
     if (storeResult.ov === 'pakrypt.pakman_store_result:no_space') {
       return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
+    } else if (storeResult.ov === 'pakrypt.pakman_store_result:pakrypt_store_failed') {
+      return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
     }
 
     return storeResult // never
@@ -660,12 +668,16 @@ async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): P
 type PakmanStoreResult = (
   | PakmanStoreResultSuccess
   | PakmanStoreResultNoSpace
+  | PakmanStoreResultPakmanStoreFailed
 )
 interface PakmanStoreResultSuccess {
   ov: 'pakrypt.pakman_store_result:success',
 }
 interface PakmanStoreResultNoSpace {
   ov: 'pakrypt.pakman_store_result:no_space',
+}
+interface PakmanStoreResultPakmanStoreFailed {
+  ov: 'pakrypt.pakman_store_result:pakrypt_store_failed',
 }
 
 async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T, PakmanStoreResult]> {
@@ -681,15 +693,26 @@ async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): 
       const { url, key } = pakman.local.options.pakmanStore
       const headers = new Headers()
       headers.append('Content-Type', 'text-plain')
-      // TODO
-      await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain',
-          'X-Api-Key': key,
-        },
-        body: item.pak,
-      })
+      
+      try {
+        const result = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain',
+            'X-Api-Key': key,
+          },
+          body: item.pak,
+        })
+
+        const o = await result.json()
+        if (o.success !== true) {
+          console.error('Pakrypt store failed:', o)
+          return [pakman, { ov: 'pakrypt.pakman_store_result:pakrypt_store_failed' }]
+        }
+      } catch (err) {
+        console.error(err)
+        return [pakman, { ov: 'pakrypt.pakman_store_result:pakrypt_store_failed' }]
+      }
     }
   }
 
