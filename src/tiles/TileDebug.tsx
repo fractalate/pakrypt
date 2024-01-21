@@ -3,6 +3,7 @@ import styling from '../lib/styling'
 import { PakmanStateContext } from '../Contexts'
 import { PakmanUpdateLocalOptions } from '../pak/Pakman'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import behavior from '../lib/behavior'
 
 interface Inputs {
   url: string,
@@ -53,11 +54,11 @@ export default function TileDebug() {
   return <div className={styling.tile.tileComponentCommand + ' flex flex-col'}>
     <form className="flex flex-col gap-2" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="url">Url</label>
-      <input type="password" className={styling.input.formInput + ' w-100'} {...register('url', {
+      <input type="text" className={styling.input.formInput + ' w-100'} {...behavior.input.sensitiveData} {...register('url', {
           required: true,
       })} />
       <label htmlFor="key">key</label>
-      <input type="password" className={styling.input.formInput + ' w-100'} {...register('key', {
+      <input type="text" className={styling.input.formInput + ' w-100'} {...behavior.input.sensitiveData} {...register('key', {
           required: true,
       })} />
       <button type="submit" className={styling.button.formButton}>Adds Locals</button>
