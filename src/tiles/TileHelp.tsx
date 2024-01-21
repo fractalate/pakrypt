@@ -16,7 +16,7 @@ function getYourPakIs(pakman: Pakman): JSX.Element {
 
 function getSoYouCan(pakman: Pakman): JSX.Element {
   if (pakman.ov == 'pakrypt.pakman_state:unloaded') {
-    return <>create a <b>new pak</b> or <b>open a pak</b></>
+    return <>create a <b>new pak</b>, <b>open a pak</b>, or <b>import a pak</b></>
   } else if (pakman.ov == 'pakrypt.pakman_state:loaded') {
     return <><b>unlock your pak</b></>
   } else if (pakman.ov == 'pakrypt.pakman_state:unlocked') {

@@ -49,7 +49,7 @@ export default function NoteEditor({
       <label htmlFor="subtitle" className="block">Subtitle</label>
       <input type="text" className={styling.input.formInput + ' w-full'} {...behavior.input.title} {...register('subtitle')} />
       <label htmlFor="note" className="block">Note</label>
-      <textarea className={styling.textarea.formTextArea + ' w-full'} {...register('note')} />
+      <textarea className={styling.textarea.formTextArea + ' w-full'} rows={8} {...register('note')} />
     </div>
     <div className="flex flex-row gap-2">
       <button type="submit" className={styling.button.formButton + ' w-1/4'}>Submit</button>

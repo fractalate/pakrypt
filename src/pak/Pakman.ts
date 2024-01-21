@@ -187,6 +187,7 @@ function PakmanRemoveLocalStorageItem(name: string) {
 type PakmanImportResult = (
   | PakmanImportResultSuccess
   | PakmanImportResultNoSpace
+  | PakmanImportResultLoadFailed
 )
 interface PakmanImportResultSuccess {
   ov: 'pakrypt.pakman_import_result:success',
@@ -194,7 +195,14 @@ interface PakmanImportResultSuccess {
 interface PakmanImportResultNoSpace {
   ov: 'pakrypt.pakman_import_result:no_space',
 }
-export function PakmanImport(name: string, pak: string): PakmanImportResult {
+interface PakmanImportResultLoadFailed {
+  ov: 'pakrypt.pakman_import_result:load_failed',
+  detail: (
+    | PakmanLoadResultNotFound
+    | PakmanLoadResultIntegrityError
+  ),
+}
+export function PakmanImport(name: string, pak: string): [Pakman, PakmanImportResult] {
   const item: PakmanLocalStorageItem = {
     ov: 'pakrypt.pakman_local_storage_item:1.0',
     pak,
@@ -203,13 +211,18 @@ export function PakmanImport(name: string, pak: string): PakmanImportResult {
   const result = PakmanSaveLocalStorageItem(name, item)
   if (result.ov !== 'pakrypt.pakman_save_local_storage_item_result:success') {
     if (result.ov === 'pakrypt.pakman_save_local_storage_item_result:no_space') {
-      return { ov: 'pakrypt.pakman_import_result:no_space' }
+      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_import_result:no_space' }]
     }
 
     return result // never
   }
+  const [pakman, loadResult] = PakmanLoad(name)
+  
+  if (loadResult.ov !== 'pakrypt.pakman_load_result:success') {
+    return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_import_result:load_failed', detail: loadResult }]
+  }
 
-  return { ov: 'pakrypt.pakman_import_result:success' }
+  return [pakman, { ov: 'pakrypt.pakman_import_result:success' }]
 }
 
 type PakmanExportResult = (

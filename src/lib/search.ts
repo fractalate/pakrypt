@@ -196,13 +196,15 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (showEverything || /^(ope?n? ?p?a?k?|pak?)$/i.test(query)) {
+  // "open pak" or "open a pak"
+  if (showEverything || /^(ope?n? ?a? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:open_pak',
     })
   }
 
-  if (showEverything || /^(cop?y? ?p?a?k?|pak?)$/i.test(query)) {
+  // "close pak" or "close a pak"
+  if (showEverything || /^(cop?y? ?a? ?p?a?k?|pak?)$/i.test(query)) {
     if (pakman.ov !== 'pakrypt.pakman_state:unloaded') {
       result.push({
         ov: 'pakrypt.command:copy_pak',
@@ -224,19 +226,22 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
-  if (showEverything || /^(del?e?t?e? ?p?a?k?|pak?)$/i.test(query)) {
+  // "delete pak" or "delete a pak"
+  if (showEverything || /^(del?e?t?e? ?a? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:delete_pak',
     })
   }
 
-  if (showEverything || /^(exp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
+  // "export pak" or "export a pak"
+  if (showEverything || /^(exp?o?r?t? ?a? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:export_pak',
     })
   }
 
-  if (showEverything || /^(imp?o?r?t? ?p?a?k?|pak?)$/i.test(query)) {
+  // "import pak" or "import a pak"
+  if (showEverything || /^(imp?o?r?t? ?a? ?p?a?k?|pak?)$/i.test(query)) {
     result.push({
       ov: 'pakrypt.command:import_pak',
     })

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { PageContext } from '../Contexts'
+import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { ListPaks, PakmanImport } from '../pak/Pakman'
 import styling from '../lib/styling'
@@ -11,6 +11,8 @@ interface Inputs {
 }
 
 export default function PageImportPak() {
+  const { setPakman } = useContext(PakmanStateContext)
+  const { setQuery } = useContext(QueryBarContext)
   const { popPage } = useContext(PageContext)
   const [ message, setMessage ] = useState('')
   const {
@@ -37,9 +39,11 @@ export default function PageImportPak() {
           if (pakdata instanceof ArrayBuffer) {
             pakdata = new TextDecoder().decode(pakdata)
           }
-          const result = PakmanImport(data.name, pakdata)
+          const [pakman, result] = PakmanImport(data.name, pakdata)
           if (result.ov === 'pakrypt.pakman_import_result:success') {
             popPage()
+            setPakman(pakman)
+            setQuery('')
           } else {
             setMessage(result.ov)
           }

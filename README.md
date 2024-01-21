@@ -2,33 +2,51 @@
 
 ## Overview
 
-Pakrypt is intended to be an encrypted data manager for the browser, allowing a user to manage several different kids of data, which only get stored in its encrypted form on a device you trust or control.
+Pakrypt is an encrypted data manager for the browser which stores your data privately on your device. Store passwords, notes, or small files securely on a computer you trust.
 
-Use cases:
+You can use Pakrypt today at [app.pakrypt.com](https://app.pakrypt.com/).
 
-* File packaging mechanism.
-* Password manager.
-* Private note taking tool.
+## Administration
 
-## Development
+This [NodeJS](https://nodejs.org/) project compiles to a set of static files which can then be served from any web server.
 
-Install dependencies:
+First, install dependencies:
 
 ```
 npm install .
 ```
 
-Run development server:
+Then, run the build script:
+
+```
+npm run build
+```
+
+This will generate the `dist` directory containing the static files to be served. Navigate to your site to use the application.
+
+## Development
+
+This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed.
+
+First, install dependencies:
+
+```
+npm install .
+```
+
+Then, run the development server:
 
 ```
 npm run dev
 ```
 
+Navigate to the URL displayed in your terminal to use the application (e.g. [http://localhost:5173/](http://localhost:5173/)).
+
 ## TODO
 
 Big features:
 
-* [ ] Storage options.
+* [x] Storage options.
 * [ ] Tests.
 
 Small features:
@@ -40,11 +58,11 @@ Small features:
 * [x] Title case general fields, no title case password fields.
 * [ ] Better support for wide displays.
 * [ ] Use a revealer for password fields.
-* [ ] A taller notes editor (not resizable on firefox mobile).
+* [x] A taller notes editor (not resizable on firefox mobile).
 * [ ] Have a file name when exporting on mobile Firefox.
 * [ ] Automatic extensions when uploading files.
-* [ ] CTA for import pak in the help.
-* [ ] Auto open on import pak?
+* [x] CTA for import pak in the help.
+* [x] Auto open on import pak?
 
 Finer details:
 
