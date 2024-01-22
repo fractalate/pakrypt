@@ -26,6 +26,8 @@ This will generate the `dist` directory containing the static files to be served
 
 ## Development
 
+*See also [doc/Developers.md](./doc/Developers.md)*
+
 This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed.
 
 First, install dependencies:
@@ -83,11 +85,11 @@ Release:
   - [ ] Main copy.
   - [ ] Release details.
   - [ ] Detailed user guide.
-* [ ] Detailed developer/hosting guide.
+* [x] Detailed developer/hosting guide.
 * [ ] Version 1.0.0.
-* [ ] Host on: app.pakrypt.com
-* [ ] Figure out build process with alternate "base" in vite.config.js.
-* [ ] An automatic release process for myself.
+* [x] Host on: app.pakrypt.com
+* [x] Figure out build process with alternate "base" in vite.config.js.
+* [x] An automatic release process for myself.
 
 Stretch goals:
 
