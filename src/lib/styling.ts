@@ -12,7 +12,7 @@ const styling = {
     `,
   },
   input: {
-    omnibarInput: `
+    searchInput: `
       border rounded-lg block p-1
       text-[#223] bg-white/75 border-slate-200
       dark:text-[#EEE] dark:bg-black/60 dark:border-slate-600

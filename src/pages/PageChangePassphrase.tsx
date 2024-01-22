@@ -4,6 +4,7 @@ import styling from '../lib/styling'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { PakmanChangePassphrase } from '../pak/Pakman'
 import PageNotUnlocked from './PageNotUnlocked'
+import behavior from '../lib/behavior'
 
 interface Inputs {
   passphrase: string,
@@ -15,6 +16,16 @@ export default function PageChangePassphrase() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
   const [ message, setMessage ] = useState('')
   const { setQuery } = useContext(QueryBarContext)
+  const [passwordType, setPasswordType] = useState('password' as 'password' | 'text')
+
+  const togglePasswordVisible = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text')
+    } else if (passwordType === 'text') {
+      setPasswordType('password')
+    }
+  }
+
   const {
     handleSubmit,
     register,
@@ -58,13 +69,25 @@ export default function PageChangePassphrase() {
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="passphrase">New Passphrase</label>
-        <input type="password" className={styling.input.formInput} {...register('passphrase', {
-            required: true,
-        })} />
+        <div className="flex flex-row">
+          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
+              required: true,
+          })} />
+          <button type="button" className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            togglePasswordVisible()
+          }}>👁️</button>
+        </div>
         <label htmlFor="passphrase">Passphrase Confirm</label>
-        <input type="password" className={styling.input.formInput} {...register('passphrase2', {
-            required: true,
-        })} />
+        <div className="flex flex-row">
+          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase2', {
+              required: true,
+          })} />
+          <button type="button" className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            togglePasswordVisible()
+          }}>👁️</button>
+        </div>
       </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/2'} type="submit">Change Passphrase</button>

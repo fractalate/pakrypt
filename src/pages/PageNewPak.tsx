@@ -16,11 +16,21 @@ export default function PageNewPak() {
   const { setPakman } = useContext(PakmanStateContext)
   const [ message, setMessage ] = useState('')
   const { setQuery } = useContext(QueryBarContext)
+  const [passwordType, setPasswordType] = useState('password' as 'password' | 'text')
+
   const {
     handleSubmit,
     register,
     watch,
   } = useForm<Inputs>()
+
+  const togglePasswordVisible = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text')
+    } else if (passwordType === 'text') {
+      setPasswordType('password')
+    }
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (data.passphrase !== data.passphrase2) {
@@ -63,13 +73,25 @@ export default function PageNewPak() {
             required: true,
         })} />
         <label htmlFor="passphrase">Passphrase</label>
-        <input type="password" className={styling.input.formInput} {...register('passphrase', {
-            required: true,
-        })} />
+        <div className="flex flex-row">
+          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
+              required: true,
+          })} />
+          <button type="button" className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            togglePasswordVisible()
+          }}>👁️</button>
+        </div>
         <label htmlFor="passphrase">Passphrase Confirm</label>
-        <input type="password" className={styling.input.formInput} {...register('passphrase2', {
-            required: true,
-        })} />
+        <div className="flex flex-row">
+          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase2', {
+              required: true,
+          })} />
+          <button type="button" className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            togglePasswordVisible()
+          }}>👁️</button>
+        </div>
       </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/2'} type="submit">Create</button>
@@ -78,4 +100,6 @@ export default function PageNewPak() {
     </form>
     { message }
   </div>
+
+  // TODO: ^^ The cancel button. Why no preventDefault()?
 }

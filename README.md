@@ -57,12 +57,13 @@ Small features:
 * [x] Escape to go to search.
 * [x] Title case general fields, no title case password fields.
 * [ ] Better support for wide displays.
-* [ ] Use a revealer for password fields.
+* [x] Use a revealer for password fields.
 * [x] A taller notes editor (not resizable on firefox mobile).
 * [ ] Have a file name when exporting on mobile Firefox.
 * [ ] Automatic extensions when uploading files.
 * [x] CTA for import pak in the help.
 * [x] Auto open on import pak?
+* [ ] Show good text for error messages.
 
 Finer details:
 

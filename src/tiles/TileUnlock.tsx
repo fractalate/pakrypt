@@ -3,6 +3,7 @@ import { PakmanStateContext, QueryBarContext } from '../Contexts'
 import styling from '../lib/styling'
 import {  PakmanUnlock } from '../pak/Pakman'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import behavior from '../lib/behavior'
 
 interface Inputs {
   passphrase: string,
@@ -12,6 +13,16 @@ export default function TileUnlock() {
   const { pakman, setPakman } = useContext(PakmanStateContext)
   const { setQuery } = useContext(QueryBarContext)
   const [ message, setMessage ] = useState('')
+  const [passwordType, setPasswordType] = useState('password' as 'password' | 'text')
+
+  const togglePasswordVisible = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text')
+    } else if (passwordType === 'text') {
+      setPasswordType('password')
+    }
+  }
+
   const {
     register,
     handleSubmit,
@@ -31,12 +42,18 @@ export default function TileUnlock() {
       setMessage(result.ov)
     }
   }
-  
+
   return <div className={styling.tile.tileComponentCommand}>
     <form className="flex flex-col gap-2" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <input type="password" className={styling.input.formInput + ' w-100'} {...register('passphrase', {
-          required: true,
-      })} />
+      <div className="flex flew-row">
+        <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
+            required: true,
+        })} />
+        <button type="button" className={styling.button.formButton} onClick={(e) => {
+          e.preventDefault()
+          togglePasswordVisible()
+        }}>👁️</button>
+      </div>
       <button className={styling.button.formButton} type="submit">Unlock</button>
     </form>
     <div>

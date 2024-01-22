@@ -36,6 +36,15 @@ export default function PasswordEditor({
   })
 
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [passwordType, setPasswordType] = useState('password' as 'password' | 'text')
+
+  const togglePasswordVisible = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text')
+    } else if (passwordType === 'text') {
+      setPasswordType('password')
+    }
+  }
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onUserSubmit(data)
@@ -54,7 +63,13 @@ export default function PasswordEditor({
         <label htmlFor="username" className="block">Username</label>
         <input type="text" className={styling.input.formInput} {...behavior.input.sensitiveData} {...register('username')} />
         <label htmlFor="password" className="block">Password</label>
-        <input type="text" className={styling.input.formInput} {...behavior.input.sensitiveData} {...register('password')} />
+        <div className="flex flex-row">
+          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('password')} />
+          <button type="button" className={styling.button.formButton} onClick={(e) => {
+            e.preventDefault()
+            togglePasswordVisible()
+          }}>👁️</button>
+        </div>
       </div>
       <div className="flex flex-row gap-2">
         <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>
