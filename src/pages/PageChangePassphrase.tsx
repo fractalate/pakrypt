@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { PakmanChangePassphrase } from '../pak/Pakman'
 import PageNotUnlocked from './PageNotUnlocked'
 import behavior from '../lib/behavior'
+import { toUserMessage } from '../pak/Text'
 
 interface Inputs {
   passphrase: string,
@@ -32,7 +33,7 @@ export default function PageChangePassphrase() {
     watch,
   } = useForm<Inputs>()
 
-  // TODO: Find some other way to detect when the field changes. onChange maybe?
+  // XXX: Find some other way to detect when the field changes. onChange maybe?
   const [opassphrase, setOpassphrase] = useState('')
   const passphrase = watch('passphrase')
   const [opassphrase2, setOpassphrase2] = useState('')
@@ -50,14 +51,22 @@ export default function PageChangePassphrase() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (data.passphrase === data.passphrase2) {
-      // TODO: Handling bad cases?
-      const [newPakman] = await PakmanChangePassphrase(pakman, data.passphrase)
+    if (data.passphrase !== data.passphrase2) {
+      setMessage('Passphrases do not match! Try again.')
+      setOpassphrase(data.passphrase)
+      setOpassphrase2(data.passphrase2)
+      return
+    }
+
+    const [newPakman, result] = await PakmanChangePassphrase(pakman, data.passphrase)
+
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
       setPakman(newPakman)
       setQuery('')
       popPage()
     } else {
-      setMessage('Passphrases do not match! Try again.')
+      // To get error messages to persist, I have to set opassphrase and opassphrase2.
+      setMessage(toUserMessage(result))
       setOpassphrase(data.passphrase)
       setOpassphrase2(data.passphrase2)
     }

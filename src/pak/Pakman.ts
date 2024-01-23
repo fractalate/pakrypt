@@ -678,18 +678,18 @@ async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): P
   return [newPakman, { ov: 'pakrypt.pakman_save_result:success' }]
 }
 
-type PakmanStoreResult = (
+export type PakmanStoreResult = (
   | PakmanStoreResultSuccess
   | PakmanStoreResultNoSpace
   | PakmanStoreResultPakmanStoreFailed
 )
-interface PakmanStoreResultSuccess {
+export interface PakmanStoreResultSuccess {
   ov: 'pakrypt.pakman_store_result:success',
 }
-interface PakmanStoreResultNoSpace {
+export interface PakmanStoreResultNoSpace {
   ov: 'pakrypt.pakman_store_result:no_space',
 }
-interface PakmanStoreResultPakmanStoreFailed {
+export interface PakmanStoreResultPakmanStoreFailed {
   ov: 'pakrypt.pakman_store_result:pakrypt_store_failed',
 }
 

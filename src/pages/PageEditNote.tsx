@@ -1,9 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext } from '../Contexts'
 import { DeleteEntry, PakNote, NoteFields, UpdateNote } from '../pak/Pak'
 import { PakmanUpdate } from '../pak/Pakman'
 import styling from '../lib/styling'
 import NoteEditor from '../editors/NoteEditor'
+import { toUserMessage } from '../pak/Text'
 
 export default function PageEditNote({
   entry,
@@ -11,6 +12,7 @@ export default function PageEditNote({
   entry: PakNote,
 }) {
   const pageContextState = useContext(PageContext)
+  const [message, setMessage] = useState('')
   const { pakman, setPakman } = useContext(PakmanStateContext)
   // Note: no setQuery on save here because it interferes with the flow: search for all of some kind of thing and edit them all, one after another.
 
@@ -20,16 +22,24 @@ export default function PageEditNote({
 
   const saveNote = async (data: NoteFields) => {
     const pak = UpdateNote(pakman.pak, entry.id, data)
-    const [nextPakman] = await PakmanUpdate(pakman, pak)
-    setPakman(nextPakman)
-    closePage()
+    const [nextPakman, result] = await PakmanUpdate(pakman, pak)
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
+      setPakman(nextPakman)
+      closePage()
+    } else {
+      setMessage(toUserMessage(result))
+    }
   }
 
   const deleteNote = async () => {
     const pak = DeleteEntry(pakman.pak, entry.id)
-    const [nextPakman] = await PakmanUpdate(pakman, pak)
-    setPakman(nextPakman)
-    closePage()
+    const [nextPakman, result] = await PakmanUpdate(pakman, pak)
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
+      setPakman(nextPakman)
+      closePage()
+    } else {
+      setMessage(toUserMessage(result))
+    }
   }
 
   function closePage() {
@@ -46,5 +56,6 @@ export default function PageEditNote({
       onUserDelete={() => deleteNote()}
       onUserCancel={() => closePage()}
     />
+    { message }
   </div>
 }

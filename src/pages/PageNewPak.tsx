@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { ListPaks, PakmanNew } from '../pak/Pakman'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
+import { toUserMessage } from '../pak/Text'
 
 interface Inputs {
   name: string,
@@ -37,20 +38,26 @@ export default function PageNewPak() {
       setMessage('Passphrases do not match! Try again.')
       setOpassphrase(data.passphrase)
       setOpassphrase2(data.passphrase2)
+      return
     } else if (ListPaks().indexOf(data.name) >= 0) {
       setMessage('A pak with the name "' + data.name + '" already exists.')
       setOpassphrase(data.passphrase) // These need to be set so the message shows.
       setOpassphrase2(data.passphrase2) // These need to be set so the message shows.
-    } else {
-      // TODO: Handling bad cases?
-      const [newPakman] = await PakmanNew(data.name, data.passphrase)
+      return
+    }
+
+    const [newPakman, result] = await PakmanNew(data.name, data.passphrase)
+    if (result.ov === 'pakrypt.pakman_new_result:success') {
       setPakman(newPakman)
       setQuery('')
       popPage()
+    } else {
+      setMessage(toUserMessage(result))
+      setOpassphrase(data.passphrase) // These need to be set so the message shows.
+      setOpassphrase2(data.passphrase2) // These need to be set so the message shows.
     }
 }
 
-  // TODO: Find some other way to detect when the field changes. onChange maybe?
   const [opassphrase, setOpassphrase] = useState('')
   const passphrase = watch('passphrase')
   const [opassphrase2, setOpassphrase2] = useState('')
@@ -100,6 +107,4 @@ export default function PageNewPak() {
     </form>
     { message }
   </div>
-
-  // TODO: ^^ The cancel button. Why no preventDefault()?
 }

@@ -5,6 +5,7 @@ import { ListPaks, PakmanCopy } from '../pak/Pakman'
 import PageNotLoaded from './PageNotLoaded'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
+import { toUserMessage } from '../pak/Text'
 
 interface Inputs {
   name: string,
@@ -27,12 +28,16 @@ export default function PageCopyPak() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (ListPaks().indexOf(data.name) >= 0) {
       setMessage('A pak with the name "' + data.name + '" already exists.')
-    } else {
-      // TODO: Handling bad cases?
-      const [newPakman] = await PakmanCopy(pakman, data.name)
+      return
+    }
+
+    const [newPakman, result] = await PakmanCopy(pakman, data.name)
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
       setPakman(newPakman)
       setQuery('')
       popPage()
+    } else {
+      setMessage(toUserMessage(result))
     }
   }
 

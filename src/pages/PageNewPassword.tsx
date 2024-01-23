@@ -1,13 +1,15 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import PasswordEditor from '../editors/PasswordEditor'
 import { CreatePassword, PasswordFields } from '../pak/Pak'
 import styling from '../lib/styling'
 import { PakmanUpdate } from '../pak/Pakman'
 import PageNotUnlocked from './PageNotUnlocked'
+import { toUserMessage } from '../pak/Text'
 
 export default function PageNewPassword() {
   const pageContextState = useContext(PageContext)
+  const [message, setMessage] = useState('')
   const { pakman, setPakman } = useContext(PakmanStateContext)
   const { setQuery } = useContext(QueryBarContext)
 
@@ -17,10 +19,15 @@ export default function PageNewPassword() {
 
   const savePassword = async (data: PasswordFields) => {
     const [pak] = CreatePassword(pakman.pak, data)
-    const [newPakman] = await PakmanUpdate(pakman, pak)
-    setPakman(newPakman)
-    setQuery(data.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
-    closePage()
+    const [newPakman, result] = await PakmanUpdate(pakman, pak)
+
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
+      setPakman(newPakman)
+      setQuery(data.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
+      closePage()
+    } else {
+      setMessage(toUserMessage(result))
+    }
   }
 
   function closePage() {
@@ -36,5 +43,6 @@ export default function PageNewPassword() {
       onUserDelete={() => {}}
       onUserCancel={() => closePage()}
     />
+    { message }
   </div>
 }

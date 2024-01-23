@@ -1,10 +1,11 @@
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 import { PageContext, PakmanStateContext } from '../Contexts'
 import { DeleteEntry, UpdateFile, PakFile, FindBlock } from '../pak/Pak'
 import { PakmanUpdate } from '../pak/Pakman'
 import styling from '../lib/styling'
 import FileEditor from '../editors/FileEditor'
 import { Base64 } from 'js-base64'
+import { toUserMessage } from '../pak/Text'
 
 // See FileEditor.tsx Input interface.
 interface FileFieldsEdit {
@@ -20,8 +21,8 @@ export default function PageEditFile({
   entry: PakFile,
 }) {
   const pageContextState = useContext(PageContext)
+  const [message, setMessage] = useState('')
   const { pakman, setPakman } = useContext(PakmanStateContext)
-  // Note: no setQuery on save here because it interferes with the flow: search for all of some kind of thing and edit them all, one after another.
 
   if (pakman.ov != 'pakrypt.pakman_state:unlocked') {
     throw new Error('pakman is not unlocked.')
@@ -56,16 +57,24 @@ export default function PageEditFile({
     }
 
     const pak = UpdateFile(pakman.pak, entry.id, obj)
-    const [nextPakman] = await PakmanUpdate(pakman, pak)
-    setPakman(nextPakman)
-    closePage()
+    const [nextPakman, result] = await PakmanUpdate(pakman, pak)
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
+      setPakman(nextPakman)
+      closePage()
+    } else {
+      setMessage(toUserMessage(result))
+    }
   }, [initialDataBase64, closePage, entry, pakman, setPakman])
 
   const deleteFile = async () => {
     const pak = DeleteEntry(pakman.pak, entry.id)
-    const [nextPakman] = await PakmanUpdate(pakman, pak)
-    setPakman(nextPakman)
-    closePage()
+    const [nextPakman, result] = await PakmanUpdate(pakman, pak)
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
+      setPakman(nextPakman)
+      closePage()
+    } else {
+      setMessage(toUserMessage(result))
+    }
   }
 
   const initialValuesEntry = useMemo(() => {
@@ -87,5 +96,6 @@ export default function PageEditFile({
       onUserDelete={() => deleteFile()}
       onUserCancel={() => closePage()}
     />
+    { message }
   </div>
 }

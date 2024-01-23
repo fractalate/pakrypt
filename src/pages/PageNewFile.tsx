@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import FileEditor from '../editors/FileEditor'
 import { CreateFile } from '../pak/Pak'
@@ -6,6 +6,7 @@ import styling from '../lib/styling'
 import { PakmanUpdate } from '../pak/Pakman'
 import PageNotUnlocked from './PageNotUnlocked'
 import { Base64 } from 'js-base64'
+import { toUserMessage } from '../pak/Text'
 
 // See FileEditor.tsx Input interface.
 interface FileFieldsNew {
@@ -17,6 +18,7 @@ interface FileFieldsNew {
 
 export default function PageNewFile() {
   const pageContextState = useContext(PageContext)
+  const [message, setMessage] = useState('')
   const { pakman, setPakman } = useContext(PakmanStateContext)
   const { setQuery } = useContext(QueryBarContext)
 
@@ -36,10 +38,15 @@ export default function PageNewFile() {
       data,
     }
     const [pak] = CreateFile(pakman.pak, obj)
-    const [newPakman] = await PakmanUpdate(pakman, pak)
-    setPakman(newPakman)
-    setQuery(obj.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
-    closePage()
+    const [newPakman, result] = await PakmanUpdate(pakman, pak)
+
+    if (result.ov === 'pakrypt.pakman_save_result:success') {
+      setPakman(newPakman)
+      setQuery(obj.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
+      closePage()
+    } else {
+      setMessage(toUserMessage(result))
+    }
   }
 
   function closePage() {
@@ -55,5 +62,6 @@ export default function PageNewFile() {
       onUserDelete={() => {}}
       onUserCancel={() => closePage()}
     />
+    { message }
   </div>
 }

@@ -4,6 +4,7 @@ import styling from '../lib/styling'
 import {  PakmanUnlock } from '../pak/Pakman'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import behavior from '../lib/behavior'
+import { toUserMessage } from '../pak/Text'
 
 interface Inputs {
   passphrase: string,
@@ -39,7 +40,7 @@ export default function TileUnlock() {
       setPakman(newPakman)
       setQuery('')
     } else {
-      setMessage(result.ov)
+      setMessage(toUserMessage(result))
     }
   }
 
