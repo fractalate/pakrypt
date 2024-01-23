@@ -6,6 +6,8 @@ Pakrypt is an encrypted data manager for the browser which stores your data priv
 
 You can use Pakrypt today at [app.pakrypt.com](https://app.pakrypt.com/).
 
+You can see what's new in the [release log](./doc/Release.md).
+
 ## Administration
 
 This [NodeJS](https://nodejs.org/) project compiles to a set of static files which can then be served from any web server.
@@ -73,7 +75,7 @@ Finer details:
 * [x] Audit `==` vs `===`.
 * [ ] Audit navigation within the app. I've gotten stuck with the tab and unable to proceed with KB only.
 * [ ] ~~Monthly code review until 1.0 go-live. (3 places for version number)~~
-* [ ] TODO hunting codebase.
+* [ ] Validate JSON structures while loading.
 * [x] Error messages on bad decrypt.
 * [ ] ~~White section on the bottom on mobile.~~
 * [ ] Editing a note/password should focus on the entry in search too.

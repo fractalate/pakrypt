@@ -42,7 +42,7 @@ export default function PageNewFile() {
 
     if (result.ov === 'pakrypt.pakman_save_result:success') {
       setPakman(newPakman)
-      setQuery(obj.title) // XXX: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
+      setQuery(obj.title) // XXX: If you use generic titles, you might get junk in the list.
       closePage()
     } else {
       setMessage(toUserMessage(result))
