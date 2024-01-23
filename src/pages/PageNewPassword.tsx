@@ -23,7 +23,7 @@ export default function PageNewPassword() {
 
     if (result.ov === 'pakrypt.pakman_save_result:success') {
       setPakman(newPakman)
-      setQuery(data.title) // TODO: If you use generic titles, you might get junk in the list. Can I set the query to the UUID?
+      setQuery(data.title) // XXX: If you use generic titles, you might get junk in the list.
       closePage()
     } else {
       setMessage(toUserMessage(result))

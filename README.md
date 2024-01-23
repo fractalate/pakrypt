@@ -65,7 +65,7 @@ Small features:
 * [ ] Automatic extensions when uploading files.
 * [x] CTA for import pak in the help.
 * [x] Auto open on import pak?
-* [ ] Show good text for error messages.
+* [x] Show good text for error messages.
 
 Finer details:
 
