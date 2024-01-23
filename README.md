@@ -49,7 +49,7 @@ Navigate to the URL displayed in your terminal to use the application (e.g. [htt
 Big features:
 
 * [x] Storage options.
-* [ ] Tests.
+* [ ] ~~Tests~~.
 
 Small features:
 

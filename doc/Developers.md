@@ -1,5 +1,23 @@
 # Developer Documentation for Pakrypt
 
+## Setup
+
+This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed.
+
+First, install dependencies:
+
+```
+npm install .
+```
+
+Then, run the development server:
+
+```
+npm run dev
+```
+
+Navigate to the URL displayed in your terminal to use the application (e.g. [http://localhost:5173/](http://localhost:5173/)).
+
 ## Terms
 
 * "pak" - A collection of items which is intended to be encrypted (notes, passwords, files).
