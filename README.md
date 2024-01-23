@@ -58,7 +58,7 @@ Small features:
 * [x] Add confirm steps when overwriting things (paks). New pak, copy pak, import pak. For new, it just prevents saving. User will have to exit, copy, delete, etc. to resolve the issue.
 * [x] Escape to go to search.
 * [x] Title case general fields, no title case password fields.
-* [ ] Better support for wide displays.
+* [ ] ~~Better support for wide displays.~~
 * [x] Use a revealer for password fields.
 * [x] A taller notes editor (not resizable on firefox mobile).
 * [ ] Have a file name when exporting on mobile Firefox.
@@ -69,13 +69,13 @@ Small features:
 
 Finer details:
 
-* [ ] Audit the ov's.
-* [ ] Audit `==` vs `===`.
+* [x] Audit the ov's.
+* [x] Audit `==` vs `===`.
 * [ ] Audit navigation within the app. I've gotten stuck with the tab and unable to proceed with KB only.
-* [ ] Monthly code review until 1.0 go-live. (3 places for version number)
+* [ ] ~~Monthly code review until 1.0 go-live. (3 places for version number)~~
 * [ ] TODO hunting codebase.
-* [ ] Error messages on bad decrypt.
-* [ ] White section on the bottom on mobile.
+* [x] Error messages on bad decrypt.
+* [ ] ~~White section on the bottom on mobile.~~
 * [ ] Editing a note/password should focus on the entry in search too.
 
 Release:
