@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid'
 import { PageContext } from './Contexts'
 import { ChoosePage, ChosenPage } from './pages'
 import Page from './pages/Page'
+import styling from './lib/styling'
 
 export default function PageContextProvider() {
   const initialPage: ChosenPage = useMemo(() => {
@@ -30,7 +31,7 @@ export default function PageContextProvider() {
     }
   }, [pages, setPages])
   
-  const rendered = pages.map(([ , id, component], index) => <div key={id} className={index < pages.length - 1 ? 'hidden' : ''}>
+  const rendered = pages.map(([ , id, component], index) => <div key={id} className={styling.pageOuter.regular + (index < pages.length - 1 ? ' hidden' : '')}>
     { component }
   </div>)
 

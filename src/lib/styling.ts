@@ -48,10 +48,17 @@ const styling = {
   },
   page: {
     regular: `
+      w-full max-w-[100ch]
+      flex flex-col gap-4
+    `,
+  },
+  pageOuter: {
+    regular: `
       min-h-screen w-screen
       text-[#333] bg-[#FFE]
       dark:text-[#EED] dark:bg-[#323]
-      flex flex-col gap-4 p-1
+      flex flex-row justify-center
+      p-1
     `,
   },
 }

@@ -46,9 +46,9 @@ export default function PageMain() {
   }
 
   return <div className={styling.page.regular} onKeyUp={(e) => checkGlobalHotkeys(e)}>
-    <div>
+    <div className="relative">
       <input type="text" ref={inputRef} className={styling.input.searchInput + ' w-full'} autoFocus={true} placeholder={message} value={query} onChange={(e) => setQuery(e.target.value)}/>
-      <button className="absolute top-2 right-3" tabIndex={-1} onClick={() => clearAndFocus()}>&#x2716;</button>
+      <button className="absolute top-1 right-2" tabIndex={-1} onClick={() => clearAndFocus()}>&#x2716;</button>
     </div>
     <div>
       { tileComponents }
