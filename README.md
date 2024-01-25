@@ -6,7 +6,7 @@ Pakrypt is an encrypted data manager for the browser which stores your data priv
 
 You can use Pakrypt today at [app.pakrypt.com](https://app.pakrypt.com/).
 
-You can read the user guide at [www.pakrypt.com](https://www.pakrypt.com/guide.html).
+You can read the user guide at [www.pakrypt.com/guide.html](https://www.pakrypt.com/guide.html).
 
 You can see what's new in the [release log](./doc/Release.md).
 
