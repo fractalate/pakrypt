@@ -59,7 +59,6 @@ export default function FileEditor({
               }
             }
             field.onChange(e?.target?.files?.[0])
-
           }}
         />}
       />

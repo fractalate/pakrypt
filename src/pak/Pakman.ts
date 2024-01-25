@@ -1,5 +1,6 @@
 import { Decrypt, DeriveKey, DeriveKeyWithEncrypted, Encrypt, Encrypted, GetEncrypted, PutEncrypted } from '../lib/krypt'
 import { NewPak, Pak } from './Pak'
+import { validateLocalOptions, validatePak } from './Validate'
 
 export interface PakmanStateContextState {
   pakman: Pakman,
@@ -473,8 +474,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
       throw err
     }
 
-    // TODO: Validate the JSON structure fully.
-    if (options.ov !== 'pakrypt.pakman_local_options:1.0') {
+    if (!validateLocalOptions(options)) {
       return [pakman, { ov: 'pakrypt.pakman_unlock_result:local_integrity_error', detail: 'validate' }]
     }
 
@@ -546,8 +546,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
     throw err
   }
 
-  // TODO: Validate the JSON structure fully.
-  if (pak.ov !== 'pakrypt.pak:1.0') {
+  if (!validatePak(pak)) {
     return [pakman, { ov: 'pakrypt.pakman_unlock_result:integrity_error', detail: 'validate' }]
   }
 
