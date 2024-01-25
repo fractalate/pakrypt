@@ -33,7 +33,7 @@ export default function TileHelp() {
   return <div className={styling.tile.tileComponentCommand}>
     <p className="mb-2">Use the search bar to find your things. Your things are bundled together in a "pak". Your pak is {yourPakIs}. So you can {soYouCan}.</p>
     <p className="mt-2 mb-2">Commands:</p>
-    <ul className="list-disc list-inside">
+    <ul className="mt-2 mb-2 list-disc list-inside">
       <li><b>new password</b></li>
       <li><b>new note</b></li>
       <li><b>new file</b></li>
@@ -50,5 +50,8 @@ export default function TileHelp() {
       <li><b>theme</b> or <b>light</b> or <b>dark</b> to switch the theme.</li>
       <li><b>*</b> (asterisk) or (space bar) to list all items and commands.</li>
     </ul>
+    <p className="mt-2">
+      <a href="https://www.pakrypt.com/guide.html" className="font-bold">&#x1f517; User Guide</a>
+    </p>
   </div>
 }
