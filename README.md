@@ -57,3 +57,5 @@ Navigate to the URL displayed in your terminal to use the application (e.g. [htt
 * [ ] Detailed user guide.
 * [ ] Version 1.0.0.
 * [ ] Include deployed tag and commit in the build? The version string can lie.
+* [ ] Space between password revealer.
+* [ ] Download button on file tile.

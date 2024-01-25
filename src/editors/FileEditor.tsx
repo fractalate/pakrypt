@@ -1,6 +1,6 @@
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { downloadContent } from '../lib/download'
+import { saveAs } from 'file-saver'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 
@@ -63,7 +63,8 @@ export default function FileEditor({
         <label>Download File</label>
         <button className={styling.button.formButton} onClick={() => {
           if (initialValues.data != null) {
-            downloadContent(initialValues.title, initialValues.data)
+            const blob = new Blob([initialValues.data])
+            saveAs(blob, initialValues.title)
           }
         }}>Download</button>
       </>}
