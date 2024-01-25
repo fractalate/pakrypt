@@ -1,13 +1,11 @@
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { downloadContent } from '../lib/download'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 
 interface Inputs {
   title: string,
   subtitle: string,
-  data: undefined | null | Uint8Array, // How data comes into the editor.
   uploadfile: undefined | null | File, // How data comes out from editor.
 }
 
@@ -50,7 +48,7 @@ export default function FileEditor({
       })} />
       <label htmlFor="subtitle" className="block">Subtitle</label>
       <input type="text" className={styling.input.formInput + ' w-full'} {...behavior.input.title} {...register('subtitle')} />
-      <label htmlFor="uploadfile">File</label>
+      <label htmlFor="uploadfile">File {showDelete && ' (Replace Existing)'}</label>
       <Controller
         name="uploadfile"
         control={control}
@@ -59,14 +57,6 @@ export default function FileEditor({
           onChange={(e) => field.onChange(e?.target?.files?.[0])}
         />}
       />
-      {initialValues != null && initialValues.data != null && <>
-        <label>Download File</label>
-        <button className={styling.button.formButton} onClick={() => {
-          if (initialValues.data != null) {
-            downloadContent(initialValues.title, initialValues.data)
-          }
-        }}>Download</button>
-      </>}
     </div>
     <div className="flex flex-row gap-2">
       <button type="submit" className={styling.button.formButton + ' w-1/4'}>Submit</button>

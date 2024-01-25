@@ -37,8 +37,8 @@ Some additional commands are available:
 
 * Show everything: `*` (asterisk) or ` ` (space).
 * Change the theme (light/dark): `theme` or `light` or `dark`.
-* See help tile: `help`.
-* See version tile: `version`.
+* Show the help tile: `help`.
+* Show the version tile: `version`.
 
 ### Quick Start
 

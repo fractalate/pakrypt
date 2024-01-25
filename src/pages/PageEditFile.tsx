@@ -11,7 +11,6 @@ import { toUserMessage } from '../pak/Text'
 interface FileFieldsEdit {
   title: string,
   subtitle: string,
-  data: undefined | null | Uint8Array, // How data comes into the editor.
   uploadfile: undefined | null | File, // How data comes out from editor.
 }
 
@@ -28,7 +27,7 @@ export default function PageEditFile({
     throw new Error('pakman is not unlocked.')
   }
 
-  const [initialData, initialDataBase64] = useMemo(() => {
+  const initialDataBase64 = useMemo(() => {
     let result = new Uint8Array()
     for (const block of entry.blocks) {
       const b = FindBlock(pakman.pak, block.id)
@@ -37,7 +36,7 @@ export default function PageEditFile({
       }
       result = new Uint8Array([...result, ...Base64.toUint8Array(b.data)])
     }
-    return [result, Base64.fromUint8Array(result)]
+    return Base64.fromUint8Array(result)
   }, [pakman.pak, entry.blocks])
 
   const closePage = useCallback(() => {
@@ -81,10 +80,9 @@ export default function PageEditFile({
     return {
       title: entry.title,
       subtitle: entry.subtitle,
-      data: initialData,
       uploadfile: undefined,
     }
-  }, [initialData, entry])
+  }, [entry])
 
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>

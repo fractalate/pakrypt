@@ -12,7 +12,6 @@ import { toUserMessage } from '../pak/Text'
 interface FileFieldsNew {
   title: string,
   subtitle: string,
-  data: undefined | null | Uint8Array, // How data comes into the editor.
   uploadfile: undefined | null | File, // How data comes out from editor.
 }
 
