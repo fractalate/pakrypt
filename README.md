@@ -35,7 +35,7 @@ When the pak is unlocked, you can:
 
 Some additional commands are available:
 
-* Show everything `*` (asterisk) or ` ` (space).
+* Show everything: `*` (asterisk) or ` ` (space).
 * Change the theme (light/dark): `theme` or `light` or `dark`.
 * See help tile: `help`.
 * See version tile: `version`.
