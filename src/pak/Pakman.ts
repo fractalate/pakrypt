@@ -19,7 +19,7 @@ export interface PakmanLoaded {
   ov: 'pakrypt.pakman_state:loaded',
   name: string,
   enc: Encrypted,
-  local: null | PakmanLocalLoaded, // XXX - I think I want to flatten these into the pakman.
+  local: null | PakmanLocalLoaded,
 }
 export interface PakmanUnlocked {
   ov: 'pakrypt.pakman_state:unlocked',
@@ -463,7 +463,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   if (pakman.local != null) {
     const [localOptionsData, localOptionsDecryptResult] = await DecryptTextEnc(passphrase, pakman.local.enc)
 
-    let options: PakmanLocalOptions
+    let options
     try {
       options = JSON.parse(localOptionsData)
     } catch (err) {
@@ -535,7 +535,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
     return decryptResult // never
   }
 
-  let pak: Pak
+  let pak
   try {
     pak = JSON.parse(data)
   } catch (err) {
