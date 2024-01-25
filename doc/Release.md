@@ -11,5 +11,5 @@ _UNRELEASED_
 
 *January 30, 2024*
 
-Version 1.0.0 is the first release of Pakrypt. It includes functionality for creating encrypted passwords, notes, and files. 
+Version 1.0.0 is the first release of Pakrypt. It includes functionality for creating encrypted passwords, notes, and files.
 -->

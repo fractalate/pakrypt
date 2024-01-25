@@ -27,6 +27,8 @@ export default function FileEditor({
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<Inputs>({
     defaultValues: {
       title: initialValues && initialValues.title || '',
@@ -35,28 +37,38 @@ export default function FileEditor({
   })
   
   const [confirmDelete, setConfirmDelete] = useState(false)
-
+  const currentTitle = watch('title')
+  
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onUserSubmit(data)
   }
 
   return <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
     <div className="flex flex-col gap-2">
+    <label htmlFor="uploadfile">File {showDelete && ' (Replace Existing)'}</label>
+      <Controller
+        name="uploadfile"
+        control={control}
+        render={({field}) => <input
+          type="file"
+          onChange={(e) => {
+            if (currentTitle.length === 0) {
+              const defaultTitle = e?.target?.files?.[0].name
+              if (defaultTitle != null) {
+                setValue('title', defaultTitle)
+              }
+            }
+            field.onChange(e?.target?.files?.[0])
+
+          }}
+        />}
+      />
       <label htmlFor="title" className="block">Title {errors.title && ('(' + (errors.title.message || 'Required') + ')')}</label>
       <input type="text" className={styling.input.formInput + ' w-full'} {...behavior.input.title} {...register('title', {
         required: true,
       })} />
       <label htmlFor="subtitle" className="block">Subtitle</label>
       <input type="text" className={styling.input.formInput + ' w-full'} {...behavior.input.title} {...register('subtitle')} />
-      <label htmlFor="uploadfile">File {showDelete && ' (Replace Existing)'}</label>
-      <Controller
-        name="uploadfile"
-        control={control}
-        render={({field}) => <input
-          type="file"
-          onChange={(e) => field.onChange(e?.target?.files?.[0])}
-        />}
-      />
     </div>
     <div className="flex flex-row gap-2">
       <button type="submit" className={styling.button.formButton + ' w-1/4'}>Submit</button>
