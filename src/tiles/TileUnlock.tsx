@@ -46,11 +46,11 @@ export default function TileUnlock() {
 
   return <div className={styling.tile.tileComponentCommand}>
     <form className="flex flex-col gap-2" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flew-row">
-        <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
+      <div className="flex flew-row relative">
+        <input type={passwordType} className={styling.input.formInput + ' pr-8 w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
             required: true,
         })} />
-        <button type="button" className={styling.button.formButton} onClick={(e) => {
+        <button type="button" className={styling.button.formButton + ' absolute right-0 '} onClick={(e) => {
           e.preventDefault()
           togglePasswordVisible()
         }}>👁️</button>

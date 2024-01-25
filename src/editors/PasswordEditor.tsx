@@ -63,9 +63,9 @@ export default function PasswordEditor({
         <label htmlFor="username" className="block">Username</label>
         <input type="text" className={styling.input.formInput} {...behavior.input.sensitiveData} {...register('username')} />
         <label htmlFor="password" className="block">Password</label>
-        <div className="flex flex-row">
-          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('password')} />
-          <button type="button" className={styling.button.formButton} onClick={(e) => {
+        <div className="flex flex-row relative">
+          <input type={passwordType} className={styling.input.formInput + ' pr-8 w-full'} {...behavior.input.sensitiveData} {...register('password')} />
+          <button type="button" className={styling.button.formButton + ' absolute right-0'} onClick={(e) => {
             e.preventDefault()
             togglePasswordVisible()
           }}>👁️</button>

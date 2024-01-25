@@ -78,21 +78,21 @@ export default function PageChangePassphrase() {
     <form className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label htmlFor="passphrase">New Passphrase</label>
-        <div className="flex flex-row">
-          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
+        <div className="flex flex-row relative">
+          <input type={passwordType} className={styling.input.formInput + ' pr-8 w-full'} {...behavior.input.sensitiveData} {...register('passphrase', {
               required: true,
           })} />
-          <button type="button" className={styling.button.formButton} onClick={(e) => {
+          <button type="button" className={styling.button.formButton + ' absolute right-0'} onClick={(e) => {
             e.preventDefault()
             togglePasswordVisible()
           }}>👁️</button>
         </div>
         <label htmlFor="passphrase">Passphrase Confirm</label>
-        <div className="flex flex-row">
-          <input type={passwordType} className={styling.input.formInput + ' w-full'} {...behavior.input.sensitiveData} {...register('passphrase2', {
+        <div className="flex flex-row relative">
+          <input type={passwordType} className={styling.input.formInput + ' pr-8 w-full'} {...behavior.input.sensitiveData} {...register('passphrase2', {
               required: true,
           })} />
-          <button type="button" className={styling.button.formButton} onClick={(e) => {
+          <button type="button" className={styling.button.formButton + ' absolute right-0'} onClick={(e) => {
             e.preventDefault()
             togglePasswordVisible()
           }}>👁️</button>
