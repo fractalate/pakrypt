@@ -57,7 +57,7 @@ First, let's create a new pak:
 * Press the "Create" button.
 * Notice the listing shows the new note. Press its "Edit" button.
 * You may view or edit the note in this screen. Press the "Cancel" button.
-* Type `lock pak` to show the "Lock Pak" button. Press it.
+* Type `lock pak` to show the "Lock" button. Press it.
 * Your note has been saved and it's protected by the passphrase you gave before.
 
 Next, let's explore how to return to the pak:
@@ -66,9 +66,9 @@ Next, let's explore how to return to the pak:
 * The app is ready for you to unlock your pak. Type `unlock pak` to show the unlock tile. Enter your passphrase and press the "Unlock" button.
 * Enter the search term `My Note` and notice the listing shows the note. Press its "Edit" button.
 * You may view or edit the note in this screen. Press the "Cancel" button.
-* Type `lock pak` to show the "Lock Pak" button. Press it.
+* Type `lock pak` to show the "Lock" button. Press it.
 
-Finally, a challenge exercise for the user: create a new pak, add a small file to it instead of a note (something smaller than 100 KB, see `new file`), export the pak (see `export pak`), send the file to yourself in an email, then receive the email and download the file, then import the pak (see `import pak`), then unlock it and 
+Finally, a challenge exercise for you! Create a new pak, add a small file to it instead of a note (something smaller than 100 KB, see `new file`), export the pak (see `export pak`, you could send this via email), then import the file you exported (see `import pak`), then unlock it, find the file, and finally download the file.
 
 ## Administration
 
