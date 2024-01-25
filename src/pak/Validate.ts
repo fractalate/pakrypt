@@ -1,17 +1,23 @@
-export interface ValidatedTypePak {
+// The types here replicate those defined elsewhere because the logic outlined
+// here checks objects for these specific structures. When these are out of
+// alignment with the other definitions, then the object that is validated should
+// then be incompatible with the type definitions used elsewhere, indicating that
+// validation logic must be expanded to handle the new structures.
+
+interface ValidatedTypePak {
   ov: 'pakrypt.pak:1.0',
   id: string,
   entries?: ValidatedTypePakEntry[],
   blocks?: ValidatedTypePakBlock[],
 }
 
-export type ValidatedTypePakEntry = (
+type ValidatedTypePakEntry = (
   | ValidatedTypePakFile
   | ValidatedTypePakNote
   | ValidatedTypePakPassword
 )
 
-export interface ValidatedTypePakFile {
+interface ValidatedTypePakFile {
   ov: 'pakrypt.file:1.0',
   id: string,
   title: string,
@@ -20,14 +26,14 @@ export interface ValidatedTypePakFile {
   tags?: string[],
 }
 
-export interface ValidatedTypePakFile_BlockReference {
+interface ValidatedTypePakFile_BlockReference {
   ov: 'pakrypt.blockref:1.0',
   id: string,
   size: number,
   pakid?: string,
 }
 
-export interface ValidatedTypePakNote {
+interface ValidatedTypePakNote {
   ov: 'pakrypt.note:1.0',
   id: string,
   title: string,
@@ -36,7 +42,7 @@ export interface ValidatedTypePakNote {
   tags?: string[],
 }
 
-export interface ValidatedTypePakPassword {
+interface ValidatedTypePakPassword {
   ov: 'pakrypt.password:1.0',
   id: string,
   title: string,
@@ -47,10 +53,10 @@ export interface ValidatedTypePakPassword {
   tags?: string[],
 }
 
-export interface ValidatedTypePakBlock {
+interface ValidatedTypePakBlock {
   ov: 'pakrypt.block:1.0',
   id: string,
-  data: string, // base64 encoded binary data.
+  data: string,
 }
 
 export function validatePak(pak: unknown): pak is ValidatedTypePak {
@@ -62,11 +68,11 @@ export function validatePak(pak: unknown): pak is ValidatedTypePak {
   return 'ov' in pak && pak.ov === 'pakrypt.pak:1.0'
 }
 
-export interface ValidatedTypePakmanLocalOptions {
+interface ValidatedTypePakmanLocalOptions {
   ov: 'pakrypt.pakman_local_options:1.0',
   pakmanStore: null | ValidatedTypePakmanLocalOptionsPakmanStore,
 }
-export interface ValidatedTypePakmanLocalOptionsPakmanStore {
+interface ValidatedTypePakmanLocalOptionsPakmanStore {
   ov: 'pakrypt.pakman_local_options.pakman_store:1.0',
   url: string,
   key: string,
