@@ -13,7 +13,8 @@ export default function PageExportPak() {
     <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
       const [data, result] = PakmanExport(name)
       if (result.ov == 'pakrypt.pakman_export_result:success') {
-        saveAs(data, name + '.pak')
+        const blob = new Blob([data], { type: 'text/plain' })
+        saveAs(blob, name + '.pak')
       } else {
         setMessage(result.ov)
       }

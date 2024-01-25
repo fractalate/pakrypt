@@ -63,7 +63,7 @@ export default function FileEditor({
         <label>Download File</label>
         <button className={styling.button.formButton} onClick={() => {
           if (initialValues.data != null) {
-            const blob = new Blob([initialValues.data])
+            const blob = new Blob([initialValues.data], { type: 'application/octet-stream' })
             saveAs(blob, initialValues.title)
           }
         }}>Download</button>
