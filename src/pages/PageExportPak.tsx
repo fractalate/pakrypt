@@ -2,7 +2,7 @@ import { useContext, useMemo, useState } from 'react'
 import { ListPaks, PakmanExport } from '../pak/Pakman'
 import styling from '../lib/styling'
 import { PageContext } from '../Contexts'
-import { saveAs } from 'file-saver'
+import { downloadContent } from '../lib/download'
 
 export default function PageExportPak() {
   const paks = useMemo(() => ListPaks(), [])
@@ -13,8 +13,7 @@ export default function PageExportPak() {
     <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
       const [data, result] = PakmanExport(name)
       if (result.ov == 'pakrypt.pakman_export_result:success') {
-        const blob = new Blob([data], { type: 'text/plain' })
-        saveAs(blob, name + '.pak')
+        downloadContent(name + '.pak', data)
       } else {
         setMessage(result.ov)
       }
