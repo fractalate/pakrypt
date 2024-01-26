@@ -36,7 +36,7 @@ export default function TileUnlock() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setMessage('')
     const [newPakman, result] = await PakmanUnlock(pakman, data.passphrase)
-    if (result.ov == 'pakrypt.pakman_unlock_result:success') {
+    if (result.ov === 'pakrypt.pakman_unlock_result:success') {
       setPakman(newPakman)
       setQuery('')
     } else {

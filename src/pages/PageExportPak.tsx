@@ -13,7 +13,7 @@ export default function PageExportPak() {
   const items = paks.map((name) => <div key={name} className="flex flex-col">
     <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
       const [data, result] = PakmanExport(name)
-      if (result.ov == 'pakrypt.pakman_export_result:success') {
+      if (result.ov === 'pakrypt.pakman_export_result:success') {
         downloadContent(name + '.pak', data)
       } else {
         setMessage(toUserMessage(result))

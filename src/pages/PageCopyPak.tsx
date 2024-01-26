@@ -21,7 +21,7 @@ export default function PageCopyPak() {
     register,
   } = useForm<Inputs>()
 
-  if (pakman.ov == 'pakrypt.pakman_state:unloaded') {
+  if (pakman.ov === 'pakrypt.pakman_state:unloaded') {
     return <PageNotLoaded />
   }
 

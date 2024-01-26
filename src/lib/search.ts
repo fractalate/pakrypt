@@ -146,7 +146,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     })
   }
 
-  if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+  if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     if (pakman.pak.entries != null) {
       for (const entry of pakman.pak.entries) {
         if (showEverything || entryMatchesQuery(entry, query)) {
@@ -157,7 +157,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_password',
       })
@@ -165,7 +165,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_note',
       })
@@ -173,7 +173,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(new? ?f?i?l?e?|fil?e?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:new_file',
       })
@@ -181,7 +181,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakman_state:loaded') {
+    if (pakman.ov === 'pakrypt.pakman_state:loaded') {
       result.push({
         ov: 'pakrypt.command:unlock',
       })
@@ -189,7 +189,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
       result.push({
         ov: 'pakrypt.command:lock',
       })

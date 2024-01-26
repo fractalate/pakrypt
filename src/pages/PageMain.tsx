@@ -21,12 +21,14 @@ export default function PageMain() {
   </div>)
 
   let message = 'Type "help" for help.'
-  if (pakman.ov == 'pakrypt.pakman_state:unloaded') {
+  if (pakman.ov === 'pakrypt.pakman_state:unloaded') {
     message = 'No pak. ' + message
-  } else if (pakman.ov == 'pakrypt.pakman_state:loaded') {
+  } else if (pakman.ov === 'pakrypt.pakman_state:loaded') {
     message = '"' + pakman.name + '" is locked. ' + message
-  } else if (pakman.ov == 'pakrypt.pakman_state:unlocked') {
+  } else if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     message = '"' + pakman.name + '" is ready! ' + message
+  } else {
+    message = pakman // never
   }
 
   const inputRef = useRef<HTMLInputElement>(null)
