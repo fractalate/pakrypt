@@ -18,7 +18,7 @@ export default function PageOpenPak() {
         setPakman(pakman)
         setQuery('')
         popPage()
-      } else if (result.ov == 'pakrypt.pakman_load_result:not_found') {
+      } else {
         setMessage(toUserMessage(result))
       }
     }}>{name}</button>
