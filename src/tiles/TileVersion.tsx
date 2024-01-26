@@ -13,7 +13,7 @@ export default function TileVersion() {
       { copyright}
     </p>
     <p>
-      <a href={ repository.url } className="font-bold">&#x1f517; Project Site</a>
+      <a href={ repository.url } className="font-bold">&#x1f517; GitHub Project</a>
     </p>
   </div>
 }
