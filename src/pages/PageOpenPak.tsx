@@ -2,6 +2,7 @@ import { useContext, useMemo, useState } from 'react'
 import { ListPaks, PakmanLoad } from '../pak/Pakman'
 import styling from '../lib/styling'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
+import { toUserMessage } from '../pak/Text'
 
 export default function PageOpenPak() {
   const paks = useMemo(() => ListPaks(), [])
@@ -18,11 +19,7 @@ export default function PageOpenPak() {
         setQuery('')
         popPage()
       } else if (result.ov == 'pakrypt.pakman_load_result:not_found') {
-        setMessage('Pak not found. Sorry.')
-      } else if (result.ov == 'pakrypt.pakman_load_result:integrity_error') {
-        setMessage('Pak is corrupt. Sorry.')
-      } else {
-        setMessage(result) // never
+        setMessage(toUserMessage(result))
       }
     }}>{name}</button>
   </div>)

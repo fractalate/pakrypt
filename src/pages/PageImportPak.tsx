@@ -4,6 +4,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { ListPaks, PakmanImport } from '../pak/Pakman'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
+import { toUserMessage } from '../pak/Text'
 
 interface Inputs {
   name: string,
@@ -45,7 +46,7 @@ export default function PageImportPak() {
             setPakman(pakman)
             setQuery('')
           } else {
-            setMessage(result.ov)
+            setMessage(toUserMessage(result))
           }
         }
       }

@@ -81,7 +81,7 @@ export interface PakmanNewResultSuccess {
 }
 export interface PakmanNewResultStoreFailed {
   ov: 'pakrypt.pakman_new_result:store_failed',
-  cause: PakmanStoreResult,
+  detail: PakmanStoreResult,
 }
 
 export async function PakmanNew(name: string, passphrase: string): Promise<[PakmanUnlocked, PakmanNewResult]> {
@@ -106,9 +106,9 @@ export async function PakmanNew(name: string, passphrase: string): Promise<[Pakm
   if (result.ov === 'pakrypt.pakman_store_result:success') {
     return [finalPakman, { ov: 'pakrypt.pakman_new_result:success' }]
   } else if (result.ov === 'pakrypt.pakman_store_result:no_space') {
-    return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', cause: result }]
+    return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', detail: result }]
   } else if (result.ov === 'pakrypt.pakman_store_result:pakrypt_store_failed') {
-    return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', cause: result }]
+    return [pakman, { ov: 'pakrypt.pakman_new_result:store_failed', detail: result }]
   }
 
   return result // never
@@ -185,18 +185,18 @@ function PakmanRemoveLocalStorageItem(name: string) {
   localStorage.removeItem(storage)
 }
 
-type PakmanImportResult = (
+export type PakmanImportResult = (
   | PakmanImportResultSuccess
   | PakmanImportResultNoSpace
   | PakmanImportResultLoadFailed
 )
-interface PakmanImportResultSuccess {
+export interface PakmanImportResultSuccess {
   ov: 'pakrypt.pakman_import_result:success',
 }
-interface PakmanImportResultNoSpace {
+export interface PakmanImportResultNoSpace {
   ov: 'pakrypt.pakman_import_result:no_space',
 }
-interface PakmanImportResultLoadFailed {
+export interface PakmanImportResultLoadFailed {
   ov: 'pakrypt.pakman_import_result:load_failed',
   detail: (
     | PakmanLoadResultNotFound
@@ -226,7 +226,7 @@ export function PakmanImport(name: string, pak: string): [Pakman, PakmanImportRe
   return [pakman, { ov: 'pakrypt.pakman_import_result:success' }]
 }
 
-type PakmanExportResult = (
+export type PakmanExportResult = (
   | PakmanExportResultSuccess
   | PakmanExportResultNotFound
   | PakmanExportResultIntegrityError
@@ -593,7 +593,7 @@ export interface PakmanSaveResultSuccess {
 }
 export interface PakmanSaveResultStoreFailed {
   ov: 'pakrypt.pakman_save_result:store_failed',
-  cause: PakmanStoreResult,
+  detail: PakmanStoreResult,
 }
 
 export async function PakmanUpdate(pakman: PakmanUnlocked, pak: Pak): Promise<[PakmanUnlocked, PakmanSaveResult]> {
@@ -666,9 +666,9 @@ async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): P
 
   if (storeResult.ov !== 'pakrypt.pakman_store_result:success') {
     if (storeResult.ov === 'pakrypt.pakman_store_result:no_space') {
-      return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
+      return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', detail: storeResult }]
     } else if (storeResult.ov === 'pakrypt.pakman_store_result:pakrypt_store_failed') {
-      return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', cause: storeResult }]
+      return [pakman, { ov: 'pakrypt.pakman_save_result:store_failed', detail: storeResult }]
     }
 
     return storeResult // never

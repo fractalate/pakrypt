@@ -49,5 +49,5 @@ export default function Page({
   } else if (ov === 'pakrypt.page:import_pak') {
     return <PageImportPak />
   }
-  return ov // This will cause a type error when the if's above are not exhaustive.
+  return ov // never
 }

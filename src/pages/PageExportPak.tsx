@@ -3,6 +3,7 @@ import { ListPaks, PakmanExport } from '../pak/Pakman'
 import styling from '../lib/styling'
 import { PageContext } from '../Contexts'
 import { downloadContent } from '../lib/download'
+import { toUserMessage } from '../pak/Text'
 
 export default function PageExportPak() {
   const paks = useMemo(() => ListPaks(), [])
@@ -15,7 +16,7 @@ export default function PageExportPak() {
       if (result.ov == 'pakrypt.pakman_export_result:success') {
         downloadContent(name + '.pak', data)
       } else {
-        setMessage(result.ov)
+        setMessage(toUserMessage(result))
       }
     }}>{name}</button>
     <div className="w-1/2"></div>
