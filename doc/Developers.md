@@ -2,7 +2,7 @@
 
 ## Setup
 
-This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed.
+This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed. The project targets NodeJS version 20, but it has been tested on older versions as far back as version 14.
 
 First, install dependencies:
 

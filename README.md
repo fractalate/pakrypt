@@ -12,7 +12,7 @@ You can see what's new in the [release log](./doc/Release.md).
 
 ## Administration
 
-This [NodeJS](https://nodejs.org/) project compiles to a set of static files which can then be served from any web server.
+This [NodeJS](https://nodejs.org/) project compiles to a set of static files which can then be served from any web server. The project targets NodeJS version 20, but it has been tested on older versions as far back as version 14.
 
 First, install dependencies:
 
@@ -32,7 +32,7 @@ This will generate the `dist` directory containing the static files to be served
 
 *See also [doc/Developers.md](./doc/Developers.md)*
 
-This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed.
+This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed. The project targets NodeJS version 20, but it has been tested on older versions as far back as version 14.
 
 First, install dependencies:
 
