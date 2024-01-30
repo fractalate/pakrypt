@@ -2,10 +2,10 @@ import { useContext, useState } from 'react'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ListPaks, PakmanCopy } from '../pak/Pakman'
-import PageNotLoaded from './PageNotLoaded'
 import styling from '../lib/styling'
 import behavior from '../lib/behavior'
 import { toUserMessage } from '../pak/Text'
+import PageErrorNotOpen from './PageErrorNotOpen'
 
 interface Inputs {
   name: string,
@@ -22,7 +22,7 @@ export default function PageCopyPak() {
   } = useForm<Inputs>()
 
   if (pakman.ov === 'pakrypt.pakman_state:nil') {
-    return <PageNotLoaded />
+    return <PageErrorNotOpen />
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {

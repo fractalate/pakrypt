@@ -34,18 +34,19 @@ export default function TileHelp() {
     <p className="mb-2">Use the search bar to find your things. Your things are bundled together in a "pak". Your pak is {yourPakIs}. So you can {soYouCan}.</p>
     <p className="mt-2 mb-2">Commands:</p>
     <ul className="mt-2 mb-2 list-disc list-inside">
-      <li><b>new password</b></li>
-      <li><b>new note</b></li>
-      <li><b>new file</b></li>
-      <li><b>unlock pak</b></li>
-      <li><b>lock pak</b></li>
+      <li><b>new pak</b></li>
+      <li><b>close pak</b></li>
       <li><b>open pak</b></li>
       <li><b>export pak</b></li>
       <li><b>import pak</b></li>
+      <li><b>delete pak</b></li>
       <li><b>copy pak</b></li>
-      <li><b>new pak</b></li>
-      <li><b>close pak</b></li>
+      <li><b>unlock pak</b></li>
+      <li><b>lock pak</b></li>
       <li><b>change passphrase</b></li>
+      <li><b>new password</b></li>
+      <li><b>new note</b></li>
+      <li><b>new file</b></li>
       <li><b>version</b></li>
       <li><b>theme</b> or <b>light</b> or <b>dark</b> to switch the theme.</li>
       <li><b>*</b> (asterisk) or (space bar) to list all items and commands.</li>
