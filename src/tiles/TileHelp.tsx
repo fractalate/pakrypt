@@ -49,7 +49,7 @@ export default function TileHelp() {
       <li><b>new file</b></li>
       <li><b>version</b></li>
       <li><b>theme</b> or <b>light</b> or <b>dark</b> to switch the theme.</li>
-      <li><b>*</b> (asterisk) or (space bar) to list all items and commands.</li>
+      <li><b>*</b> (asterisk) or <b>_</b> (space bar) to list all items and commands.</li>
     </ul>
     <p className="mt-2">
       <a href="https://www.pakrypt.com/guide.html" className="font-bold">&#x1f517; User Guide</a>

@@ -124,7 +124,9 @@ function entryMatchesQuery(entry: PakEntry, query: string): boolean {
 }
 
 export default function search(query: string, pakman: Pakman): SearchResult[] {
-  const showEverything = query === '*' || query === ' '
+  // The help tile calls out * and space, but uses an underscore to show the space.
+  // Be kind and allow underscore to find everything.
+  const showEverything = query === '*' || query === ' ' || query === '_'
 
   query = query.trim().toLowerCase()
 
