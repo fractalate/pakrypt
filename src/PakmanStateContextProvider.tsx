@@ -11,7 +11,7 @@ export default function PakmanStateContextProvider({ children }: PropsWithChildr
   const [pakman, _setPakman] = useState(initialPakman)
 
   function setPakman(pakman: Pakman) {
-    if (pakman.ov === 'pakrypt.pakman_state:unloaded') {
+    if (pakman.ov === 'pakrypt.pakman_state:nil') {
       PakmanSetLast(null)
     } else {
       PakmanSetLast(pakman.name)

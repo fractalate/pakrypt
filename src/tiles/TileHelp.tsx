@@ -4,9 +4,9 @@ import styling from '../lib/styling'
 import { Pakman } from '../pak/Pakman'
 
 function getYourPakIs(pakman: Pakman): JSX.Element {
-  if (pakman.ov === 'pakrypt.pakman_state:unloaded') {
-    return <>not loaded</>
-  } else if (pakman.ov === 'pakrypt.pakman_state:loaded') {
+  if (pakman.ov === 'pakrypt.pakman_state:nil') {
+    return <>not open</>
+  } else if (pakman.ov === 'pakrypt.pakman_state:locked') {
     return <>locked</>
   } else if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     return <>ready to be used</>
@@ -15,9 +15,9 @@ function getYourPakIs(pakman: Pakman): JSX.Element {
 }
 
 function getSoYouCan(pakman: Pakman): JSX.Element {
-  if (pakman.ov === 'pakrypt.pakman_state:unloaded') {
+  if (pakman.ov === 'pakrypt.pakman_state:nil') {
     return <>create a <b>new pak</b>, <b>open a pak</b>, or <b>import a pak</b></>
-  } else if (pakman.ov === 'pakrypt.pakman_state:loaded') {
+  } else if (pakman.ov === 'pakrypt.pakman_state:locked') {
     return <><b>unlock your pak</b></>
   } else if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     return <>view and manage your data; e.g. make a <b>new password</b>, <b>note</b>, or <b>file</b></>

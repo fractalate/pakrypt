@@ -21,9 +21,9 @@ export default function PageMain() {
   </div>)
 
   let message = 'Type "help" for help.'
-  if (pakman.ov === 'pakrypt.pakman_state:unloaded') {
+  if (pakman.ov === 'pakrypt.pakman_state:nil') {
     message = 'No pak. ' + message
-  } else if (pakman.ov === 'pakrypt.pakman_state:loaded') {
+  } else if (pakman.ov === 'pakrypt.pakman_state:locked') {
     message = '"' + pakman.name + '" is locked. ' + message
   } else if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     message = '"' + pakman.name + '" is ready! ' + message

@@ -5,6 +5,7 @@ import { PakmanUpdate } from '../pak/Pakman'
 import styling from '../lib/styling'
 import NoteEditor from '../editors/NoteEditor'
 import { toUserMessage } from '../pak/Text'
+import PageErrorNotUnlocked from './PageErrorNotUnlocked'
 
 export default function PageEditNote({
   entry,
@@ -17,7 +18,7 @@ export default function PageEditNote({
   // Note: no setQuery on save here because it interferes with the flow: search for all of some kind of thing and edit them all, one after another.
 
   if (pakman.ov != 'pakrypt.pakman_state:unlocked') {
-    throw new Error('pakman is not unlocked.')
+    return <PageErrorNotUnlocked />
   }
 
   const saveNote = async (data: NoteFields) => {

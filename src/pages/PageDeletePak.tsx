@@ -23,7 +23,7 @@ export default function PageDeletePak() {
             setQuery('')
             popPage()
 
-            if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
+            if (pakman.ov != 'pakrypt.pakman_state:nil') {
               if (pakman.name === name) {
                 setPakman(PakmanClose())
               }

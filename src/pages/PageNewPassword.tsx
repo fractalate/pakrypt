@@ -4,7 +4,7 @@ import PasswordEditor from '../editors/PasswordEditor'
 import { CreatePassword, PasswordFields } from '../pak/Pak'
 import styling from '../lib/styling'
 import { PakmanUpdate } from '../pak/Pakman'
-import PageNotUnlocked from './PageNotUnlocked'
+import PageNotUnlocked from './PageErrorNotUnlocked'
 import { toUserMessage } from '../pak/Text'
 
 export default function PageNewPassword() {

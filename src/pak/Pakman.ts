@@ -8,15 +8,15 @@ export interface PakmanStateContextState {
 }
 
 export type Pakman = (
-  | PakmanUnloaded
-  | PakmanLoaded
+  | PakmanNil
+  | PakmanLocked
   | PakmanUnlocked
 )
-export interface PakmanUnloaded {
-  ov: 'pakrypt.pakman_state:unloaded',
+export interface PakmanNil {
+  ov: 'pakrypt.pakman_state:nil',
 }
-export interface PakmanLoaded {
-  ov: 'pakrypt.pakman_state:loaded',
+export interface PakmanLocked {
+  ov: 'pakrypt.pakman_state:locked',
   name: string,
   enc: Encrypted,
   local: null | PakmanLocalLoaded,
@@ -68,8 +68,8 @@ export function ListPaks(): Array<string> {
   return result
 }
 
-export function PakmanClose(): PakmanUnloaded {
-  return { ov: 'pakrypt.pakman_state:unloaded' }
+export function PakmanClose(): PakmanNil {
+  return { ov: 'pakrypt.pakman_state:nil' }
 }
 
 export type PakmanNewResult = (
@@ -212,7 +212,7 @@ export function PakmanImport(name: string, pak: string): [Pakman, PakmanImportRe
   const result = PakmanSaveLocalStorageItem(name, item)
   if (result.ov !== 'pakrypt.pakman_save_local_storage_item_result:success') {
     if (result.ov === 'pakrypt.pakman_save_local_storage_item_result:no_space') {
-      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_import_result:no_space' }]
+      return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_import_result:no_space' }]
     }
 
     return result // never
@@ -220,7 +220,7 @@ export function PakmanImport(name: string, pak: string): [Pakman, PakmanImportRe
   const [pakman, loadResult] = PakmanLoad(name)
   
   if (loadResult.ov !== 'pakrypt.pakman_load_result:success') {
-    return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_import_result:load_failed', detail: loadResult }]
+    return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_import_result:load_failed', detail: loadResult }]
   }
 
   return [pakman, { ov: 'pakrypt.pakman_import_result:success' }]
@@ -291,9 +291,9 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
 
   if (itemResult.ov !== 'pakrypt.pakman_load_local_storage_item_result:success') {
     if (itemResult.ov === 'pakrypt.pakman_load_local_storage_item_result:not_found') {
-      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:not_found' }]
+      return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_load_result:not_found' }]
     } else if (itemResult.ov === 'pakrypt.pakman_load_local_storage_item_result:integrity_error') {
-      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: itemResult.ov }]
+      return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: itemResult.ov }]
     }
 
     return itemResult // never
@@ -301,7 +301,7 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
 
   const data = item.pak
   if (data == null || data == '') {
-    return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'pak_local_storage_item_integrity_error' }]
+    return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'pak_local_storage_item_integrity_error' }]
   }
 
   let enc: Encrypted
@@ -309,7 +309,7 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
     enc = GetEncrypted(data)
   } catch (err) {
     console.error(err)
-    return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'pak_integrity_error' }]
+    return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'pak_integrity_error' }]
   }
 
   const localData = item.local
@@ -321,13 +321,13 @@ export function PakmanLoad(name: string): [Pakman, PakmanLoadResult] {
       }
     } catch (err) {
       console.error(err)
-      return [{ ov: 'pakrypt.pakman_state:unloaded' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'local_integrity_error' }]
+      return [{ ov: 'pakrypt.pakman_state:nil' }, { ov: 'pakrypt.pakman_load_result:integrity_error', detail: 'local_integrity_error' }]
     }
   }
 
   return [
     {
-      ov: 'pakrypt.pakman_state:loaded',
+      ov: 'pakrypt.pakman_state:locked',
       name,
       enc,
       local,
@@ -340,7 +340,7 @@ export function PakmanLoadLast(): [Pakman, PakmanLoadResult] {
   const lastPakName = localStorage.getItem('pakrypt.last_pak')
   if (!lastPakName) {
     return [{ 
-      ov: 'pakrypt.pakman_state:unloaded',
+      ov: 'pakrypt.pakman_state:nil',
     }, {
       ov: 'pakrypt.pakman_load_result:success',
     }]
@@ -449,7 +449,7 @@ export interface PakmanUnlockResultLocalRekeyError {
   detail: 'encrypt',
 }
 
-export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
+export async function PakmanUnlock(pakman: PakmanLocked, passphrase: string): Promise<[Pakman, PakmanUnlockResult]> {
   let key: CryptoKey
   let salt: Uint8Array
   try {
@@ -569,7 +569,7 @@ export async function PakmanUnlock(pakman: PakmanLoaded, passphrase: string): Pr
   }, { ov: 'pakrypt.pakman_unlock_result:success' }]
 }
 
-export function PakmanLock(pakman: PakmanUnlocked): PakmanLoaded {
+export function PakmanLock(pakman: PakmanUnlocked): PakmanLocked {
   let local: null | PakmanLocalLoaded = null
   if (pakman.local != null) {
     local = {
@@ -577,7 +577,7 @@ export function PakmanLock(pakman: PakmanUnlocked): PakmanLoaded {
     }
   }
   return {
-    ov: 'pakrypt.pakman_state:loaded',
+    ov: 'pakrypt.pakman_state:locked',
     name: pakman.name,
     enc: pakman.enc,
     local,
@@ -652,7 +652,7 @@ export async function PakmanChangePassphrase(pakman: PakmanUnlocked, passphrase:
   return [newPakman, result]
 }
 
-export async function PakmanCopy<T extends PakmanLoaded | PakmanUnlocked>(pakman: T, name: string): Promise<[T, PakmanSaveResult]> {
+export async function PakmanCopy<T extends PakmanLocked | PakmanUnlocked>(pakman: T, name: string): Promise<[T, PakmanSaveResult]> {
   const [newPakman, result] = await PakmanSave({ ...pakman, name, local: null })
   if (result.ov !== 'pakrypt.pakman_save_result:success') {
     return [pakman, result]
@@ -661,7 +661,7 @@ export async function PakmanCopy<T extends PakmanLoaded | PakmanUnlocked>(pakman
 }
 
 // Use the PakmanChangePassphrase(), PakmanUpdate(), and PakmanCopy() functions.
-async function PakmanSave<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T,  PakmanSaveResult]> {
+async function PakmanSave<T extends PakmanLocked | PakmanUnlocked>(pakman: T): Promise<[T,  PakmanSaveResult]> {
   const [newPakman, storeResult] = await PakmanStore(pakman)
 
   if (storeResult.ov !== 'pakrypt.pakman_store_result:success') {
@@ -692,7 +692,7 @@ export interface PakmanStoreResultPakmanStoreFailed {
   ov: 'pakrypt.pakman_store_result:pakrypt_store_failed',
 }
 
-async function PakmanStore<T extends PakmanLoaded | PakmanUnlocked>(pakman: T): Promise<[T, PakmanStoreResult]> {
+async function PakmanStore<T extends PakmanLocked | PakmanUnlocked>(pakman: T): Promise<[T, PakmanStoreResult]> {
   const item: PakmanLocalStorageItem = { ov: 'pakrypt.pakman_local_storage_item:1.0' }
 
   item.pak = PutEncrypted(pakman.enc)

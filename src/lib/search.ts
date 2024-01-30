@@ -181,7 +181,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:loaded') {
+    if (pakman.ov === 'pakrypt.pakman_state:locked') {
       result.push({
         ov: 'pakrypt.command:unlock',
       })
@@ -205,7 +205,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
 
   // "close pak" or "close a pak"
   if (showEverything || /^(cop?y? ?a? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov !== 'pakrypt.pakman_state:unloaded') {
+    if (pakman.ov !== 'pakrypt.pakman_state:nil') {
       result.push({
         ov: 'pakrypt.command:copy_pak',
       })
@@ -219,7 +219,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   }
 
   if (showEverything || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
+    if (pakman.ov != 'pakrypt.pakman_state:nil') {
       result.push({
         ov: 'pakrypt.command:close_pak',
       })
