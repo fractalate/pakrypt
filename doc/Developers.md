@@ -46,7 +46,7 @@ The application entrypoint is located in [`src/main.tsx`](../src/main.tsx). Ther
 
 [`src/App.tsx`](../src/App.tsx) holds the `<App />` component which creates the context providers used throughout the application. There are contexts for dark/light theme, search bar contents, pakman state, and page state. The page state context provider ([`src/PageContextProvider.tsx`](../src/PageContextProvider.tsx)) is special in that it renders its own child components, so it must be the final context created by `<App />` and takes no children. See [`src/pages/PageMain.tsx`](../src/pages/PageMain.tsx) if you are looking for the page a user sees initially.
 
-React contexts are created in [`src/Contexts.ts`](../src/Contexts.ts). The corresponding providers for those contexts are split into separate files as React components and are located directly in the [`src/`](../src/) directory (e.g. [`src/PakmanStateContextProvider.tsx`](../src/PakmanStateContextProvider.tsx))
+React contexts are created in [`src/Contexts.ts`](../src/Contexts.ts). The corresponding providers for those contexts are split into separate files as React components and are located directly in the [`src/`](../src/) directory (e.g. [`src/PakmanStateContextProvider.tsx`](../src/PakmanStateContextProvider.tsx)).
 
 Source files are also split across various directories depending on the purpose of each:
 
