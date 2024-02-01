@@ -1,6 +1,6 @@
-import { PakmanExportResult, PakmanImportResult, PakmanLoadResult, PakmanNewResult, PakmanSaveResult, PakmanStoreResult, PakmanUnlockResult } from './Pakman'
+import { PakmanExportResult, PakmanImportResult, PakmanOpenResult, PakmanNewResult, PakmanSaveResult, PakmanStoreResult, PakmanUnlockResult } from './Pakman'
 
-export function toUserMessage(o: PakmanSaveResult | PakmanNewResult | PakmanUnlockResult | PakmanImportResult | PakmanExportResult | PakmanLoadResult): string {
+export function toUserMessage(o: PakmanSaveResult | PakmanNewResult | PakmanUnlockResult | PakmanImportResult | PakmanExportResult | PakmanOpenResult): string {
   function toFollowupMessageStoreResult(o: PakmanStoreResult): string {
     if (o.ov === 'pakrypt.pakman_store_result:success') {
       return 'success.'
@@ -47,12 +47,12 @@ export function toUserMessage(o: PakmanSaveResult | PakmanNewResult | PakmanUnlo
     return 'Pak unlock failed: rekey could not be performed.'
   }
 
-  function toFollowupMessageLoadResult(o: PakmanLoadResult): string {
-    if (o.ov === 'pakrypt.pakman_load_result:success') {
+  function toFollowupMessageOpenResult(o: PakmanOpenResult): string {
+    if (o.ov === 'pakrypt.pakman_open_result:success') {
       return 'success.'
-    } else if (o.ov === 'pakrypt.pakman_load_result:integrity_error') {
+    } else if (o.ov === 'pakrypt.pakman_open_result:integrity_error') {
       return 'integrity error.'
-    } else if (o.ov === 'pakrypt.pakman_load_result:not_found') {
+    } else if (o.ov === 'pakrypt.pakman_open_result:not_found') {
       return 'not found.'
     }
 
@@ -61,8 +61,8 @@ export function toUserMessage(o: PakmanSaveResult | PakmanNewResult | PakmanUnlo
 
   if (o.ov === 'pakrypt.pakman_import_result:success') {
     return 'Pak was imported successfully.'
-  } else if (o.ov === 'pakrypt.pakman_import_result:load_failed') {
-    return 'Pak failed to import: ' + toFollowupMessageLoadResult(o.detail)
+  } else if (o.ov === 'pakrypt.pakman_import_result:open_failed') {
+    return 'Pak failed to import: ' + toFollowupMessageOpenResult(o.detail)
   } else if (o.ov === 'pakrypt.pakman_import_result:no_space') {
     return 'Pak failed to import: not enough space.'
   }
@@ -75,12 +75,12 @@ export function toUserMessage(o: PakmanSaveResult | PakmanNewResult | PakmanUnlo
     return 'Pak failed to export: not found.'
   }
 
-  if (o.ov === 'pakrypt.pakman_load_result:success') {
-    return 'Pak was loaded successfully.'
-  } else if (o.ov === 'pakrypt.pakman_load_result:integrity_error') {
-    return 'Pak failed to load: integrity error.'
-  } else if (o.ov === 'pakrypt.pakman_load_result:not_found') {
-    return 'Pak failed to load: not found.'
+  if (o.ov === 'pakrypt.pakman_open_result:success') {
+    return 'Pak was opened successfully.'
+  } else if (o.ov === 'pakrypt.pakman_open_result:integrity_error') {
+    return 'Pak failed to open: integrity error.'
+  } else if (o.ov === 'pakrypt.pakman_open_result:not_found') {
+    return 'Pak failed to open: not found.'
   }
 
   return o // never

@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from 'react'
-import { ListPaks, PakmanLoad } from '../pak/Pakman'
+import { ListPaks, PakmanOpen } from '../pak/Pakman'
 import styling from '../lib/styling'
 import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import { toUserMessage } from '../pak/Text'
@@ -13,8 +13,8 @@ export default function PageOpenPak() {
 
   const items = paks.map((name) => <div key={name} className="flex flex-col">
     <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
-      const [pakman, result] = PakmanLoad(name)
-      if (result.ov === 'pakrypt.pakman_load_result:success') {
+      const [pakman, result] = PakmanOpen(name)
+      if (result.ov === 'pakrypt.pakman_open_result:success') {
         setPakman(pakman)
         setQuery('')
         popPage()
