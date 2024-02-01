@@ -16,7 +16,7 @@ export default function TileThemeSwitcher() {
         Theme is {themeText}
       </div>
       <div className="flex flex-row gap-2">
-        <button className={styling.button.formButton + ' w-1/3'} onClick={() => clearPreferredTheme()}>Set No Theme</button>
+        <button className={styling.button.formButton + ' w-1/3'} onClick={() => clearPreferredTheme()}>Use System Theme</button>
         <button className={styling.button.formButton + ' w-1/3'} onClick={() => setPreferredTheme('dark')}>Set Dark Theme</button>
         <button className={styling.button.formButton + ' w-1/3'} onClick={() => setPreferredTheme('light')}>Set Light Theme</button>
       </div>

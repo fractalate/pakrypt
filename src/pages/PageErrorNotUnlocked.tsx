@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { PageContext } from '../Contexts'
 import styling from '../lib/styling'
 
-export default function PageNotLoaded() {
+export default function PageErrorNotUnlocked() {
   const pageContextState = useContext(PageContext)
 
   function closePage() {
@@ -11,6 +11,6 @@ export default function PageNotLoaded() {
 
   return <div className={styling.page.regular}>
     <button className={styling.button.formButton} onClick={() => closePage()}>Cancel</button>
-    <div>The Pak is not loaded. Press the button to close.</div>
+    <div>The pak is not unlocked. Press the button to close.</div>
   </div>
 }

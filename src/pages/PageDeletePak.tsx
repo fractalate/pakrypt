@@ -14,7 +14,7 @@ export default function PageDeletePak() {
   const items = useMemo(() => {
     function Entry({ name }: { name: string }) {
       if (name === confirmingDeletePak) {
-        return <div key={name} className="flex flex-row gap-1">
+        return <div className="flex flex-row gap-1">
           <button className={styling.button.formButton + ' w-1/2'} onClick={() => {
             setConfirmingDeletePak(null)
           }}>Keep</button>
@@ -23,7 +23,7 @@ export default function PageDeletePak() {
             setQuery('')
             popPage()
 
-            if (pakman.ov != 'pakrypt.pakman_state:unloaded') {
+            if (pakman.ov != 'pakrypt.pakman_state:nil') {
               if (pakman.name === name) {
                 setPakman(PakmanClose())
               }
@@ -39,7 +39,7 @@ export default function PageDeletePak() {
         <div className="w-1/2"></div>
       </div>
     }
-    return paks.map((name) => <Entry name={name} />)
+    return paks.map((name) => <Entry key={name} name={name} />)
   }, [confirmingDeletePak, paks, popPage, setPakman, setQuery, pakman])
 
   return <div className={styling.page.regular}>

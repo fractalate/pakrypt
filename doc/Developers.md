@@ -2,7 +2,7 @@
 
 ## Setup
 
-This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed.
+This [NodeJS](https://nodejs.org/) project can be run in development mode with hot reloading as the source code is changed. The project targets NodeJS version 20, but it has been tested on older versions as far back as version 14.
 
 First, install dependencies:
 
@@ -38,15 +38,15 @@ There are two main source directories:
 A field is present on most objects used in this application named `ov` which stands for "object version". An example of one of these from [`src/pak/Pak.ts`](../src/pak/Pak.ts) is `pakrypt.pak:1.0` which communicates that the object with the `ov` implements interface `Pak`. This field is used in conjunction with TypeScript's type system to allow various kinds of type refinement checks for basic objects. Values for `ov` follow the following two patterns in this application:
 
 * An `ov` can be versioned, where it ends with `:1.0` or similar. This indicates the version of the kind of object that it is. For example, as time goes on, the semantics of the data in an object may change and the version indicates this, allowing the application to handle old data differently (or upgrade it if possible). Use versioned `ov` values when the object is stored for later use (e.g. in local storage or online).
-* An `ov` can be unversioned, where it ends with some identifier like `:success`. An example of one of these from [`src/pak/Pakman.ts`](../src/pak/Pakman.ts) is `pakrypt.pakman_state:unloaded` which communicates that the object is a pakman and is in the "unloaded" state. Use unversioned `ov` values when the object is not stored (e.g. only used while the app is running) or when versioning considerations are not necessary.
+* An `ov` can be unversioned, where it ends with some identifier like `:success`. An example of one of these from [`src/pak/Pakman.ts`](../src/pak/Pakman.ts) is `pakrypt.pakman_state:nil` which communicates that the object is a pakman and is not opened. Use unversioned `ov` values when the object is not stored (e.g. only used while the app is running) or when versioning considerations are not necessary.
 
 ## Source Code Layout
 
 The application entrypoint is located in [`src/main.tsx`](../src/main.tsx). There you will see the `<App />` component gets rendered which offers the entire application experience. [`src/main.tsx`](../src/main.tsx) is also a great place to do any one-time initialization, e.g. the dark/light theme setup which happens in this file.
 
-[`src/App.tsx`](../src/App.tsx) holds the `<App />` component which creates the context providers used throughout the application. There are contexts for dark/light theme, search bar contents, pakman state, and page state. The page state context provider ([`src/PageContextProvider.tsx`](../src/PageContextProvider.tsx)) is special in that it renders its own child components, so it must be the final context created by `<App />` and takes no children. See [`src/pages/PageMain.tsx`](../src/pages/PageMain.tsx) if you are looking for the page a user sees initially.
+[`src/App.tsx`](../src/App.tsx) holds the `<App />` component which creates the context providers used throughout the application. There are contexts for dark/light theme, search bar contents, pakman state, and page state. The page state context provider ([`src/PageContextProvider.tsx`](../src/PageContextProvider.tsx)) is special in that it renders its own child components, so it must be the innermost context created by `<App />` and takes no children. See [`src/pages/PageMain.tsx`](../src/pages/PageMain.tsx) if you are looking for the page a user sees initially.
 
-React contexts are created in [`src/Contexts.ts`](../src/Contexts.ts). The corresponding providers for those contexts are split into separate files as React components and are located directly in the [`src/`](../src/) directory (e.g. [`src/PakmanStateContextProvider.tsx`](../src/PakmanStateContextProvider.tsx))
+React contexts are created in [`src/Contexts.ts`](../src/Contexts.ts). The corresponding providers for those contexts are split into separate files as React components and are located directly in the [`src/`](../src/) directory (e.g. [`src/PakmanStateContextProvider.tsx`](../src/PakmanStateContextProvider.tsx)).
 
 Source files are also split across various directories depending on the purpose of each:
 

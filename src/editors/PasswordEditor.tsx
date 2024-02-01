@@ -72,7 +72,9 @@ export default function PasswordEditor({
         </div>
       </div>
       <div className="flex flex-row gap-2">
-        <button className={styling.button.formButton + ' w-1/4'} type="submit">Submit</button>
+        <button type="submit" className={styling.button.formButton + ' w-1/4'}>
+          {showDelete ? 'Save' : 'Create'}
+        </button>
         <button className={styling.button.formButton + ' w-1/4'} onClick={() => {
           onUserCancel()
         }}>Cancel</button>

@@ -29,7 +29,7 @@ export default function TileUnlock() {
     handleSubmit,
   } = useForm<Inputs>()
 
-  if (pakman.ov != 'pakrypt.pakman_state:loaded') {
+  if (pakman.ov != 'pakrypt.pakman_state:locked') {
     return <></>
   }
 

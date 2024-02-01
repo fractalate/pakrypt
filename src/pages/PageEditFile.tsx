@@ -25,6 +25,8 @@ export default function PageEditFile({
 
   if (pakman.ov != 'pakrypt.pakman_state:unlocked') {
     throw new Error('pakman is not unlocked.')
+    // TODO: I want to return this, but I use a lot of hooks after here, so I throw the error instead. How could I restructure this and do the return?
+    // return <PageErrorNotUnlocked />
   }
 
   const initialDataBase64 = useMemo(() => {

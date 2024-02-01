@@ -3,7 +3,7 @@ import { PageContext, PakmanStateContext, QueryBarContext } from '../Contexts'
 import styling from '../lib/styling'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { PakmanChangePassphrase } from '../pak/Pakman'
-import PageNotUnlocked from './PageNotUnlocked'
+import PageNotUnlocked from './PageErrorNotUnlocked'
 import behavior from '../lib/behavior'
 import { toUserMessage } from '../pak/Text'
 

@@ -4,7 +4,7 @@ import FileEditor from '../editors/FileEditor'
 import { CreateFile } from '../pak/Pak'
 import styling from '../lib/styling'
 import { PakmanUpdate } from '../pak/Pakman'
-import PageNotUnlocked from './PageNotUnlocked'
+import PageNotUnlocked from './PageErrorNotUnlocked'
 import { Base64 } from 'js-base64'
 import { toUserMessage } from '../pak/Text'
 

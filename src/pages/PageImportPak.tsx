@@ -32,8 +32,10 @@ export default function PageImportPak() {
 
       reader.onload = (e) => {
         let pakdata = e?.target?.result
-        if (pakdata == null || pakdata == '') {
+        if (pakdata == null) {
           setMessage('No data loaded.')
+        } else if (pakdata == '') {
+          setMessage('Cannot import empty file.')
         } else if (ListPaks().indexOf(data.name) >= 0) {
           setMessage('A pak with the name "' + data.name + '" already exists.')
         } else {
