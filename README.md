@@ -10,23 +10,9 @@ You can read the user guide at [www.pakrypt.com/guide.html](https://www.pakrypt.
 
 You can see what's new in the [release log](./doc/Release.md).
 
-## Administration
+## Administrators
 
-This [NodeJS](https://nodejs.org/) project compiles to a set of static files which can then be served from any web server. The project targets NodeJS version 20, but it has been tested on older versions as far back as version 14.
-
-First, install dependencies:
-
-```
-npm install .
-```
-
-Then, run the build script:
-
-```
-npm run build
-```
-
-This will generate the `dist` directory containing the static files to be served. Move them to your web server, then navigate to your site to use the application.
+To use this project, you simply need to serve the project's static files from a web server. The files can be downloaded from the current GitHub release: [v0.9.2](https://github.com/fractalate/pakrypt/releases/tag/v0.9.2).
 
 ## Development
 
