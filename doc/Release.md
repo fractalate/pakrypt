@@ -1,5 +1,9 @@
 # Release History for Pakrypt
 
+## 0.9.3
+
+This is the release candidate for the first release. It has no major changes.
+
 ## 0.9.2
 
 This is the release candidate for the first release. It has:
