@@ -1,10 +1,22 @@
 # Release History for Pakrypt
 
+<!--
+## 1.0.0
+
+*February 7, 2024*
+
+Version 1.0.0 is the first release of Pakrypt. It includes functionality for creating encrypted passwords, notes, and files locally on your device. You can read the [user guide](https://www.pakrypt.com/guide.html) to get a feel of what is possible with the app.
+-->
+
 ## 0.9.3
+
+*February 2, 2024*
 
 This is the release candidate for the first release. It has no major changes.
 
 ## 0.9.2
+
+*January 31, 2024*
 
 This is the release candidate for the first release. It has:
 
@@ -14,18 +26,10 @@ This is the release candidate for the first release. It has:
 
 ## 0.9.1
 
+*January 28, 2024*
+
 This is the release candidate for the first release. It's fully functional.
 
 ## 0.9.0
 
 Version 0.9.0 is the pre-release version number for the software that was used before the official release.
-
-<!--
-## 1.0.0
-
-_UNRELEASED_
-
-*January 30, 2024*
-
-Version 1.0.0 is the first release of Pakrypt. It includes functionality for creating encrypted passwords, notes, and files.
--->
