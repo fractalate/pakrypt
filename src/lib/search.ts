@@ -160,8 +160,8 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   let wildMatch = false
   // The help tile calls out * and space to search everything, but it
   // uses an underscore to show the space; be kind and allow underscore
-  // to find everything too.
-  if (/\s*[_*]\s*/.test(query) || query === ' ') {
+  // to find everything too. The regex matches a single * or _.
+  if (/^\s*[_*]\s*$/.test(query) || query === ' ') {
     wildMatch = true
     // If you're not searching for a particular kind of entry, it'll
     // show everything including command tiles.
