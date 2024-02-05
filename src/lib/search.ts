@@ -1,4 +1,4 @@
-import { PakEntry } from '../pak/Pak'
+import { IsFileEntry, IsNoteEntry, IsPasswordEntry, PakEntry } from '../pak/Pak'
 import { Pakman } from '../pak/Pakman'
 
 export type SearchResult = (
@@ -114,7 +114,19 @@ function getSubtitle(entry: PakEntry): string {
   return ''
 }
 
-function entryMatchesQuery(entry: PakEntry, query: string): boolean {
+function entryMatchesQuery(entry: PakEntry, query: string, wildMatch: boolean, justFiles: boolean, justNotes: boolean, justPasswords: boolean): boolean {
+  if (justFiles && !IsFileEntry(entry)) {
+    return false
+  }
+  if (justNotes && !IsNoteEntry(entry)) {
+    return false
+  }
+  if (justPasswords && !IsPasswordEntry(entry)) {
+    return false
+  }
+  if (wildMatch) {
+    return true
+  }
   if (query.length == 0) {
     return false
   }
@@ -124,9 +136,39 @@ function entryMatchesQuery(entry: PakEntry, query: string): boolean {
 }
 
 export default function search(query: string, pakman: Pakman): SearchResult[] {
-  // The help tile calls out * and space, but uses an underscore to show the space.
-  // Be kind and allow underscore to find everything.
-  const showEverything = query === '*' || query === ' ' || query === '_'
+  const justFiles = /^\s*files?($|\s)/.test(query)
+  const justNotes = /^\s*notes?($|\s)/.test(query)
+  const justPasswords = /^\s*passw?o?r?d?s?($|\s)/.test(query)
+  if (justFiles) {
+    query = query.replace(/^\s*files?/, '')
+    if (query.length == 0) {
+      query = '*'
+    }
+  } else if (justNotes) {
+    query = query.replace(/^\s*notes?/, '')
+    if (query.length == 0) {
+      query = '*'
+    }
+  } else if (justPasswords) {
+    query = query.replace(/^\s*passw?o?r?d?s?/, '')
+    if (query.length == 0) {
+      query = '*'
+    }
+  }
+
+  let showEverything = false
+  let wildMatch = false
+  // The help tile calls out * and space to search everything, but it
+  // uses an underscore to show the space; be kind and allow underscore
+  // to find everything too.
+  if (/\s*[_*]\s*/.test(query) || query === ' ') {
+    wildMatch = true
+    // If you're not searching for a particular kind of entry, it'll
+    // show everything including command tiles.
+    if (!justFiles && !justNotes && !justPasswords) {
+      showEverything = true
+    }
+  }
 
   query = query.trim().toLowerCase()
 
@@ -151,7 +193,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     if (pakman.pak.entries != null) {
       for (const entry of pakman.pak.entries) {
-        if (showEverything || entryMatchesQuery(entry, query)) {
+        if (showEverything || entryMatchesQuery(entry, query, wildMatch, justFiles, justNotes, justPasswords)) {
           result.push(entry)
         }
       }
