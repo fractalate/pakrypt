@@ -1,4 +1,4 @@
-import { PakEntry } from '../pak/Pak'
+import { IsFileEntry, IsNoteEntry, IsPasswordEntry, PakEntry } from '../pak/Pak'
 import { Pakman } from '../pak/Pakman'
 
 export type SearchResult = (
@@ -114,7 +114,19 @@ function getSubtitle(entry: PakEntry): string {
   return ''
 }
 
-function entryMatchesQuery(entry: PakEntry, query: string): boolean {
+function entryMatchesQuery(entry: PakEntry, query: string, wildMatch: boolean, justFiles: boolean, justNotes: boolean, justPasswords: boolean): boolean {
+  if (justFiles && !IsFileEntry(entry)) {
+    return false
+  }
+  if (justNotes && !IsNoteEntry(entry)) {
+    return false
+  }
+  if (justPasswords && !IsPasswordEntry(entry)) {
+    return false
+  }
+  if (wildMatch) {
+    return true
+  }
   if (query.length == 0) {
     return false
   }
@@ -124,9 +136,32 @@ function entryMatchesQuery(entry: PakEntry, query: string): boolean {
 }
 
 export default function search(query: string, pakman: Pakman): SearchResult[] {
-  // The help tile calls out * and space, but uses an underscore to show the space.
-  // Be kind and allow underscore to find everything.
-  const showEverything = query === '*' || query === ' ' || query === '_'
+  const justFiles = /^\s*files?($|\s)/.test(query)
+  const justNotes = /^\s*notes?($|\s)/.test(query)
+  const justPasswords = /^\s*passw?o?r?d?s?($|\s)/.test(query)
+  if (justFiles) {
+    query = query.replace(/^\s*files?/, '')
+    if (query.length == 0) {
+      query = '*'
+    }
+  } else if (justNotes) {
+    query = query.replace(/^\s*notes?/, '')
+    if (query.length == 0) {
+      query = '*'
+    }
+  } else if (justPasswords) {
+    query = query.replace(/^\s*passw?o?r?d?s?/, '')
+    if (query.length == 0) {
+      query = '*'
+    }
+  }
+  // If you're not searching for a particular kind of entry, it'll
+  // include command tiles.
+  const includeCommands = !justFiles && !justNotes && !justPasswords
+  // The help tile calls out * and space to search everything, but it
+  // uses an underscore to show the space; be kind and allow underscore
+  // to find everything too. The regex matches a single * or _.
+  const wildMatch = /^\s*[_*]\s*$/.test(query) || query === ' '
 
   query = query.trim().toLowerCase()
 
@@ -134,151 +169,155 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   let explicitHelp = false
   let explicitVersion = false
 
-  if (/^(help)$/i.test(query)) {
-    explicitHelp = true
-    result.push({
-      ov: 'pakrypt.command:help',
-    })
-  }
+  if (includeCommands) {
+    if (/^(help)$/i.test(query)) {
+      explicitHelp = true
+      result.push({
+        ov: 'pakrypt.command:help',
+      })
+    }
 
-  if (/^(version)$/i.test(query)) {
-    explicitVersion = true
-    result.push({
-      ov: 'pakrypt.command:version',
-    })
+    if (/^(version)$/i.test(query)) {
+      explicitVersion = true
+      result.push({
+        ov: 'pakrypt.command:version',
+      })
+    }
   }
 
   if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
     if (pakman.pak.entries != null) {
       for (const entry of pakman.pak.entries) {
-        if (showEverything || entryMatchesQuery(entry, query)) {
+        if (entryMatchesQuery(entry, query, wildMatch, justFiles, justNotes, justPasswords)) {
           result.push(entry)
         }
       }
     }
   }
 
-  if (showEverything || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+  if (includeCommands) {
+    if (wildMatch || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:new_password',
+        })
+      }
+    }
+
+    if (wildMatch || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:new_note',
+        })
+      }
+    }
+
+    if (wildMatch || /^(new? ?f?i?l?e?|fil?e?)$/i.test(query)) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:new_file',
+        })
+      }
+    }
+
+    if (wildMatch || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
+      if (pakman.ov === 'pakrypt.pakman_state:locked') {
+        result.push({
+          ov: 'pakrypt.command:unlock',
+        })
+      }
+    }
+
+    if (wildMatch || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:lock',
+        })
+      }
+    }
+
+    // "open pak" or "open a pak"
+    if (wildMatch || /^(ope?n? ?a? ?p?a?k?|pak?)$/i.test(query)) {
       result.push({
-        ov: 'pakrypt.command:new_password',
+        ov: 'pakrypt.command:open_pak',
       })
     }
-  }
 
-  if (showEverything || /^(new? ?n?o?t?e?|not?e?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+    // "close pak" or "close a pak"
+    if (wildMatch || /^(cop?y? ?a? ?p?a?k?|pak?)$/i.test(query)) {
+      if (pakman.ov !== 'pakrypt.pakman_state:nil') {
+        result.push({
+          ov: 'pakrypt.command:copy_pak',
+        })
+      }
+    }
+
+    if (wildMatch || /^(new? ?p?a?k?|pak?)$/i.test(query)) {
       result.push({
-        ov: 'pakrypt.command:new_note',
+        ov: 'pakrypt.command:new_pak',
       })
     }
-  }
 
-  if (showEverything || /^(new? ?f?i?l?e?|fil?e?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+    if (wildMatch || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
+      if (pakman.ov != 'pakrypt.pakman_state:nil') {
+        result.push({
+          ov: 'pakrypt.command:close_pak',
+        })
+      }
+    }
+
+    // "delete pak" or "delete a pak"
+    if (wildMatch || /^(del?e?t?e? ?a? ?p?a?k?|pak?)$/i.test(query)) {
       result.push({
-        ov: 'pakrypt.command:new_file',
+        ov: 'pakrypt.command:delete_pak',
       })
     }
-  }
 
-  if (showEverything || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:locked') {
+    // "export pak" or "export a pak"
+    if (wildMatch || /^(exp?o?r?t? ?a? ?p?a?k?|pak?)$/i.test(query)) {
       result.push({
-        ov: 'pakrypt.command:unlock',
+        ov: 'pakrypt.command:export_pak',
       })
     }
-  }
 
-  if (showEverything || /^(loc?k? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+    // "import pak" or "import a pak"
+    if (wildMatch || /^(imp?o?r?t? ?a? ?p?a?k?|pak?)$/i.test(query)) {
       result.push({
-        ov: 'pakrypt.command:lock',
+        ov: 'pakrypt.command:import_pak',
       })
     }
-  }
 
-  // "open pak" or "open a pak"
-  if (showEverything || /^(ope?n? ?a? ?p?a?k?|pak?)$/i.test(query)) {
-    result.push({
-      ov: 'pakrypt.command:open_pak',
-    })
-  }
+    if (wildMatch || /^(cha?n?g?e? ?p?a?s?s?p?h?r?a?s?e?|pas?s?p?h?r?a?s?e?)$/i.test(query)) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:change_passphrase',
+        })
+      }
+    }
 
-  // "close pak" or "close a pak"
-  if (showEverything || /^(cop?y? ?a? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov !== 'pakrypt.pakman_state:nil') {
+    if (wildMatch || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
       result.push({
-        ov: 'pakrypt.command:copy_pak',
+        ov: 'pakrypt.command:theme_switcher',
       })
     }
-  }
 
-  if (showEverything || /^(new? ?p?a?k?|pak?)$/i.test(query)) {
-    result.push({
-      ov: 'pakrypt.command:new_pak',
-    })
-  }
-
-  if (showEverything || /^(clo?s?e? ?p?a?k?|pak?)$/i.test(query)) {
-    if (pakman.ov != 'pakrypt.pakman_state:nil') {
+    if (!explicitHelp && (wildMatch || /^(hel?p?)$/i.test(query))) {
       result.push({
-        ov: 'pakrypt.command:close_pak',
+        ov: 'pakrypt.command:help',
       })
     }
-  }
 
-  // "delete pak" or "delete a pak"
-  if (showEverything || /^(del?e?t?e? ?a? ?p?a?k?|pak?)$/i.test(query)) {
-    result.push({
-      ov: 'pakrypt.command:delete_pak',
-    })
-  }
-
-  // "export pak" or "export a pak"
-  if (showEverything || /^(exp?o?r?t? ?a? ?p?a?k?|pak?)$/i.test(query)) {
-    result.push({
-      ov: 'pakrypt.command:export_pak',
-    })
-  }
-
-  // "import pak" or "import a pak"
-  if (showEverything || /^(imp?o?r?t? ?a? ?p?a?k?|pak?)$/i.test(query)) {
-    result.push({
-      ov: 'pakrypt.command:import_pak',
-    })
-  }
-
-  if (showEverything || /^(cha?n?g?e? ?p?a?s?s?p?h?r?a?s?e?|pas?s?p?h?r?a?s?e?)$/i.test(query)) {
-    if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+    if (!explicitVersion && (wildMatch || /^(ver?s?i?o?n?)$/i.test(query))) {
       result.push({
-        ov: 'pakrypt.command:change_passphrase',
+        ov: 'pakrypt.command:version',
       })
     }
-  }
 
-  if (showEverything || /^(the?m?e?|dar?k?|lig?h?t?)$/i.test(query)) {
-    result.push({
-      ov: 'pakrypt.command:theme_switcher',
-    })
-  }
-
-  if (!explicitHelp && (showEverything || /^(hel?p?)$/i.test(query))) {
-    result.push({
-      ov: 'pakrypt.command:help',
-    })
-  }
-
-  if (!explicitVersion && (showEverything || /^(ver?s?i?o?n?)$/i.test(query))) {
-    result.push({
-      ov: 'pakrypt.command:version',
-    })
-  }
-
-  if (query === 'enable debug menu') {
-    result.push({
-      ov: 'pakrypt.command:debug_menu',
-    })
+    if (query === 'enable debug menu') {
+      result.push({
+        ov: 'pakrypt.command:debug_menu',
+      })
+    }
   }
 
   return result

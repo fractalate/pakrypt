@@ -327,3 +327,39 @@ export function FindBlock(pak: Pak, id: string): null | PakBlock {
   }
   return null
 }
+
+export function IsFileEntry(entry: PakEntry): entry is PakFile {
+  if (entry.ov === 'pakrypt.file:1.0') {
+    return true
+  } else if (entry.ov === 'pakrypt.note:1.0') {
+    return false
+  } else if (entry.ov === 'pakrypt.password:1.0') {
+    return false
+  }
+
+  return entry // never
+}
+
+export function IsNoteEntry(entry: PakEntry): entry is PakNote {
+  if (entry.ov === 'pakrypt.file:1.0') {
+    return false
+  } else if (entry.ov === 'pakrypt.note:1.0') {
+    return true
+  } else if (entry.ov === 'pakrypt.password:1.0') {
+    return false
+  }
+
+  return entry // never
+}
+
+export function IsPasswordEntry(entry: PakEntry): entry is PakPassword {
+  if (entry.ov === 'pakrypt.file:1.0') {
+    return false
+  } else if (entry.ov === 'pakrypt.note:1.0') {
+    return false
+  } else if (entry.ov === 'pakrypt.password:1.0') {
+    return true
+  }
+
+  return entry // never
+}
