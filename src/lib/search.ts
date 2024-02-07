@@ -195,6 +195,33 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
     }
   }
 
+  // Special overrides to show new password, file, and note tiles when you're searching for that kind of entry.
+  if (!includeCommands) {
+    if (wildMatch && justPasswords) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:new_password',
+        })
+      }
+    }
+
+    if (wildMatch && justNotes) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:new_note',
+        })
+      }
+    }
+
+    if (wildMatch && justFiles) {
+      if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
+        result.push({
+          ov: 'pakrypt.command:new_file',
+        })
+      }
+    }
+  }
+
   if (includeCommands) {
     if (wildMatch || /^(new? ?p?a?s?s?w?o?r?d?|pas?s?w?o?r?d?)$/i.test(query)) {
       if (pakman.ov === 'pakrypt.pakman_state:unlocked') {
