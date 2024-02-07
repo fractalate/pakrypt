@@ -136,21 +136,21 @@ function entryMatchesQuery(entry: PakEntry, query: string, wildMatch: boolean, j
 }
 
 export default function search(query: string, pakman: Pakman): SearchResult[] {
-  const justFiles = /^\s*files?($|\s)/.test(query)
-  const justNotes = /^\s*notes?($|\s)/.test(query)
-  const justPasswords = /^\s*passw?o?r?d?s?($|\s)/.test(query)
+  const justFiles = /^\s*files?($|\s)/i.test(query)
+  const justNotes = /^\s*notes?($|\s)/i.test(query)
+  const justPasswords = /^\s*passw?o?r?d?s?($|\s)/i.test(query)
   if (justFiles) {
-    query = query.replace(/^\s*files?/, '')
+    query = query.replace(/^\s*files?/i, '')
     if (query.length == 0) {
       query = '*'
     }
   } else if (justNotes) {
-    query = query.replace(/^\s*notes?/, '')
+    query = query.replace(/^\s*notes?/i, '')
     if (query.length == 0) {
       query = '*'
     }
   } else if (justPasswords) {
-    query = query.replace(/^\s*passw?o?r?d?s?/, '')
+    query = query.replace(/^\s*passw?o?r?d?s?/i, '')
     if (query.length == 0) {
       query = '*'
     }
@@ -161,7 +161,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
   // The help tile calls out * and space to search everything, but it
   // uses an underscore to show the space; be kind and allow underscore
   // to find everything too. The regex matches a single * or _.
-  const wildMatch = /^\s*[_*]\s*$/.test(query) || query === ' '
+  const wildMatch = /^\s*[_*]\s*$/i.test(query) || query === ' '
 
   query = query.trim().toLowerCase()
 
