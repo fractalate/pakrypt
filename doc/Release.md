@@ -8,6 +8,12 @@
 Version 1.0.0 is the first release of Pakrypt. It includes functionality for creating encrypted passwords, notes, and files locally on your device. You can read the [user guide](https://www.pakrypt.com/guide.html) to get a feel of what is possible with the app. Happy encrypting!
 -->
 
+## 0.9.4
+
+*February 7, 2024*
+
+This is the release candidate for the first release. It includes new search prefixes: search with `files`, `notes`, or `passwords` to search entries of just that type. For example, typing `file` or `files` will find all files and typing `file data` will find the files matching the search term `data`.
+
 ## 0.9.3
 
 *February 2, 2024*
