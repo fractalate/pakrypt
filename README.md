@@ -12,7 +12,7 @@ You can see what's new in the [release log](./doc/Release.md).
 
 ## Administrators
 
-To use this project, you simply need to serve the project's static files from a web server. The files can be downloaded from the current GitHub release: [v0.9.4](https://github.com/fractalate/pakrypt/releases/tag/v0.9.4).
+To use this project, you simply need to serve the project's static files from a web server. The files can be downloaded from the current GitHub release: [v1.0.0](https://github.com/fractalate/pakrypt/releases/tag/v1.0.0).
 
 ## Development
 
