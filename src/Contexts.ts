@@ -23,11 +23,13 @@ const nullPakmanStateContextState: PakmanStateContextState = {
 }
 
 interface QueryBarContextState {
+  initialVisit: boolean,
   query: string,
   setQuery: (query: string) => void,
 }
 
 const nullQueryBarContextState: QueryBarContextState = {
+  initialVisit: true,
   query: '',
   setQuery: () => {},
 }
