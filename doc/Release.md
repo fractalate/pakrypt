@@ -1,5 +1,11 @@
 # Release History for Pakrypt
 
+## 1.0.1
+
+*March 17, 2024*
+
+This version ass functionality to show the unlock tile by default on return visits for ease of use.
+
 ## 1.0.0
 
 *February 7, 2024*
