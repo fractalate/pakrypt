@@ -135,7 +135,7 @@ function entryMatchesQuery(entry: PakEntry, query: string, wildMatch: boolean, j
     || (entry.tags != null && tagsMatchQuery(entry.tags, query))
 }
 
-export default function search(query: string, pakman: Pakman): SearchResult[] {
+export default function search(initialVisit: boolean, query: string, pakman: Pakman): SearchResult[] {
   const justFiles = /^\s*files?($|\s)/i.test(query)
   const justNotes = /^\s*notes?($|\s)/i.test(query)
   const justPasswords = /^\s*passw?o?r?d?s?($|\s)/i.test(query)
@@ -247,7 +247,7 @@ export default function search(query: string, pakman: Pakman): SearchResult[] {
       }
     }
 
-    if (wildMatch || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
+    if (initialVisit || wildMatch || /^(unl?o?c?k? ?p?a?k?|pak?)$/i.test(query)) {
       if (pakman.ov === 'pakrypt.pakman_state:locked') {
         result.push({
           ov: 'pakrypt.command:unlock',

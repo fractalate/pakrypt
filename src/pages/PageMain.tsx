@@ -12,9 +12,9 @@ function computeTileKey(searchResult: SearchResult) {
 }
 
 export default function PageMain() {
-  const { query, setQuery } = useContext(QueryBarContext)
+  const { initialVisit, query, setQuery } = useContext(QueryBarContext)
   const { pakman } = useContext(PakmanStateContext)
-  const tiles = useMemo(() => search(query, pakman), [query, pakman])
+  const tiles = useMemo(() => search(initialVisit, query, pakman), [query, pakman])
 
   const tileComponents = tiles.map((searchResult) => <div className="mb-1" key={computeTileKey(searchResult)}>
     <Tile searchResult={searchResult} />
