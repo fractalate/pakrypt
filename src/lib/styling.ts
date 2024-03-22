@@ -1,12 +1,12 @@
 const styling = {
   button: {
     formButton: `
-      p-1 border rounded
+      p-1 border rounded-lg
       bg-slate-300 border-slate-200
       dark:bg-[#5c535c] dark:border-[#5c535c]
     `,
     dangerButton: `
-      p-1 border rounded
+      p-1 border rounded-lg
       bg-red-300 border-red-200
       dark:bg-red-800 dark:border-red-900
     `,
